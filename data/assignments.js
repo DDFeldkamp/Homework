@@ -73,6 +73,13 @@ assignments = {
       "dueDate": "2025-02-03T23:59:00",
       "link": "https://www.gradescope.com/courses/961758",
       "submitted": false
+    },
+    {
+      "title": "Homework 1",
+      "course": "CS 61B",
+      "dueDate": "2025-02-07T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758/assignments/5698332/submissions/new",
+      "submitted": false
     }
   ],
   "CS 70": [
