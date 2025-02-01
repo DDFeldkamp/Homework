@@ -4,8 +4,8 @@ assignments = {
       "title": "HW1",
       "course": "CHMENG 141",
       "dueDate": "2025-01-31T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5654842/submissions/304124390",
+      "submitted": true
     },
     {
       "title": "HW1 Bonus",
