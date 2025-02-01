@@ -22,6 +22,13 @@ assignments = {
       "dueDate": "2025-01-31T19:00:00",
       "link": "https://www.gradescope.com/courses/951862/assignments/5662945/submissions/303776357",
       "submitted": true
+    },
+    {
+      "title": "HW 2",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-02-07T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862",
+      "submitted": false
     }
   ],
   "CS 61B": [
