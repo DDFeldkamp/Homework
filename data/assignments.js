@@ -166,8 +166,8 @@ assignments = {
       "title": "Week 2 Homework (Due Monday 2/3 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-02-03T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/5506692/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5506692/submissions/304354746",
+      "submitted": true
     }
   ]
 };
