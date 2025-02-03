@@ -182,6 +182,13 @@ assignments = {
       "dueDate": "2025-02-03T02:00:00",
       "link": "https://www.gradescope.com/courses/929909/assignments/5506692/submissions/304354746",
       "submitted": true
+    },
+    {
+      "title": "Week 3 Homework (Due Monday 2/10 at 2AM)",
+      "course": "LS 22",
+      "dueDate": "2025-02-10T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909/assignments/5668855/submissions/new",
+      "submitted": false
     }
   ]
 };
