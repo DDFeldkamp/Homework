@@ -85,8 +85,8 @@ assignments = {
       "title": "Project 0: 2048",
       "course": "CS 61B",
       "dueDate": "2025-02-03T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5672962/submissions/304380788",
+      "submitted": true
     },
     {
       "title": "Project 0 Hard Mode: 2048",
@@ -145,6 +145,20 @@ assignments = {
       "dueDate": "2025-02-01T16:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5682185/submissions/304223339",
       "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 2A",
+      "course": "CS 70",
+      "dueDate": "2025-02-04T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5704242/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 2B",
+      "course": "CS 70",
+      "dueDate": "2025-02-06T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5704243/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
