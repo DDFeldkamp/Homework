@@ -196,6 +196,13 @@ assignments = {
       "dueDate": "2025-02-10T02:00:00",
       "link": "https://www.gradescope.com/courses/929909/assignments/5668855/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Project 1 Assignment 1",
+      "course": "LS 22",
+      "dueDate": "2025-02-10T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909",
+      "submitted": false
     }
   ]
 };
