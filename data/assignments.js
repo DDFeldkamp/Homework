@@ -166,6 +166,13 @@ assignments = {
       "dueDate": "2025-02-06T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5704243/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Homework 2",
+      "course": "CS 70",
+      "dueDate": "2025-02-08T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
     }
   ],
   "LS 22": [
