@@ -41,8 +41,8 @@ assignments = {
       "title": "HW 2",
       "course": "CHMENG 150A",
       "dueDate": "2025-02-07T19:00:00",
-      "link": "https://www.gradescope.com/courses/951862",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/951862/assignments/5710569/submissions/306071347",
+      "submitted": true
     }
   ],
   "CS 61B": [
