@@ -18,15 +18,15 @@ assignments = {
       "title": "HW 2",
       "course": "CHMENG 141",
       "dueDate": "2025-02-07T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767/assignments/5713282/submissions/306394096",
+      "link": "https://www.gradescope.com/courses/956767/assignments/5713282/submissions/306424442",
       "submitted": true
     },
     {
       "title": "HW 2 Bonus",
       "course": "CHMENG 141",
       "dueDate": "2025-02-07T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5713297/submissions/306443694",
+      "submitted": true
     }
   ],
   "CHMENG 150A": [
