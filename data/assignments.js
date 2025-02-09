@@ -215,6 +215,13 @@ assignments = {
       "dueDate": "2025-02-11T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5738645/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 3B",
+      "course": "CS 70",
+      "dueDate": "2025-02-13T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5738647/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
