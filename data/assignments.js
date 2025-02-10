@@ -124,6 +124,13 @@ assignments = {
       "submitted": true
     },
     {
+      "title": "Lab 04",
+      "course": "CS 61B",
+      "dueDate": "2025-02-14T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
+    },
+    {
       "title": "Project 1A: LinkedListDeque",
       "course": "CS 61B",
       "dueDate": "2025-02-10T23:59:00",
