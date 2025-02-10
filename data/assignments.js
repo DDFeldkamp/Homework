@@ -134,8 +134,8 @@ assignments = {
       "title": "[UNGRADED] Project 1A: LinkedListDeque Test Coverage",
       "course": "CS 61B",
       "dueDate": "2025-02-10T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5733485/submissions/306785876",
+      "submitted": true
     },
     {
       "title": "Project 1B: ArrayDeque",
