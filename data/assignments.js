@@ -222,6 +222,13 @@ assignments = {
       "dueDate": "2025-02-13T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5738647/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Discussion Attendance",
+      "course": "CS 70",
+      "dueDate": "2025-05-31T23:59:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
     }
   ],
   "LS 22": [
