@@ -127,8 +127,8 @@ assignments = {
       "title": "Project 1A: LinkedListDeque",
       "course": "CS 61B",
       "dueDate": "2025-02-10T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5731196/submissions/306753335",
+      "submitted": true
     },
     {
       "title": "[UNGRADED] Project 1A: LinkedListDeque Test Coverage",
@@ -257,8 +257,8 @@ assignments = {
       "title": "Project 1 Assignment 1",
       "course": "LS 22",
       "dueDate": "2025-02-10T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5713767/submissions/306769660",
+      "submitted": true
     }
   ]
 };
