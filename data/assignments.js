@@ -243,6 +243,13 @@ assignments = {
       "dueDate": "2025-05-31T23:59:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5759066/submissions/306830846",
       "submitted": true
+    },
+    {
+      "title": "Homework 3",
+      "course": "CS 70",
+      "dueDate": "2025-02-15T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
     }
   ],
   "LS 22": [
