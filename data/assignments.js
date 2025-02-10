@@ -268,11 +268,25 @@ assignments = {
       "submitted": true
     },
     {
+      "title": "Week 4 Homework (Due Monday 2/17 at 2AM)",
+      "course": "LS 22",
+      "dueDate": "2025-02-17T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909/assignments/5682908/submissions/new",
+      "submitted": false
+    },
+    {
       "title": "Project 1 Assignment 1",
       "course": "LS 22",
       "dueDate": "2025-02-10T02:00:00",
       "link": "https://www.gradescope.com/courses/929909/assignments/5713767/submissions/306769660",
       "submitted": true
+    },
+    {
+      "title": "Project 1 Assignment 2",
+      "course": "LS 22",
+      "dueDate": "2025-02-17T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909",
+      "submitted": false
     }
   ]
 };
