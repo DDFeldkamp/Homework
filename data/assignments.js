@@ -148,8 +148,8 @@ assignments = {
       "title": "Project 1B: ArrayDeque",
       "course": "CS 61B",
       "dueDate": "2025-02-19T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5753024/submissions/307138454",
+      "submitted": true
     },
     {
       "title": "[UNGRADED] Project 1B: ArrayDeque Test Coverage",
