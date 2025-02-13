@@ -57,6 +57,13 @@ assignments = {
       "dueDate": "2025-02-07T19:00:00",
       "link": "https://www.gradescope.com/courses/951862/assignments/5710569/submissions/306383490",
       "submitted": true
+    },
+    {
+      "title": "HW 3",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-02-14T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862",
+      "submitted": false
     }
   ],
   "CS 61B": [
@@ -234,8 +241,8 @@ assignments = {
       "title": "Mini-Vitamin 3B",
       "course": "CS 70",
       "dueDate": "2025-02-13T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/5738647/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5738647/submissions/308269303",
+      "submitted": true
     },
     {
       "title": "Discussion Attendance",
