@@ -32,15 +32,15 @@ assignments = {
       "title": "HW3",
       "course": "CHMENG 141",
       "dueDate": "2025-02-14T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5756227/submissions/308860552",
+      "submitted": true
     },
     {
       "title": "HW3 Bonus",
       "course": "CHMENG 141",
       "dueDate": "2025-02-14T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5756303/submissions/308860537",
+      "submitted": true
     },
     {
       "title": "HW4",
