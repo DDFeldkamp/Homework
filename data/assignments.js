@@ -276,8 +276,8 @@ assignments = {
       "title": "Homework 3",
       "course": "CS 70",
       "dueDate": "2025-02-15T16:00:00",
-      "link": "https://www.gradescope.com/courses/963062",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5764644/submissions/308954888",
+      "submitted": true
     }
   ],
   "LS 22": [
@@ -313,8 +313,8 @@ assignments = {
       "title": "Week 4 Homework (Due Monday 2/17 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-02-17T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/5682908/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5682908/submissions/308954986",
+      "submitted": true
     },
     {
       "title": "Project 1 Assignment 1",
