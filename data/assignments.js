@@ -278,6 +278,27 @@ assignments = {
       "dueDate": "2025-02-15T16:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5764644/submissions/308954888",
       "submitted": true
+    },
+    {
+      "title": "Homework 4",
+      "course": "CS 70",
+      "dueDate": "2025-02-22T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 4A",
+      "course": "CS 70",
+      "dueDate": "2025-02-18T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5800629/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 4B",
+      "course": "CS 70",
+      "dueDate": "2025-02-20T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5800630/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
