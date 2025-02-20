@@ -147,7 +147,7 @@ assignments = {
     {
       "title": "Homework 1",
       "course": "CS 61B",
-      "dueDate": "2025-02-07T23:59:00",
+      "dueDate": "2025-04-27T23:59:00",
       "link": "https://www.gradescope.com/courses/961758/assignments/5698332/submissions/306445458",
       "submitted": true
     },
