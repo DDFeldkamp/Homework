@@ -306,6 +306,20 @@ assignments = {
       "dueDate": "2025-02-20T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5800630/submissions/310499726",
       "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 5A",
+      "course": "CS 70",
+      "dueDate": "2025-02-25T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5818044/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 5B",
+      "course": "CS 70",
+      "dueDate": "2025-02-27T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5818059/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
@@ -355,8 +369,8 @@ assignments = {
       "title": "Week 5 Homework (Due Monday 2/24 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-02-24T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/5724839/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5724839/submissions/311372894",
+      "submitted": true
     },
     {
       "title": "Project 1 Assignment 2",
