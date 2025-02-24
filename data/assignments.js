@@ -383,8 +383,8 @@ assignments = {
       "title": "Project 1 Assignment 3",
       "course": "LS 22",
       "dueDate": "2025-02-24T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5798330/submissions/311465802",
+      "submitted": true
     }
   ]
 };
