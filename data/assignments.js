@@ -192,6 +192,20 @@ assignments = {
       "dueDate": "2025-02-19T23:59:00",
       "link": "https://www.gradescope.com/courses/961758",
       "submitted": false
+    },
+    {
+      "title": "Lab 05",
+      "course": "CS 61B",
+      "dueDate": "2025-02-28T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
+    },
+    {
+      "title": "Homework 2",
+      "course": "CS 61B",
+      "dueDate": "2025-03-07T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
     }
   ],
   "CS 70": [
