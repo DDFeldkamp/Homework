@@ -46,15 +46,15 @@ assignments = {
       "title": "HW4",
       "course": "CHMENG 141",
       "dueDate": "2025-02-28T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5765180/submissions/313489147",
+      "submitted": true
     },
     {
       "title": "HW4 Bonus",
       "course": "CHMENG 141",
       "dueDate": "2025-02-28T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5766801/submissions/313489338",
+      "submitted": true
     }
   ],
   "CHMENG 150A": [
