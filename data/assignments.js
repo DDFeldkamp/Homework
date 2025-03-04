@@ -369,6 +369,13 @@ assignments = {
       "dueDate": "2025-03-05T23:59:00",
       "link": "https://www.gradescope.com/courses/963062",
       "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 6A",
+      "course": "CS 70",
+      "dueDate": "2025-03-04T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5883312/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
