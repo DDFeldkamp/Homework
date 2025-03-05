@@ -374,8 +374,8 @@ assignments = {
       "title": "Homework 6",
       "course": "CS 70",
       "dueDate": "2025-03-05T23:59:00",
-      "link": "https://www.gradescope.com/courses/963062",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5860387/submissions/314704858",
+      "submitted": true
     },
     {
       "title": "Mini-Vitamin 6A",
