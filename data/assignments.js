@@ -253,8 +253,8 @@ assignments = {
       "title": "Homework 2",
       "course": "CS 61B",
       "dueDate": "2025-03-09T23:58:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5844627/submissions/315790313",
+      "submitted": true
     }
   ],
   "CS 70": [
