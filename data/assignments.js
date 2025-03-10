@@ -404,6 +404,20 @@ assignments = {
       "dueDate": "2025-03-04T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5883312/submissions/314408116",
       "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 7A",
+      "course": "CS 70",
+      "dueDate": "2025-10-17T19:30:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 7B",
+      "course": "CS 70",
+      "dueDate": "2025-10-17T19:30:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
     }
   ],
   "LS 22": [
