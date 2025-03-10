@@ -432,6 +432,13 @@ assignments = {
       "dueDate": "2025-03-13T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5911921/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Homework 7",
+      "course": "CS 70",
+      "dueDate": "2025-03-15T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
     }
   ],
   "LS 22": [
@@ -518,6 +525,13 @@ assignments = {
       "dueDate": "2025-02-24T02:00:00",
       "link": "https://www.gradescope.com/courses/929909/assignments/5798330/submissions/311465802",
       "submitted": true
+    },
+    {
+      "title": "Extra Credit Peer Reviews for Project 1",
+      "course": "LS 22",
+      "dueDate": "2025-03-10T20:00:00",
+      "link": "https://www.gradescope.com/courses/929909",
+      "submitted": false
     }
   ]
 };
