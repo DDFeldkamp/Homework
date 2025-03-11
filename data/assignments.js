@@ -423,8 +423,8 @@ assignments = {
       "title": "Mini-Vitamin 7A",
       "course": "CS 70",
       "dueDate": "2025-03-11T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/5911920/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5911920/submissions/316344562",
+      "submitted": true
     },
     {
       "title": "Mini-Vitamin 7B",
