@@ -530,8 +530,8 @@ assignments = {
       "title": "Extra Credit Peer Reviews for Project 1",
       "course": "LS 22",
       "dueDate": "2025-03-11T20:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5917567/submissions/316413291",
+      "submitted": true
     },
     {
       "title": "Project 2 Assignment 1",
