@@ -437,15 +437,15 @@ assignments = {
       "title": "Mini-Vitamin 7B",
       "course": "CS 70",
       "dueDate": "2025-03-13T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/5911921/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5911921/submissions/316859381",
+      "submitted": true
     },
     {
       "title": "Homework 7",
       "course": "CS 70",
       "dueDate": "2025-03-15T16:00:00",
-      "link": "https://www.gradescope.com/courses/963062",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5917664/submissions/316859367",
+      "submitted": true
     }
   ],
   "LS 22": [
