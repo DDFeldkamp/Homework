@@ -232,8 +232,8 @@ assignments = {
       "title": "Project 2A: Ngrams",
       "course": "CS 61B",
       "dueDate": "2025-03-12T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5737800/submissions/316847469",
+      "submitted": true
     },
     {
       "title": "Project 2B: Checkpoint",
