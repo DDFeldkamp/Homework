@@ -125,7 +125,7 @@ assignments = {
       "title": "HW 7",
       "course": "CHMENG 150A",
       "dueDate": "2025-03-14T19:00:00",
-      "link": "https://www.gradescope.com/courses/951862/assignments/5905123/submissions/316147928",
+      "link": "https://www.gradescope.com/courses/951862/assignments/5905123/submissions/317408075",
       "submitted": true
     }
   ],
@@ -234,6 +234,13 @@ assignments = {
       "dueDate": "2025-03-12T23:59:00",
       "link": "https://www.gradescope.com/courses/961758/assignments/5737800/submissions/317332941",
       "submitted": true
+    },
+    {
+      "title": "Project 2B: Wordnet",
+      "course": "CS 61B",
+      "dueDate": "2025-04-04T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
     },
     {
       "title": "Project 2B: Checkpoint",
