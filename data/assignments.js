@@ -548,6 +548,13 @@ assignments = {
       "submitted": true
     },
     {
+      "title": "Week 9 Homework (Due Monday 3/24 at 2AM)",
+      "course": "LS 22",
+      "dueDate": "2025-03-24T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909/assignments/5794534/submissions/new",
+      "submitted": false
+    },
+    {
       "title": "Project 1 Assignment 3",
       "course": "LS 22",
       "dueDate": "2025-02-24T02:00:00",
