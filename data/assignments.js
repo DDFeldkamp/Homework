@@ -1,4 +1,118 @@
 assignments = {
+  "CHEM 4B SP2025": [
+    {
+      "title": "Lab 1: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-07T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 1: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-01-31T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 2: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-07T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 2: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-14T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 3, part I: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-14T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 3, part I: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-21T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Special Projects: Two Proposals",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-21T23:59:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 3, part II: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-28T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 3, part II: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-07T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Special Projects: Outline",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-02-22T23:59:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 4: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-07T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 4: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-14T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 5: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-14T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 5: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-21T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Lab 6: Prelab",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-21T13:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Special Projects: Finalized Plan",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-03-16T23:59:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    }
+  ],
   "CHMENG 141": [
     {
       "title": "HW1",
