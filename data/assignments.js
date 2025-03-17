@@ -565,8 +565,8 @@ assignments = {
       "title": "Project 2 Assignment 1",
       "course": "LS 22",
       "dueDate": "2025-03-17T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5921220/submissions/317808718",
+      "submitted": true
     }
   ]
 };
