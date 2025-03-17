@@ -462,6 +462,13 @@ assignments = {
       "submitted": true
     },
     {
+      "title": "Mini-Vitamin 8A",
+      "course": "CS 70",
+      "dueDate": "2025-03-18T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/5937558/submissions/new",
+      "submitted": false
+    },
+    {
       "title": "Mini-Vitamin 8B",
       "course": "CS 70",
       "dueDate": "2025-10-24T19:30:00",
