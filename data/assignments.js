@@ -411,6 +411,13 @@ assignments = {
       "dueDate": "2025-03-09T23:58:00",
       "link": "https://www.gradescope.com/courses/961758/assignments/5844627/submissions/315793616",
       "submitted": true
+    },
+    {
+      "title": "Lab 08",
+      "course": "CS 61B",
+      "dueDate": "2025-03-21T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
     }
   ],
   "CS 70": [
