@@ -106,6 +106,13 @@ assignments = {
       "submitted": false
     },
     {
+      "title": "Lab 6: Report",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-04-04T17:00:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
       "title": "Special Projects: Finalized Plan",
       "course": "CHEM 4B SP2025",
       "dueDate": "2025-03-16T23:59:00",
