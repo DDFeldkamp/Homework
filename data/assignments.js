@@ -600,8 +600,8 @@ assignments = {
       "title": "Mini-Vitamin 8B",
       "course": "CS 70",
       "dueDate": "2025-03-20T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/5937559/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5937559/submissions/318274434",
+      "submitted": true
     },
     {
       "title": "Homework 8",
