@@ -204,6 +204,13 @@ assignments = {
       "dueDate": "2025-03-21T23:59:00",
       "link": "https://www.gradescope.com/courses/956767",
       "submitted": false
+    },
+    {
+      "title": "HW7 Bonus",
+      "course": "CHMENG 141",
+      "dueDate": "2025-03-21T23:59:00",
+      "link": "https://www.gradescope.com/courses/956767",
+      "submitted": false
     }
   ],
   "CHMENG 150A": [
