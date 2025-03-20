@@ -197,6 +197,13 @@ assignments = {
       "dueDate": "2025-03-14T23:59:00",
       "link": "https://www.gradescope.com/courses/956767/assignments/5901505/submissions/317488462",
       "submitted": true
+    },
+    {
+      "title": "HW 7",
+      "course": "CHMENG 141",
+      "dueDate": "2025-03-21T23:59:00",
+      "link": "https://www.gradescope.com/courses/956767",
+      "submitted": false
     }
   ],
   "CHMENG 150A": [
