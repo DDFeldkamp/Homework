@@ -635,8 +635,8 @@ assignments = {
       "title": "Homework 8",
       "course": "CS 70",
       "dueDate": "2025-03-22T16:00:00",
-      "link": "https://www.gradescope.com/courses/963062",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/5950171/submissions/319196629",
+      "submitted": true
     }
   ],
   "LS 22": [
