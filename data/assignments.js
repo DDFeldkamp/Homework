@@ -202,7 +202,7 @@ assignments = {
       "title": "HW 7",
       "course": "CHMENG 141",
       "dueDate": "2025-03-21T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767/assignments/5965535/submissions/318949589",
+      "link": "https://www.gradescope.com/courses/956767/assignments/5965535/submissions/319178478",
       "submitted": true
     },
     {
@@ -276,6 +276,13 @@ assignments = {
       "dueDate": "2025-03-21T19:00:00",
       "link": "https://www.gradescope.com/courses/951862/assignments/5936696/submissions/319032689",
       "submitted": true
+    },
+    {
+      "title": "HW 9",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-04-07T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862",
+      "submitted": false
     }
   ],
   "CS 61B": [
