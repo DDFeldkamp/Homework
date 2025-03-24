@@ -450,7 +450,7 @@ assignments = {
     {
       "title": "Homework 3: Midterm 2 Conceptual Review",
       "course": "CS 61B",
-      "dueDate": "2025-04-02T23:59:00",
+      "dueDate": "2025-04-04T23:59:00",
       "link": "https://www.gradescope.com/courses/961758/assignments/5967008/submissions/new",
       "submitted": false
     }
