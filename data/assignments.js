@@ -409,8 +409,8 @@ assignments = {
       "title": "Project 2B: Design Document",
       "course": "CS 61B",
       "dueDate": "2025-03-21T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5737948/submissions/319627232",
+      "submitted": true
     },
     {
       "title": "Project 1B: ArrayDeque",
@@ -444,8 +444,8 @@ assignments = {
       "title": "Lab 08",
       "course": "CS 61B",
       "dueDate": "2025-03-21T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5951335/submissions/319639703",
+      "submitted": true
     },
     {
       "title": "Homework 3: Midterm 2 Conceptual Review",
