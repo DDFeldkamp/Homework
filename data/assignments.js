@@ -216,8 +216,8 @@ assignments = {
       "title": "HW8",
       "course": "CHMENG 141",
       "dueDate": "2025-03-28T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/5970661/submissions/320857752",
+      "submitted": true
     }
   ],
   "CHMENG 150A": [
