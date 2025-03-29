@@ -732,9 +732,9 @@ assignments = {
       "submitted": false
     },
     {
-      "title": "Week 10 Homework (Due Monday 3/31 at 2AM)",
+      "title": "Week 10 Homework (Due Monday 4/07 at 2AM)",
       "course": "LS 22",
-      "dueDate": "2025-03-31T02:00:00",
+      "dueDate": "2025-04-07T02:00:00",
       "link": "https://www.gradescope.com/courses/929909/assignments/5794537/submissions/new",
       "submitted": false
     },
