@@ -644,6 +644,20 @@ assignments = {
       "dueDate": "2025-03-22T16:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/5950171/submissions/319196629",
       "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 9A",
+      "course": "CS 70",
+      "dueDate": "2025-04-01T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6014685/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 9B",
+      "course": "CS 70",
+      "dueDate": "2025-04-03T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6014690/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
