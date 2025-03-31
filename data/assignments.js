@@ -728,8 +728,8 @@ assignments = {
       "title": "Week 9 Homework (Due Monday 3/31 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-03-31T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/5794534/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5794534/submissions/321158740",
+      "submitted": true
     },
     {
       "title": "Week 10 Homework (Due Monday 4/07 at 2AM)",
@@ -770,8 +770,8 @@ assignments = {
       "title": "Project 1 Final Essay",
       "course": "LS 22",
       "dueDate": "2025-03-31T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5960488/submissions/321158507",
+      "submitted": true
     }
   ]
 };
