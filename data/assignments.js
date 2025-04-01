@@ -115,7 +115,7 @@ assignments = {
     {
       "title": "Special Projects: Finalized Plan",
       "course": "CHEM 4B SP2025",
-      "dueDate": "2025-03-29T23:59:00",
+      "dueDate": "2025-04-04T23:59:00",
       "link": "https://www.gradescope.com/courses/944712",
       "submitted": false
     }
