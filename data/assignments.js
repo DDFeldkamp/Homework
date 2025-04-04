@@ -451,8 +451,8 @@ assignments = {
       "title": "Homework 3: Midterm 2 Conceptual Review",
       "course": "CS 61B",
       "dueDate": "2025-04-04T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758/assignments/5967008/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5967008/submissions/322621127",
+      "submitted": true
     },
     {
       "title": "Project 3B: Interactivity",
