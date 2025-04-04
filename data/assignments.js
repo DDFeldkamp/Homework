@@ -453,6 +453,27 @@ assignments = {
       "dueDate": "2025-04-04T23:59:00",
       "link": "https://www.gradescope.com/courses/961758/assignments/5967008/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Project 3B: Interactivity",
+      "course": "CS 61B",
+      "dueDate": "2025-04-27T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
+    },
+    {
+      "title": "Project 3A: World Screenshots",
+      "course": "CS 61B",
+      "dueDate": "2025-04-18T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
+    },
+    {
+      "title": "Project 3: Design Document",
+      "course": "CS 61B",
+      "dueDate": "2025-04-18T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
     }
   ],
   "CS 70": [
