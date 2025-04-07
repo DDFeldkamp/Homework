@@ -395,7 +395,7 @@ assignments = {
       "title": "Project 2B: Wordnet",
       "course": "CS 61B",
       "dueDate": "2025-04-04T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758/assignments/5737804/submissions/323079201",
+      "link": "https://www.gradescope.com/courses/961758/assignments/5737804/submissions/323082747",
       "submitted": true
     },
     {
@@ -791,8 +791,8 @@ assignments = {
       "title": "Week 10 Homework (Due Monday 4/07 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-04-07T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/5794537/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/5794537/submissions/323082884",
+      "submitted": true
     },
     {
       "title": "Project 1 Assignment 3",
