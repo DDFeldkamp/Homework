@@ -686,6 +686,20 @@ assignments = {
       "dueDate": "2025-04-06T16:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/6020247/submissions/322798135",
       "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 11A",
+      "course": "CS 70",
+      "dueDate": "2025-04-08T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6034153/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 11B",
+      "course": "CS 70",
+      "dueDate": "2025-04-10T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6034156/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
