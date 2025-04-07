@@ -395,8 +395,8 @@ assignments = {
       "title": "Project 2B: Wordnet",
       "course": "CS 61B",
       "dueDate": "2025-04-04T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/5737804/submissions/323076682",
+      "submitted": true
     },
     {
       "title": "Project 2B: Checkpoint",
