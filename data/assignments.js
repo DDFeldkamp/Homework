@@ -474,6 +474,13 @@ assignments = {
       "dueDate": "2025-04-18T23:59:00",
       "link": "https://www.gradescope.com/courses/961758",
       "submitted": false
+    },
+    {
+      "title": "[UNGRADED] Lab 10",
+      "course": "CS 61B",
+      "dueDate": "2025-06-01T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758",
+      "submitted": false
     }
   ],
   "CS 70": [
