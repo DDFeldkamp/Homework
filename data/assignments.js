@@ -742,6 +742,13 @@ assignments = {
       "dueDate": "2025-04-15T18:00:00",
       "link": "https://www.gradescope.com/courses/963062/assignments/6083917/submissions/new",
       "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 12B",
+      "course": "CS 70",
+      "dueDate": "2025-04-17T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6083918/submissions/new",
+      "submitted": false
     }
   ],
   "LS 22": [
