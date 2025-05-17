@@ -21,20 +21,20 @@ jobs:
 
     - name: Upgrade to latest Planit version
       run: |
-        git config --global user.name 'planit'
-        git config --global user.email 'planit@tanjeffreyz.github.io'
-        git config --global pull.rebase false
-        git remote add planit 'https://github.com/tanjeffreyz/planit.git'
-        git fetch planit
-        git checkout planit/main -- .
-        git checkout HEAD -- data || true
-        git checkout HEAD -- .github
-        git commit -m 'Upgraded to latest Planit version' || true
+        # git config --global user.name 'planit'
+        # git config --global user.email 'planit@tanjeffreyz.github.io'
+        # git config --global pull.rebase false
+        # git remote add planit 'https://github.com/tanjeffreyz/planit.git'
+        # git fetch planit
+        # git checkout planit/main -- .
+        # git checkout HEAD -- data || true
+        # git checkout HEAD -- .github
+        # git commit -m 'Upgraded to latest Planit version' || true
     
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.10"
+        python-version: "3.13"
         cache: "pip"
         
     - name: Install dependencies
