@@ -31,7 +31,7 @@ jobs:
         # git checkout HEAD -- .github
         # git commit -m 'Upgraded to latest Planit version' || true
     
-    - name: Set up Python 3.10
+    - name: Set up Python 3.13
       uses: actions/setup-python@v5
       with:
         python-version: "3.13"
