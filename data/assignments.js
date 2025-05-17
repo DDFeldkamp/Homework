@@ -118,6 +118,20 @@ assignments = {
       "dueDate": "2025-04-04T23:59:00",
       "link": "https://www.gradescope.com/courses/944712",
       "submitted": false
+    },
+    {
+      "title": "Special Projects: Poster Layout",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-05-02T23:59:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
+    },
+    {
+      "title": "Special Projects: Extra Credit Data Analysis [Optional]",
+      "course": "CHEM 4B SP2025",
+      "dueDate": "2025-05-09T23:59:00",
+      "link": "https://www.gradescope.com/courses/944712",
+      "submitted": false
     }
   ],
   "CHMENG 141": [
@@ -230,8 +244,29 @@ assignments = {
       "title": "HW10",
       "course": "CHMENG 141",
       "dueDate": "2025-04-18T23:59:00",
-      "link": "https://www.gradescope.com/courses/956767",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/956767/assignments/6077285/submissions/326805437",
+      "submitted": true
+    },
+    {
+      "title": "HW11",
+      "course": "CHMENG 141",
+      "dueDate": "2025-04-25T23:59:00",
+      "link": "https://www.gradescope.com/courses/956767/assignments/6102112/submissions/328853420",
+      "submitted": true
+    },
+    {
+      "title": "Course Evaluation",
+      "course": "CHMENG 141",
+      "dueDate": "2025-05-11T23:59:00",
+      "link": "https://www.gradescope.com/courses/956767/assignments/6116502/submissions/331994362",
+      "submitted": true
+    },
+    {
+      "title": "HW12",
+      "course": "CHMENG 141",
+      "dueDate": "2025-05-02T23:59:00",
+      "link": "https://www.gradescope.com/courses/956767/assignments/6150031/submissions/330902525",
+      "submitted": true
     }
   ],
   "CHMENG 150A": [
@@ -297,6 +332,34 @@ assignments = {
       "dueDate": "2025-04-07T19:00:00",
       "link": "https://www.gradescope.com/courses/951862",
       "submitted": false
+    },
+    {
+      "title": "HW 10",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-04-18T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862/assignments/6103292/submissions/326689412",
+      "submitted": true
+    },
+    {
+      "title": "HW 11",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-04-25T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862/assignments/6111550/submissions/328779985",
+      "submitted": true
+    },
+    {
+      "title": "Proof of Course Evaluations",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-05-12T20:00:00",
+      "link": "https://www.gradescope.com/courses/951862/assignments/6158889/submissions/331994415",
+      "submitted": true
+    },
+    {
+      "title": "HW 12",
+      "course": "CHMENG 150A",
+      "dueDate": "2025-05-07T19:00:00",
+      "link": "https://www.gradescope.com/courses/951862/assignments/6159543/submissions/331963946",
+      "submitted": true
     }
   ],
   "CS 61B": [
@@ -471,23 +534,23 @@ assignments = {
     {
       "title": "Project 3B: Interactivity",
       "course": "CS 61B",
-      "dueDate": "2025-04-27T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "dueDate": "2025-04-29T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758/assignments/6024078/submissions/329190770",
+      "submitted": true
     },
     {
       "title": "Project 3A: World Screenshots",
       "course": "CS 61B",
       "dueDate": "2025-04-18T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/6024091/submissions/326760751",
+      "submitted": true
     },
     {
       "title": "Project 3: Design Document",
       "course": "CS 61B",
       "dueDate": "2025-04-18T23:59:00",
-      "link": "https://www.gradescope.com/courses/961758",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/961758/assignments/6024328/submissions/325708700",
+      "submitted": true
     },
     {
       "title": "[UNGRADED] Lab 10",
@@ -495,6 +558,27 @@ assignments = {
       "dueDate": "2025-06-01T23:59:00",
       "link": "https://www.gradescope.com/courses/961758",
       "submitted": false
+    },
+    {
+      "title": "Project 3: Checkoffs (LLM Pilot Program)",
+      "course": "CS 61B",
+      "dueDate": "2025-05-04T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758/assignments/6158306/submissions/new",
+      "submitted": false
+    },
+    {
+      "title": "Project 3: Checkoffs",
+      "course": "CS 61B",
+      "dueDate": "2025-05-04T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758/assignments/6158366/submissions/330414663",
+      "submitted": true
+    },
+    {
+      "title": "Homework 4: Final Exam Review",
+      "course": "CS 61B",
+      "dueDate": "2025-05-04T23:59:00",
+      "link": "https://www.gradescope.com/courses/961758/assignments/6164006/submissions/331070838",
+      "submitted": true
     }
   ],
   "CS 70": [
@@ -733,21 +817,63 @@ assignments = {
       "title": "Homework 12",
       "course": "CS 70",
       "dueDate": "2025-04-19T16:00:00",
-      "link": "https://www.gradescope.com/courses/963062",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/6083913/submissions/326894793",
+      "submitted": true
     },
     {
       "title": "Mini-Vitamin 12A",
       "course": "CS 70",
       "dueDate": "2025-04-15T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/6083917/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/963062/assignments/6083917/submissions/325650959",
+      "submitted": true
     },
     {
       "title": "Mini-Vitamin 12B",
       "course": "CS 70",
       "dueDate": "2025-04-17T18:00:00",
-      "link": "https://www.gradescope.com/courses/963062/assignments/6083918/submissions/new",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6083918/submissions/326354671",
+      "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 13A",
+      "course": "CS 70",
+      "dueDate": "2025-04-22T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6108218/submissions/327431111",
+      "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 13B",
+      "course": "CS 70",
+      "dueDate": "2025-04-24T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6108221/submissions/327432411",
+      "submitted": true
+    },
+    {
+      "title": "Homework 13",
+      "course": "CS 70",
+      "dueDate": "2025-04-26T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
+      "submitted": false
+    },
+    {
+      "title": "Mini-Vitamin 14A",
+      "course": "CS 70",
+      "dueDate": "2025-04-29T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6151859/submissions/329531242",
+      "submitted": true
+    },
+    {
+      "title": "Mini-Vitamin 14B",
+      "course": "CS 70",
+      "dueDate": "2025-05-01T18:00:00",
+      "link": "https://www.gradescope.com/courses/963062/assignments/6151864/submissions/329532582",
+      "submitted": true
+    },
+    {
+      "title": "Homework 14",
+      "course": "CS 70",
+      "dueDate": "2025-05-03T16:00:00",
+      "link": "https://www.gradescope.com/courses/963062",
       "submitted": false
     }
   ],
@@ -889,8 +1015,8 @@ assignments = {
       "title": "Project 2 Assignment 3",
       "course": "LS 22",
       "dueDate": "2025-04-21T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/6041212/submissions/327111397",
+      "submitted": true
     },
     {
       "title": "Week 11 Living the Topic",
@@ -903,8 +1029,22 @@ assignments = {
       "title": "Week 12 Homework (Due Monday 4/21 at 2AM)",
       "course": "LS 22",
       "dueDate": "2025-04-21T02:00:00",
-      "link": "https://www.gradescope.com/courses/929909/assignments/6051443/submissions/new",
-      "submitted": false
+      "link": "https://www.gradescope.com/courses/929909/assignments/6051443/submissions/326894864",
+      "submitted": true
+    },
+    {
+      "title": "Week 13 Homework (Due Monday 4/28 at 2AM)",
+      "course": "LS 22",
+      "dueDate": "2025-04-28T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909/assignments/6086753/submissions/329157339",
+      "submitted": true
+    },
+    {
+      "title": "Project 2 Final Poster",
+      "course": "LS 22",
+      "dueDate": "2025-05-05T02:00:00",
+      "link": "https://www.gradescope.com/courses/929909/assignments/6120263/submissions/331204165",
+      "submitted": true
     }
   ]
 };
