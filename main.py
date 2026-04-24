@@ -37,7 +37,7 @@ with open('README.md', 'w') as file:
     file.write(readme)
 
 # Save the list to a JavaScript file for Planit to import later
-utils.save_data('assignments', assignments)
+utils.save_data('./data/assignments', assignments)
 
 # Touch a dummy file so git always has a change
 with open('.last_run', 'w') as f:
