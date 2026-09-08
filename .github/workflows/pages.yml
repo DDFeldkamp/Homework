@@ -23,11 +23,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Build static site only
+        run: |
+          mkdir _site
+          cp index.html styles.css app.js config.js _site/
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "_site"
 
       - name: Deploy
         id: deployment

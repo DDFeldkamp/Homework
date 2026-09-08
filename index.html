@@ -3,39 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#111827" />
   <title>Deadline Dashboard</title>
+  <script>
+    (() => {
+      const saved = localStorage.getItem('deadline-theme');
+      const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">DEADLINE DASHBOARD</p>
-        <h1>What’s due next?</h1>
-        <p id="syncStatus" class="muted">Loading Gradescope sync…</p>
+  <header class="banner">
+    <div class="banner-inner">
+      <div class="brand-block">
+        <h1>Deadline Dashboard</h1>
+        <span id="currentDate" class="current-date"></span>
       </div>
-      <div class="top-actions">
-        <button id="refreshBtn" class="ghost">Refresh</button>
-        <button id="addBtn" class="primary">+ Add assignment</button>
+      <div class="banner-actions">
+        <span id="syncStatus" class="sync-status">Gradescope locked</span>
+        <button id="unlockBtn" class="button subtle" type="button">Unlock</button>
+        <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme">☾</button>
+        <button id="addBtn" class="button primary" type="button">+ Add</button>
       </div>
-    </header>
+    </div>
+  </header>
 
+  <main class="shell">
     <section class="summary" aria-label="Deadline summary">
-      <div class="summary-card"><span>Next 24h</span><strong id="count24">0</strong></div>
-      <div class="summary-card"><span>Next 7 days</span><strong id="count7">0</strong></div>
-      <div class="summary-card"><span>Upcoming</span><strong id="countUpcoming">0</strong></div>
-      <div class="summary-card"><span>Completed</span><strong id="countDone">0</strong></div>
+      <div><span>Due today</span><strong id="countToday">0</strong></div>
+      <div><span>Next 7 days</span><strong id="count7">0</strong></div>
+      <div><span>Upcoming</span><strong id="countUpcoming">0</strong></div>
+      <div><span>Done</span><strong id="countDone">0</strong></div>
     </section>
 
     <section class="toolbar">
-      <div class="tabs" role="tablist">
-        <button class="tab active" data-filter="upcoming">Upcoming</button>
-        <button class="tab" data-filter="all">All</button>
-        <button class="tab" data-filter="done">Done</button>
+      <div class="tabs" role="tablist" aria-label="Assignment filters">
+        <button class="tab active" data-filter="upcoming" type="button">Upcoming</button>
+        <button class="tab" data-filter="all" type="button">All</button>
+        <button class="tab" data-filter="done" type="button">Done</button>
       </div>
       <label class="search">
-        <span>⌕</span>
+        <span aria-hidden="true">⌕</span>
         <input id="searchInput" type="search" placeholder="Search course or assignment" />
       </label>
     </section>
@@ -43,14 +53,35 @@
     <section id="assignmentList" class="assignment-list" aria-live="polite"></section>
   </main>
 
+  <dialog id="unlockDialog">
+    <form id="unlockForm">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">PRIVATE GRADESCOPE DATA</p>
+          <h2>Unlock dashboard</h2>
+        </div>
+        <button type="button" class="icon-button close-unlock" aria-label="Close">×</button>
+      </div>
+      <p class="dialog-copy">Enter your dashboard password. It is sent only to your private API over HTTPS and is kept in this browser tab for the session.</p>
+      <label>Password
+        <input name="password" type="password" autocomplete="current-password" required autofocus />
+      </label>
+      <p id="unlockError" class="form-error" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="button subtle close-unlock">Cancel</button>
+        <button type="submit" class="button primary">Unlock</button>
+      </div>
+    </form>
+  </dialog>
+
   <dialog id="assignmentDialog">
-    <form id="assignmentForm" method="dialog">
+    <form id="assignmentForm">
       <div class="dialog-head">
         <div>
           <p class="eyebrow">MANUAL ASSIGNMENT</p>
           <h2>Add assignment</h2>
         </div>
-        <button type="button" id="closeDialog" class="icon-btn" aria-label="Close">×</button>
+        <button type="button" id="closeDialog" class="icon-button" aria-label="Close">×</button>
       </div>
 
       <label>Assignment
@@ -85,46 +116,48 @@
       </div>
 
       <div class="dialog-actions">
-        <button type="button" id="cancelDialog" class="ghost">Cancel</button>
-        <button type="submit" class="primary">Add assignment</button>
+        <button type="button" id="cancelDialog" class="button subtle">Cancel</button>
+        <button type="submit" class="button primary">Add assignment</button>
       </div>
     </form>
   </dialog>
 
   <template id="assignmentTemplate">
-    <article class="assignment-card">
-      <div class="card-main">
-        <button class="check" aria-label="Mark complete"></button>
-        <div class="assignment-copy">
-          <div class="assignment-heading">
-            <div>
-              <div class="meta-line">
-                <span class="course-pill"></span>
-                <span class="source-pill"></span>
-              </div>
-              <h3 class="title"></h3>
+    <article class="assignment-row">
+      <div class="date-cell">
+        <span class="date-month"></span>
+        <strong class="date-day"></strong>
+        <span class="date-time"></span>
+      </div>
+      <button class="check" type="button" aria-label="Mark complete"></button>
+      <div class="assignment-copy">
+        <div class="assignment-heading">
+          <div>
+            <div class="meta-line">
+              <span class="course-pill"></span>
+              <span class="source-pill"></span>
             </div>
-            <button class="more-btn" aria-label="Delete manual assignment">×</button>
+            <h3 class="title"></h3>
           </div>
+          <button class="delete-btn" type="button" aria-label="Delete manual assignment">×</button>
+        </div>
 
-          <div class="time-row">
-            <span class="remaining"></span>
-            <span class="due"></span>
-          </div>
+        <div class="deadline-line">
+          <strong class="remaining"></strong>
+          <span class="due-full"></span>
+        </div>
 
-          <div class="bar-track">
-            <div class="bar-fill"></div>
-          </div>
+        <div class="bar-track" aria-hidden="true"><div class="bar-fill"></div></div>
 
-          <div class="late-row">
-            <span class="late"></span>
-            <a class="open-link" target="_blank" rel="noreferrer">Open ↗</a>
-          </div>
+        <div class="late-line">
+          <span class="late"></span>
+          <a class="open-link" target="_blank" rel="noreferrer">Open ↗</a>
         </div>
       </div>
     </article>
   </template>
 
+  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

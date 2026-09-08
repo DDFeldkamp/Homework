@@ -1,16 +1,21 @@
-const DATA_URL = "./data/gradescope.json";
-const MANUAL_KEY = "deadline-dashboard-manual-v1";
+const API_URL = (window.DEADLINE_CONFIG?.apiUrl || "").replace(/\/$/, "");
+const MANUAL_KEY = "deadline-dashboard-manual-v2";
+const THEME_KEY = "deadline-theme";
+const SESSION_PASSWORD_KEY = "deadline-dashboard-session-password";
 const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 
 let gradescopeAssignments = [];
 let manualAssignments = loadManual();
 let filter = "upcoming";
 let query = "";
+let dashboardPassword = sessionStorage.getItem(SESSION_PASSWORD_KEY) || "";
 
 const list = document.querySelector("#assignmentList");
 const template = document.querySelector("#assignmentTemplate");
-const dialog = document.querySelector("#assignmentDialog");
-const form = document.querySelector("#assignmentForm");
+const assignmentDialog = document.querySelector("#assignmentDialog");
+const assignmentForm = document.querySelector("#assignmentForm");
+const unlockDialog = document.querySelector("#unlockDialog");
+const unlockForm = document.querySelector("#unlockForm");
 
 function loadManual() {
   try { return JSON.parse(localStorage.getItem(MANUAL_KEY)) || []; }
@@ -27,56 +32,62 @@ function parseDate(value) {
 function fmtDate(d) {
   if (!d) return "No deadline";
   return new Intl.DateTimeFormat(undefined, {
-    weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"
+    weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit"
   }).format(d);
 }
-
+function dateGroupKey(d) {
+  if (!d) return "No date";
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function dateHeadingText(d) {
+  if (!d) return "No deadline";
+  const now = new Date();
+  const tomorrow = new Date(now); tomorrow.setDate(tomorrow.getDate()+1);
+  if (isSameDay(d, now)) return `Today · ${new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric"}).format(d)}`;
+  if (isSameDay(d, tomorrow)) return `Tomorrow · ${new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric"}).format(d)}`;
+  return new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(d);
+}
+function isSameDay(a, b) {
+  return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
 function remainingText(target) {
-  if (!target) return "";
+  if (!target) return "No deadline";
   const diff = target - new Date();
   const abs = Math.abs(diff);
   const days = Math.floor(abs / 86400000);
   const hours = Math.floor((abs % 86400000) / 3600000);
   const mins = Math.floor((abs % 3600000) / 60000);
   const chunk = days ? `${days}d ${hours}h` : hours ? `${hours}h ${mins}m` : `${Math.max(0, mins)}m`;
-  return diff >= 0 ? `${chunk} left` : `${chunk} overdue`;
+  return diff >= 0 ? `${chunk} remaining` : `${chunk} overdue`;
+}
+
+function updateCurrentDate() {
+  const now = new Date();
+  document.querySelector("#currentDate").textContent = new Intl.DateTimeFormat(undefined, {
+    weekday:"long", month:"long", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit"
+  }).format(now);
 }
 
 function expandManual(items) {
   const output = [];
-  const horizon = new Date();
-  horizon.setMonth(horizon.getMonth() + 6);
-
+  const horizon = new Date(); horizon.setMonth(horizon.getMonth() + 6);
   for (const item of items) {
     output.push({...item});
     if (!item.recurrence || item.recurrence === "none") continue;
-
     const due = parseDate(item.due);
     const late = parseDate(item.late_due);
+    if (!due) continue;
     const until = item.repeat_until ? new Date(item.repeat_until + "T23:59:59") : horizon;
     let nextDue = new Date(due);
     let nextLate = late ? new Date(late) : null;
     let i = 1;
-
     while (i < 100) {
-      if (item.recurrence === "daily") {
-        nextDue.setDate(nextDue.getDate()+1); if (nextLate) nextLate.setDate(nextLate.getDate()+1);
-      } else if (item.recurrence === "weekly") {
-        nextDue.setDate(nextDue.getDate()+7); if (nextLate) nextLate.setDate(nextLate.getDate()+7);
-      } else if (item.recurrence === "biweekly") {
-        nextDue.setDate(nextDue.getDate()+14); if (nextLate) nextLate.setDate(nextLate.getDate()+14);
-      } else if (item.recurrence === "monthly") {
-        nextDue.setMonth(nextDue.getMonth()+1); if (nextLate) nextLate.setMonth(nextLate.getMonth()+1);
-      }
+      if (item.recurrence === "daily") { nextDue.setDate(nextDue.getDate()+1); if (nextLate) nextLate.setDate(nextLate.getDate()+1); }
+      else if (item.recurrence === "weekly") { nextDue.setDate(nextDue.getDate()+7); if (nextLate) nextLate.setDate(nextLate.getDate()+7); }
+      else if (item.recurrence === "biweekly") { nextDue.setDate(nextDue.getDate()+14); if (nextLate) nextLate.setDate(nextLate.getDate()+14); }
+      else if (item.recurrence === "monthly") { nextDue.setMonth(nextDue.getMonth()+1); if (nextLate) nextLate.setMonth(nextLate.getMonth()+1); }
       if (nextDue > until || nextDue > horizon) break;
-      output.push({
-        ...item,
-        id: `${item.id}:${i}`,
-        parent_id: item.id,
-        due: nextDue.toISOString(),
-        late_due: nextLate ? nextLate.toISOString() : null,
-        completed: false
-      });
+      output.push({...item, id:`${item.id}:${i}`, parent_id:item.id, due:nextDue.toISOString(), late_due:nextLate ? nextLate.toISOString() : null, completed:false});
       i++;
     }
   }
@@ -91,24 +102,32 @@ function allAssignments() {
 function render() {
   const now = new Date();
   const all = allAssignments();
-  const visible = all
-    .filter(a => {
-      const text = `${a.title || ""} ${a.course || ""}`.toLowerCase();
-      if (query && !text.includes(query)) return false;
-      if (filter === "done") return !!a.completed;
-      if (filter === "upcoming") return !a.completed && (!a.lateDate || a.lateDate >= now) && (!a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now));
-      return true;
-    })
-    .sort((a,b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
+  const visible = all.filter(a => {
+    const text = `${a.title || ""} ${a.course || ""}`.toLowerCase();
+    if (query && !text.includes(query)) return false;
+    if (filter === "done") return !!a.completed;
+    if (filter === "upcoming") return !a.completed && (!a.lateDate || a.lateDate >= now) && (!a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now));
+    return true;
+  }).sort((a,b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
 
   list.innerHTML = "";
   if (!visible.length) {
-    list.innerHTML = `<div class="empty">Nothing here. Add a manual assignment or wait for the next Gradescope sync.</div>`;
+    const locked = !dashboardPassword && gradescopeAssignments.length === 0;
+    list.innerHTML = `<div class="empty">${locked ? "Unlock Gradescope data or add a manual assignment." : "No assignments in this view."}</div>`;
   }
 
+  let lastGroup = null;
   visible.forEach(a => {
+    const group = dateGroupKey(a.dueDate);
+    if (group !== lastGroup) {
+      const heading = document.createElement("div");
+      heading.className = "date-heading";
+      heading.textContent = dateHeadingText(a.dueDate);
+      list.appendChild(heading);
+      lastGroup = group;
+    }
+
     const node = template.content.firstElementChild.cloneNode(true);
-    const now = new Date();
     const deadline = a.dueDate;
     const inLate = deadline && deadline < now && a.lateDate && a.lateDate >= now;
     const activeTarget = inLate ? a.lateDate : deadline;
@@ -116,13 +135,18 @@ function render() {
     const width = remaining == null ? 0 : Math.max(0, Math.min(100, remaining / WINDOW_MS * 100));
 
     node.classList.toggle("done", !!a.completed);
-    node.classList.toggle("urgent", !a.completed && !inLate && remaining != null && remaining < 24*3600000 && remaining >= 0);
+    node.classList.toggle("urgent", !a.completed && !inLate && remaining != null && remaining < 86400000 && remaining >= 0);
     node.classList.toggle("late-window", !!inLate);
+
+    const date = deadline;
+    node.querySelector(".date-month").textContent = date ? new Intl.DateTimeFormat(undefined,{month:"short"}).format(date).toUpperCase() : "—";
+    node.querySelector(".date-day").textContent = date ? String(date.getDate()) : "—";
+    node.querySelector(".date-time").textContent = date ? new Intl.DateTimeFormat(undefined,{hour:"numeric",minute:"2-digit"}).format(date) : "";
     node.querySelector(".title").textContent = a.title || "Untitled";
     node.querySelector(".course-pill").textContent = a.course || "Manual";
     node.querySelector(".source-pill").textContent = a.source === "gradescope" ? "Gradescope" : (a.recurrence && a.recurrence !== "none" ? `Manual · ${a.recurrence}` : "Manual");
     node.querySelector(".remaining").textContent = a.completed ? "Completed" : (inLate ? `Late window · ${remainingText(a.lateDate)}` : remainingText(deadline));
-    node.querySelector(".due").textContent = deadline ? `Due ${fmtDate(deadline)}` : "";
+    node.querySelector(".due-full").textContent = deadline ? `Due ${fmtDate(deadline)}` : "";
     node.querySelector(".bar-fill").style.width = a.completed ? "100%" : `${width}%`;
 
     const lateEl = node.querySelector(".late");
@@ -132,7 +156,7 @@ function render() {
     const link = node.querySelector(".open-link");
     if (a.url) link.href = a.url; else link.remove();
 
-    const del = node.querySelector(".more-btn");
+    const del = node.querySelector(".delete-btn");
     if (a.source === "gradescope") del.remove();
     else del.addEventListener("click", () => {
       const base = a.parent_id || a.id;
@@ -140,52 +164,128 @@ function render() {
       saveManual(); render();
     });
 
-    node.querySelector(".check").addEventListener("click", () => {
-      if (a.source === "gradescope") return; // sync is authoritative for Gradescope
-      const base = a.parent_id || a.id;
-      const item = manualAssignments.find(x => x.id === base);
-      if (item) {
-        item.completed = !item.completed;
-        saveManual();
-        render();
-      }
-    });
+    const check = node.querySelector(".check");
+    if (a.source === "gradescope") {
+      check.title = "Gradescope completion is detected automatically";
+      check.setAttribute("aria-label", "Gradescope completion is detected automatically");
+    } else {
+      check.addEventListener("click", () => {
+        const base = a.parent_id || a.id;
+        const item = manualAssignments.find(x => x.id === base);
+        if (item) { item.completed = !item.completed; saveManual(); render(); }
+      });
+    }
 
     list.appendChild(node);
   });
 
   const notDone = all.filter(a => !a.completed);
-  document.querySelector("#count24").textContent = notDone.filter(a => a.dueDate && a.dueDate >= now && a.dueDate-now <= 86400000).length;
+  document.querySelector("#countToday").textContent = notDone.filter(a => a.dueDate && isSameDay(a.dueDate, now)).length;
   document.querySelector("#count7").textContent = notDone.filter(a => a.dueDate && a.dueDate >= now && a.dueDate-now <= WINDOW_MS).length;
   document.querySelector("#countUpcoming").textContent = notDone.filter(a => !a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now)).length;
   document.querySelector("#countDone").textContent = all.filter(a => a.completed).length;
 }
 
-async function loadGradescope() {
-  const status = document.querySelector("#syncStatus");
-  try {
-    const res = await fetch(`${DATA_URL}?t=${Date.now()}`, {cache:"no-store"});
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    gradescopeAssignments = data.assignments || [];
-    status.textContent = data.synced_at
-      ? `Gradescope last synced ${new Date(data.synced_at).toLocaleString()}`
-      : "Gradescope sync has not run yet.";
-  } catch (err) {
-    gradescopeAssignments = [];
-    status.textContent = "Could not load Gradescope data. Manual assignments still work.";
-  }
-  render();
+function apiConfigured() {
+  return API_URL && !API_URL.includes("YOUR-WORKER-NAME");
 }
 
-document.querySelector("#addBtn").addEventListener("click", () => dialog.showModal());
-document.querySelector("#closeDialog").addEventListener("click", () => dialog.close());
-document.querySelector("#cancelDialog").addEventListener("click", () => dialog.close());
-document.querySelector("#refreshBtn").addEventListener("click", loadGradescope);
+async function loadGradescope({showUnlockOnAuthFailure = true} = {}) {
+  const status = document.querySelector("#syncStatus");
+  if (!apiConfigured()) {
+    status.textContent = "Set the Worker URL in config.js";
+    gradescopeAssignments = [];
+    render();
+    return false;
+  }
+  if (!dashboardPassword) {
+    status.textContent = "Gradescope locked";
+    gradescopeAssignments = [];
+    render();
+    return false;
+  }
 
-document.querySelector("#searchInput").addEventListener("input", e => {
-  query = e.target.value.trim().toLowerCase(); render();
+  status.textContent = "Loading private Gradescope data…";
+  try {
+    const res = await fetch(`${API_URL}/deadlines`, {
+      cache: "no-store",
+      headers: {"Authorization": `Bearer ${dashboardPassword}`}
+    });
+    if (res.status === 401) {
+      throw Object.assign(new Error("Incorrect dashboard password."), {auth:true});
+    }
+    if (!res.ok) throw new Error(`Private API returned HTTP ${res.status}`);
+    const data = await res.json();
+    gradescopeAssignments = data.assignments || [];
+    status.textContent = data.synced_at ? `Gradescope synced ${new Date(data.synced_at).toLocaleString()}` : "Gradescope connected";
+    render();
+    return true;
+  } catch (err) {
+    gradescopeAssignments = [];
+    if (err.auth) {
+      dashboardPassword = "";
+      sessionStorage.removeItem(SESSION_PASSWORD_KEY);
+      status.textContent = "Gradescope locked";
+      if (showUnlockOnAuthFailure) openUnlock(err.message);
+    } else {
+      status.textContent = "Private API unavailable · manual assignments still work";
+    }
+    render();
+    return false;
+  }
+}
+
+function openUnlock(message = "") {
+  document.querySelector("#unlockError").hidden = !message;
+  document.querySelector("#unlockError").textContent = message;
+  unlockForm.reset();
+  if (!unlockDialog.open) unlockDialog.showModal();
+}
+
+function updateThemeButton() {
+  const dark = document.documentElement.dataset.theme === "dark";
+  document.querySelector("#themeBtn").textContent = dark ? "☀" : "☾";
+  document.querySelector("meta[name=theme-color]").setAttribute("content", dark ? "#111722" : "#ffffff");
+}
+
+document.querySelector("#themeBtn").addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem(THEME_KEY, next);
+  updateThemeButton();
 });
+
+document.querySelector("#unlockBtn").addEventListener("click", () => {
+  if (dashboardPassword) {
+    dashboardPassword = "";
+    sessionStorage.removeItem(SESSION_PASSWORD_KEY);
+    gradescopeAssignments = [];
+    document.querySelector("#syncStatus").textContent = "Gradescope locked";
+    document.querySelector("#unlockBtn").textContent = "Unlock";
+    render();
+  } else openUnlock();
+});
+
+document.querySelectorAll(".close-unlock").forEach(btn => btn.addEventListener("click", () => unlockDialog.close()));
+unlockForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  const password = new FormData(unlockForm).get("password");
+  dashboardPassword = String(password || "");
+  const ok = await loadGradescope({showUnlockOnAuthFailure:false});
+  if (ok) {
+    sessionStorage.setItem(SESSION_PASSWORD_KEY, dashboardPassword);
+    document.querySelector("#unlockBtn").textContent = "Lock";
+    unlockDialog.close();
+  } else {
+    document.querySelector("#unlockError").hidden = false;
+    document.querySelector("#unlockError").textContent = "Could not unlock. Check the password and API configuration.";
+  }
+});
+
+document.querySelector("#addBtn").addEventListener("click", () => assignmentDialog.showModal());
+document.querySelector("#closeDialog").addEventListener("click", () => assignmentDialog.close());
+document.querySelector("#cancelDialog").addEventListener("click", () => assignmentDialog.close());
+document.querySelector("#searchInput").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); render(); });
 document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   tab.classList.add("active");
@@ -193,26 +293,34 @@ document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", (
   render();
 }));
 
-form.addEventListener("submit", e => {
+assignmentForm.addEventListener("submit", e => {
   e.preventDefault();
-  const fd = new FormData(form);
+  const fd = new FormData(assignmentForm);
   const item = {
     id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-    source:"manual",
-    title:fd.get("title").trim(),
-    course:fd.get("course").trim() || "Manual",
-    due:new Date(fd.get("due")).toISOString(),
-    late_due:fd.get("late_due") ? new Date(fd.get("late_due")).toISOString() : null,
-    recurrence:fd.get("recurrence"),
-    repeat_until:fd.get("repeat_until") || null,
-    completed:false
+    source: "manual",
+    title: String(fd.get("title") || "").trim(),
+    course: String(fd.get("course") || "").trim() || "Manual",
+    due: new Date(fd.get("due")).toISOString(),
+    late_due: fd.get("late_due") ? new Date(fd.get("late_due")).toISOString() : null,
+    recurrence: fd.get("recurrence"),
+    repeat_until: fd.get("repeat_until") || null,
+    completed: false
   };
   manualAssignments.push(item);
   saveManual();
-  form.reset();
-  dialog.close();
+  assignmentForm.reset();
+  assignmentDialog.close();
   render();
 });
 
-loadGradescope();
-setInterval(render, 60_000);
+updateCurrentDate();
+updateThemeButton();
+render();
+if (dashboardPassword) {
+  document.querySelector("#unlockBtn").textContent = "Lock";
+  loadGradescope();
+} else if (apiConfigured()) {
+  openUnlock();
+}
+setInterval(() => { updateCurrentDate(); render(); }, 60_000);

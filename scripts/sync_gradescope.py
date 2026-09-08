@@ -1,17 +1,11 @@
-"""
-Sync Gradescope deadlines for a STUDENT account.
+"""Scrape student-course deadlines from Gradescope and write them to a local output file.
 
-Credentials come only from environment variables:
-  GRADESCOPE_EMAIL
-  GRADESCOPE_PASSWORD
-
-Important:
-- Gradescope does not provide a public API. This uses its web pages.
-- Password-based Gradescope login is required. School/Google SSO-only accounts may not work.
-- Web markup can change, so the parser includes multiple selector fallbacks.
+The output is intended to be uploaded directly to the private deadline API by GitHub
+Actions. It is never committed to the repository or published by GitHub Pages.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -24,8 +18,6 @@ import requests
 from bs4 import BeautifulSoup
 
 BASE = "https://www.gradescope.com"
-OUT = Path(__file__).resolve().parents[1] / "data" / "gradescope.json"
-
 EMAIL = os.environ.get("GRADESCOPE_EMAIL", "")
 PASSWORD = os.environ.get("GRADESCOPE_PASSWORD", "")
 
@@ -35,15 +27,14 @@ def fail(msg: str):
     raise SystemExit(1)
 
 
-def clean(s: str | None) -> str:
-    return re.sub(r"\s+", " ", s or "").strip()
+def clean(value: str | None) -> str:
+    return re.sub(r"\s+", " ", value or "").strip()
 
 
 def login(session: requests.Session):
     page = session.get(f"{BASE}/login", timeout=30)
     page.raise_for_status()
     soup = BeautifulSoup(page.text, "html.parser")
-
     token = soup.select_one('input[name="authenticity_token"]')
     payload = {
         "session[email]": EMAIL,
@@ -55,165 +46,165 @@ def login(session: requests.Session):
 
     resp = session.post(f"{BASE}/login", data=payload, timeout=30, allow_redirects=True)
     resp.raise_for_status()
-
-    # A failed login normally leaves us on /login.
-    if "/login" in resp.url or "session[email]" in resp.text:
-        fail("Gradescope login failed. Check the secrets and whether this account requires SSO.")
+    if "/login" in resp.url or 'name="session[email]"' in resp.text:
+        fail("Gradescope login failed. Check credentials or whether the account requires SSO.")
 
 
 def student_courses(session: requests.Session):
-    resp = session.get(BASE, timeout=30)
+    """Return ONLY courses in Gradescope's Student Courses section.
+
+    Gradescope's account dashboard separates staff and student courses. If the user
+    has any staff role, staff courses appear first and an h2.pageHeading labeled
+    'Student Courses' switches the following courseList to student role.
+    """
+    resp = session.get(f"{BASE}/account", timeout=30)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
+    account = soup.select_one("div#account-show")
+    if account is None:
+        fail("Could not find the Gradescope account course list.")
 
-    found = {}
-    for a in soup.select('a[href^="/courses/"]'):
-        href = a.get("href", "")
-        m = re.fullmatch(r"/courses/(\d+)", href.rstrip("/"))
-        if not m:
+    is_staff_somewhere = soup.select_one("button.js-createNewCourse") is not None
+    section_type = "instructor" if is_staff_somewhere else "student"
+    found: dict[str, str] = {}
+
+    for section in account.find_all(recursive=True):
+        if section.name == "h2" and "pageHeading" in section.get("class", []):
+            heading = clean(section.get_text(" ", strip=True)).lower()
+            if heading == "student courses":
+                section_type = "student"
+            elif heading in {"instructor courses", "courses as instructor"}:
+                section_type = "instructor"
             continue
-        cid = m.group(1)
-        text = clean(a.get_text(" ", strip=True))
-        if text:
-            found[cid] = text
+
+        if section.name != "div" or "courseList" not in section.get("class", []):
+            continue
+        if section_type != "student":
+            continue
+
+        for link in section.select('a[href^="/courses/"]'):
+            href = link.get("href", "").rstrip("/")
+            match = re.fullmatch(r"/courses/(\d+)", href)
+            if not match:
+                continue
+            cid = match.group(1)
+            short = link.select_one("h3.courseBox--shortname")
+            full = link.select_one("div.courseBox--name")
+            name = clean(short.get_text(" ", strip=True) if short else "")
+            full_name = clean(full.get_text(" ", strip=True) if full else "")
+            found[cid] = name or full_name or f"Course {cid}"
 
     if not found:
-        # Dashboard markup fallback: locate course ids anywhere in course links.
-        for a in soup.find_all("a", href=True):
-            m = re.search(r"/courses/(\d+)(?:$|[/?#])", a["href"])
-            if m:
-                found.setdefault(m.group(1), clean(a.get_text(" ", strip=True)) or f"Course {m.group(1)}")
-
+        fail("No student courses were found. The scraper intentionally refuses to fall back to all courses, so instructor courses cannot leak into the dashboard.")
     return [{"id": cid, "name": name} for cid, name in found.items()]
 
 
-def iso_from_time(tag):
-    if not tag:
-        return None
-    value = tag.get("datetime") or tag.get("data-datetime") or tag.get("title")
-    if value:
-        try:
-            return datetime.fromisoformat(value.replace("Z", "+00:00")).isoformat()
-        except ValueError:
-            pass
-    text = clean(tag.get_text(" ", strip=True))
-    # Gradescope often renders machine-readable datetime attributes; text parsing is last-resort.
-    for fmt in ("%b %d at %I:%M%p", "%b %d, %Y at %I:%M%p", "%m/%d/%Y %I:%M %p"):
-        try:
-            dt = datetime.strptime(text, fmt)
-            if dt.year == 1900:
-                dt = dt.replace(year=datetime.now().year)
-            return dt.astimezone().isoformat()
-        except ValueError:
-            continue
-    return None
-
-
-def parse_assignment_rows(html: str, course_id: str, course_name: str):
+def parse_student_assignments(html: str, course_id: str, course_name: str):
     soup = BeautifulSoup(html, "html.parser")
     assignments = []
-    seen = set()
 
-    # Assignment links are the most stable anchor across Gradescope layouts.
-    links = soup.find_all("a", href=re.compile(rf"^/courses/{course_id}/assignments/\d+"))
-    for link in links:
-        href = link.get("href")
-        m = re.search(r"/assignments/(\d+)", href)
-        if not m or m.group(1) in seen:
+    rows = soup.find_all("tr", role="row")
+    if rows:
+        rows = rows[1:-1] if len(rows) > 2 else rows[1:]
+
+    for row in rows:
+        cells = [*row.find_all("th", recursive=False), *row.find_all("td", recursive=False)]
+        if len(cells) < 2:
+            # Some layouts wrap cells one level deeper.
+            cells = [*row.find_all("th"), *row.find_all("td")]
+        if len(cells) < 2:
             continue
 
-        aid = m.group(1)
-        seen.add(aid)
-        title = clean(link.get_text(" ", strip=True))
+        title = clean(cells[0].get_text(" ", strip=True))
         if not title:
             continue
 
-        row = link
-        for _ in range(8):
-            if row.parent is None:
-                break
-            row = row.parent
-            txt = clean(row.get_text(" ", strip=True)).lower()
-            if ("due" in txt or "submitted" in txt or "late" in txt) and len(txt) < 1800:
-                break
+        link = cells[0].find("a", href=True)
+        button = cells[0].find("button", class_="js-submitAssignment")
+        assignment_id = None
+        href = None
+        if link:
+            href = link.get("href")
+            match = re.search(r"/assignments/(\d+)", href or "")
+            assignment_id = match.group(1) if match else None
+        elif button and button.get("data-assignment-id"):
+            assignment_id = str(button["data-assignment-id"])
+            href = f"/courses/{course_id}/assignments/{assignment_id}"
 
-        text = clean(row.get_text(" ", strip=True))
-        lower = text.lower()
-
-        times = row.find_all("time")
-        due = None
-        late_due = None
-
-        # Prefer nearby labels where possible.
-        for t in times:
-            context = clean((t.parent or t).get_text(" ", strip=True)).lower()
-            val = iso_from_time(t)
-            if not val:
-                continue
-            if "late" in context and not late_due:
-                late_due = val
-            elif ("due" in context or not due) and not due:
-                due = val
-
-        # data-* fallback.
-        for elem in row.find_all(attrs={"data-datetime": True}):
-            val = iso_from_time(elem)
-            context = clean((elem.parent or elem).get_text(" ", strip=True)).lower()
-            if "late" in context and not late_due:
-                late_due = val
-            elif not due:
-                due = val
-
-        completed_markers = (
-            "submitted", "graded", "submission received",
-            "view submission", "resubmit"
+        status_text = clean(cells[1].get_text(" ", strip=True))
+        status_lower = status_text.lower()
+        completed = (
+            "submitted" in status_lower
+            or "graded" in status_lower
+            or bool(re.match(r"^\s*-?\d+(?:\.\d+)?\s*/\s*\d+(?:\.\d+)?\s*$", status_text))
         )
-        completed = any(marker in lower for marker in completed_markers)
+
+        date_cell = cells[2] if len(cells) > 2 else row
+        release_obj = date_cell.find(class_="submissionTimeChart--releaseDate")
+        due_objs = date_cell.find_all(class_="submissionTimeChart--dueDate")
+        due = due_objs[0].get("datetime") if due_objs else None
+        late_due = due_objs[1].get("datetime") if len(due_objs) > 1 else None
+        release = release_obj.get("datetime") if release_obj else None
+
+        # Generic time-tag fallback if Gradescope changes only the wrapper classes.
+        if not due:
+            time_tags = date_cell.find_all("time")
+            for tag in time_tags:
+                val = tag.get("datetime")
+                context = clean((tag.parent or tag).get_text(" ", strip=True)).lower()
+                if not val:
+                    continue
+                if "late" in context and not late_due:
+                    late_due = val
+                elif not due:
+                    due = val
 
         assignments.append({
-            "id": f"gradescope:{course_id}:{aid}",
+            "id": f"gradescope:{course_id}:{assignment_id or title}",
             "source": "gradescope",
             "course": course_name,
             "title": title,
+            "release": release,
             "due": due,
             "late_due": late_due,
             "completed": completed,
-            "url": urljoin(BASE, href),
+            "url": urljoin(BASE, href) if href else f"{BASE}/courses/{course_id}",
         })
 
     return assignments
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="/tmp/gradescope.json")
+    args = parser.parse_args()
+
     if not EMAIL or not PASSWORD:
         fail("Set GRADESCOPE_EMAIL and GRADESCOPE_PASSWORD.")
 
     session = requests.Session()
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 deadline-dashboard/1.0",
+        "User-Agent": "Mozilla/5.0 deadline-dashboard/2.0",
         "Accept-Language": "en-US,en;q=0.9",
     })
     login(session)
-
     courses = student_courses(session)
-    if not courses:
-        fail("Logged in, but no Gradescope courses were found.")
 
     assignments = []
     for course in courses:
-        url = f"{BASE}/courses/{course['id']}"
-        resp = session.get(url, timeout=30)
+        resp = session.get(f"{BASE}/courses/{course['id']}", timeout=30)
         resp.raise_for_status()
-        assignments.extend(parse_assignment_rows(resp.text, course["id"], course["name"]))
+        assignments.extend(parse_student_assignments(resp.text, course["id"], course["name"]))
 
-    # Keep only records where at least a title was found; the UI can tolerate missing dates.
     payload = {
         "synced_at": datetime.now(timezone.utc).isoformat(),
+        "course_count": len(courses),
         "assignments": assignments,
     }
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {len(assignments)} assignments from {len(courses)} courses to {OUT}")
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    print(f"Wrote {len(assignments)} assignments from {len(courses)} STUDENT courses to {output}")
 
 
 if __name__ == "__main__":
