@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Deadline Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">DEADLINE DASHBOARD</p>
+        <h1>What’s due next?</h1>
+        <p id="syncStatus" class="muted">Loading Gradescope sync…</p>
+      </div>
+      <div class="top-actions">
+        <button id="refreshBtn" class="ghost">Refresh</button>
+        <button id="addBtn" class="primary">+ Add assignment</button>
+      </div>
+    </header>
+
+    <section class="summary" aria-label="Deadline summary">
+      <div class="summary-card"><span>Next 24h</span><strong id="count24">0</strong></div>
+      <div class="summary-card"><span>Next 7 days</span><strong id="count7">0</strong></div>
+      <div class="summary-card"><span>Upcoming</span><strong id="countUpcoming">0</strong></div>
+      <div class="summary-card"><span>Completed</span><strong id="countDone">0</strong></div>
+    </section>
+
+    <section class="toolbar">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-filter="upcoming">Upcoming</button>
+        <button class="tab" data-filter="all">All</button>
+        <button class="tab" data-filter="done">Done</button>
+      </div>
+      <label class="search">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search course or assignment" />
+      </label>
+    </section>
+
+    <section id="assignmentList" class="assignment-list" aria-live="polite"></section>
+  </main>
+
+  <dialog id="assignmentDialog">
+    <form id="assignmentForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">MANUAL ASSIGNMENT</p>
+          <h2>Add assignment</h2>
+        </div>
+        <button type="button" id="closeDialog" class="icon-btn" aria-label="Close">×</button>
+      </div>
+
+      <label>Assignment
+        <input name="title" required placeholder="Problem Set 4" />
+      </label>
+      <label>Course
+        <input name="course" placeholder="CS 182" />
+      </label>
+
+      <div class="grid2">
+        <label>Due date
+          <input name="due" type="datetime-local" required />
+        </label>
+        <label>Late deadline
+          <input name="late_due" type="datetime-local" />
+        </label>
+      </div>
+
+      <div class="grid2">
+        <label>Repeat
+          <select name="recurrence">
+            <option value="none">Does not repeat</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="biweekly">Every 2 weeks</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </label>
+        <label>Repeat until
+          <input name="repeat_until" type="date" />
+        </label>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" id="cancelDialog" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Add assignment</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="assignmentTemplate">
+    <article class="assignment-card">
+      <div class="card-main">
+        <button class="check" aria-label="Mark complete"></button>
+        <div class="assignment-copy">
+          <div class="assignment-heading">
+            <div>
+              <div class="meta-line">
+                <span class="course-pill"></span>
+                <span class="source-pill"></span>
+              </div>
+              <h3 class="title"></h3>
+            </div>
+            <button class="more-btn" aria-label="Delete manual assignment">×</button>
+          </div>
+
+          <div class="time-row">
+            <span class="remaining"></span>
+            <span class="due"></span>
+          </div>
+
+          <div class="bar-track">
+            <div class="bar-fill"></div>
+          </div>
+
+          <div class="late-row">
+            <span class="late"></span>
+            <a class="open-link" target="_blank" rel="noreferrer">Open ↗</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

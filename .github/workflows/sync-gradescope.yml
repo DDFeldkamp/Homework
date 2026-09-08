@@ -1,0 +1,44 @@
+name: Sync Gradescope
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub scheduled workflows use UTC.
+    # Every 2 hours at minute 17.
+    - cron: "17 */2 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Sync Gradescope
+        env:
+          GRADESCOPE_EMAIL: ${{ secrets.GRADESCOPE_EMAIL }}
+          GRADESCOPE_PASSWORD: ${{ secrets.GRADESCOPE_PASSWORD }}
+        run: python scripts/sync_gradescope.py
+
+      - name: Commit changed deadline data
+        run: |
+          if git diff --quiet -- data/gradescope.json; then
+            echo "No deadline changes."
+            exit 0
+          fi
+          git config user.name "gradescope-sync[bot]"
+          git config user.email "gradescope-sync[bot]@users.noreply.github.com"
+          git add data/gradescope.json
+          git commit -m "chore: sync Gradescope deadlines"
+          git push
