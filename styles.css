@@ -705,3 +705,22 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   .merge-name-setting { grid-template-columns: 1fr 1fr; }
   .merge-name-setting span { grid-column: 1 / -1; }
 }
+
+
+.pensive-merge-heading {
+  display: grid;
+  gap: 3px;
+  margin: 18px 0 8px;
+  padding-top: 15px;
+  border-top: 1px solid var(--grid);
+}
+.pensive-merge-heading strong {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+}
+.pensive-merge-heading span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}

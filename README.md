@@ -141,3 +141,71 @@ In **Courses → Combine bCourses + Gradescope**, use **Combined course name** t
 ## Assignment-count default
 
 The **Assignments per course** dropdown at the top of the Courses dialog applies one limit to every currently known course and saves that value as the default for newly discovered courses. Individual course dropdowns can still override that value afterward.
+
+
+## Pensive integration
+
+The dashboard can also sync Fall 2026 Pensive deadlines.
+
+Observed Pensive endpoints:
+
+```text
+GET https://api.pensieve.co/api/v1/dashboards/teacher
+GET https://api.pensieve.co/api/b2s/v1/assignment/heads?clazz_id=<clazzId>
+```
+
+Both requests use:
+
+```text
+Authorization: Bearer <token>
+```
+
+Create a GitHub Actions repository secret named:
+
+```text
+PENSIVE_TOKEN
+```
+
+and paste only the token value (not the word `Bearer`).
+
+The sync script filters the `teacher` class list to `season == "fall"` and
+`year == 2026`, then calls the `heads` endpoint for each matching `clazzId`.
+Pensive's `due_time` and `release_time` values are converted from Unix
+milliseconds to ISO timestamps.
+
+The `heads` endpoint does not include the current user's submission state, so
+Pensive deadlines currently appear as incomplete until they pass their
+deadline. Gradescope and bCourses completion detection is unchanged.
+
+### Combining Pensive courses
+
+Open **Courses → Combine course sources**. Existing bCourses ↔ Gradescope
+pairing remains available. Beneath it, each Pensive course gets a dropdown
+containing the Gradescope and bCourses classes discovered by the dashboard.
+
+When a Pensive class is mapped to one of those classes, all three sources can
+share the same displayed course. If the selected target is already a
+bCourses/Gradescope pair, the existing **Combined course name** setting
+determines whether that pair uses the bCourses or Gradescope name.
+
+### Token lifetime
+
+Pensive's public web app supplies the bearer token. The dashboard does not
+attempt to automate Pensive login. If Pensive later rejects the saved token
+with HTTP 401, the sync status will say **Pensive auth expired/rejected** and
+the Gradescope/bCourses sync will continue. Replace `PENSIVE_TOKEN` with a
+fresh token from your authenticated Pensive session.
+
+
+## Manual completion for sources without submission status
+
+Assignments from sources that do not expose the current user's submission state
+(currently Pensive) can be marked complete directly from the dashboard by
+clicking the checkbox beside the assignment.
+
+The override is stored in browser `localStorage` using the assignment's stable
+source ID, so refreshing the page or running another deadline sync does not
+reset it. Click the checkbox again to mark the assignment incomplete.
+
+Gradescope and bCourses remain automatically controlled when their sync data
+contains submission/completion state.

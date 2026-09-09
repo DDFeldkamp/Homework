@@ -6,6 +6,8 @@ const DEFAULTS_CONFIGURED_KEY = "deadline-default-courses-configured-v1";
 const ACTIVE_COURSES_KEY = "deadline-active-courses-v1";
 const COURSE_LIMITS_KEY = "deadline-course-assignment-limits-v1";
 const COURSE_MERGES_KEY = "deadline-course-merges-v1";
+const PENSIVE_MERGES_KEY = "deadline-pensive-merges-v1";
+const MANUAL_COMPLETION_KEY = "deadline-manual-completion-overrides-v1";
 const MERGED_NAME_SOURCE_KEY = "deadline-merged-course-name-source-v1";
 const DEFAULT_COURSE_LIMIT_KEY = "deadline-default-course-assignment-limit-v1";
 const VIEW_MODE_KEY = "deadline-calendar-view-v1";
@@ -15,6 +17,7 @@ const TIMELINE_MS = TIMELINE_DAYS * DAY_MS;
 
 let gradescopeAssignments = [];
 let bcoursesAssignments = [];
+let pensiveAssignments = [];
 let manualAssignments = loadManual();
 let courseRegistry = loadCourseRegistry();
 let defaultCourses = new Set(loadStringArray(localStorage, DEFAULT_COURSES_KEY));
@@ -23,6 +26,8 @@ let activeCourses = null;
 let activeCoursesInitialized = false;
 let courseAssignmentLimits = loadCourseLimits();
 let courseMerges = loadCourseMerges();
+let pensiveMerges = loadPensiveMerges();
+let manualCompletionOverrides = loadManualCompletionOverrides();
 let mergedNameSource = localStorage.getItem(MERGED_NAME_SOURCE_KEY) === "gradescope" ? "gradescope" : "bcourses";
 let defaultCourseLimit = localStorage.getItem(DEFAULT_COURSE_LIMIT_KEY) || "all";
 let viewMode = localStorage.getItem(VIEW_MODE_KEY) === "combined" ? "combined" : "course";
@@ -35,6 +40,7 @@ const assignmentForm = document.querySelector("#assignmentForm");
 const coursesDialog = document.querySelector("#coursesDialog");
 const courseOptions = document.querySelector("#courseOptions");
 const courseMergeOptions = document.querySelector("#courseMergeOptions");
+const pensiveMergeOptions = document.querySelector("#pensiveMergeOptions");
 const mergedNameSourceSelect = document.querySelector("#mergedNameSource");
 const allCourseLimitSelect = document.querySelector("#allCourseLimit");
 
@@ -101,6 +107,78 @@ function saveCourseMerges() {
   localStorage.setItem(COURSE_MERGES_KEY, JSON.stringify(courseMerges));
 }
 
+function loadPensiveMerges() {
+  try {
+    const value = JSON.parse(localStorage.getItem(PENSIVE_MERGES_KEY));
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    const clean = {};
+    for (const [pensive, target] of Object.entries(value)) {
+      if (typeof pensive === "string" && typeof target === "string" && pensive && target) {
+        clean[pensive] = target;
+      }
+    }
+    return clean;
+  } catch {
+    return {};
+  }
+}
+
+function savePensiveMerges() {
+  localStorage.setItem(PENSIVE_MERGES_KEY, JSON.stringify(pensiveMerges));
+}
+
+function loadManualCompletionOverrides() {
+  try {
+    const value = JSON.parse(localStorage.getItem(MANUAL_COMPLETION_KEY));
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveManualCompletionOverrides() {
+  localStorage.setItem(MANUAL_COMPLETION_KEY, JSON.stringify(manualCompletionOverrides));
+}
+
+function usesManualCompletion(assignment) {
+  return assignment?.completion_mode === "manual" || assignment?.source === "pensive";
+}
+
+function assignmentCompletionKey(assignment) {
+  return String(assignment?.id || `${assignment?.source || "unknown"}:${assignment?.course || ""}:${assignment?.title || ""}:${assignment?.due || ""}`);
+}
+
+function effectiveCompleted(assignment) {
+  if (!usesManualCompletion(assignment)) return Boolean(assignment.completed);
+  const key = assignmentCompletionKey(assignment);
+  if (Object.prototype.hasOwnProperty.call(manualCompletionOverrides, key)) {
+    return Boolean(manualCompletionOverrides[key]);
+  }
+  return Boolean(assignment.completed);
+}
+
+function setManualCompletion(assignment, completed) {
+  manualCompletionOverrides[assignmentCompletionKey(assignment)] = Boolean(completed);
+  saveManualCompletionOverrides();
+}
+
+function canonicalTargetCourseName(target) {
+  const name = String(target || "").trim();
+  if (!name) return name;
+
+  if (courseMerges[name]) {
+    return canonicalNameForMerge(name, courseMerges[name]);
+  }
+
+  for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
+    if (gradescopeName === name) {
+      return canonicalNameForMerge(bcoursesName, gradescopeName);
+    }
+  }
+
+  return name;
+}
+
 function sourceCourseNames(assignments) {
   return [...new Set(
     assignments
@@ -111,6 +189,10 @@ function sourceCourseNames(assignments) {
 
 function canonicalCourseName(assignment) {
   const original = String(assignment.course || "Manual").trim() || "Manual";
+
+  if (assignment.source === "pensive" && pensiveMerges[original]) {
+    return canonicalTargetCourseName(pensiveMerges[original]);
+  }
 
   if (assignment.source === "gradescope") {
     for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
@@ -333,6 +415,7 @@ function sourceAssignments() {
   return [
     ...gradescopeAssignments,
     ...bcoursesAssignments,
+    ...pensiveAssignments,
     ...expandManual(manualAssignments),
   ];
 }
@@ -348,6 +431,7 @@ function rawAssignments() {
 function allAssignments() {
   return rawAssignments().map((a) => ({
     ...a,
+    completed: effectiveCompleted(a),
     dueDate: parseDate(a.due),
     lateDate: parseDate(a.late_due),
   }));
@@ -356,6 +440,7 @@ function allAssignments() {
 function sourceLabel(source) {
   if (source === "gradescope") return "Gradescope";
   if (source === "bcourses") return "bCourses";
+  if (source === "pensive") return "Pensive";
   return "Manual";
 }
 
@@ -377,6 +462,10 @@ function reconcileCourseRegistry() {
     mergedAliases.add(bcoursesName);
     mergedAliases.add(gradescopeName);
     canonicalMergedNames.add(canonicalNameForMerge(bcoursesName, gradescopeName));
+  }
+  for (const [pensiveName, targetName] of Object.entries(pensiveMerges)) {
+    mergedAliases.add(pensiveName);
+    canonicalMergedNames.add(canonicalTargetCourseName(targetName));
   }
   for (const item of courseRegistry) {
     if (!item || typeof item.name !== "string") continue;
@@ -541,6 +630,94 @@ function renderCourseMergeOptions() {
   }
 }
 
+
+function renderPensiveMergeOptions() {
+  if (!pensiveMergeOptions) return;
+  pensiveMergeOptions.innerHTML = "";
+
+  const pensiveCourses = sourceCourseNames(pensiveAssignments);
+  const bcoursesCourses = sourceCourseNames(bcoursesAssignments);
+  const gradescopeCourses = sourceCourseNames(gradescopeAssignments);
+  const targets = [...new Set([...bcoursesCourses, ...gradescopeCourses])]
+    .sort((a, b) => a.localeCompare(b));
+
+  if (!pensiveCourses.length) {
+    const empty = document.createElement("div");
+    empty.className = "course-merge-empty";
+    empty.textContent = "No Pensive classes are available to match yet.";
+    pensiveMergeOptions.appendChild(empty);
+    return;
+  }
+
+  if (!targets.length) {
+    const empty = document.createElement("div");
+    empty.className = "course-merge-empty";
+    empty.textContent = "No Gradescope or bCourses classes are available as merge targets yet.";
+    pensiveMergeOptions.appendChild(empty);
+    return;
+  }
+
+  for (const pensiveCourse of pensiveCourses) {
+    const row = document.createElement("div");
+    row.className = "course-merge-row";
+
+    const label = document.createElement("div");
+    label.className = "course-merge-class";
+    const name = document.createElement("strong");
+    name.textContent = pensiveCourse;
+    const source = document.createElement("span");
+    source.textContent = "Pensive";
+    label.append(name, source);
+
+    const select = document.createElement("select");
+    select.setAttribute("aria-label", `Course to combine with Pensive class ${pensiveCourse}`);
+
+    const separate = document.createElement("option");
+    separate.value = "";
+    separate.textContent = "Keep separate";
+    select.appendChild(separate);
+
+    for (const target of targets) {
+      const option = document.createElement("option");
+      option.value = target;
+
+      const inBCourses = bcoursesCourses.includes(target);
+      const inGradescope = gradescopeCourses.includes(target);
+      const sourceText = inBCourses && inGradescope
+        ? "bCourses + Gradescope"
+        : (inBCourses ? "bCourses" : "Gradescope");
+
+      option.textContent = `${target} · ${sourceText}`;
+      option.selected = pensiveMerges[pensiveCourse] === target;
+      select.appendChild(option);
+    }
+
+    select.addEventListener("change", () => {
+      const previous = pensiveMerges[pensiveCourse] || "";
+      const oldCanonical = previous ? canonicalTargetCourseName(previous) : pensiveCourse;
+      const selected = select.value;
+
+      if (selected) pensiveMerges[pensiveCourse] = selected;
+      else delete pensiveMerges[pensiveCourse];
+
+      const newCanonical = selected ? canonicalTargetCourseName(selected) : pensiveCourse;
+      migrateCoursePreferences(oldCanonical, newCanonical);
+      savePensiveMerges();
+      reconcileCourseRegistry();
+      renderCourseOptions();
+      render();
+    });
+
+    const arrow = document.createElement("span");
+    arrow.className = "course-merge-arrow";
+    arrow.textContent = "→";
+    arrow.title = "Pensive assignments will display with the selected course";
+
+    row.append(label, arrow, select);
+    pensiveMergeOptions.appendChild(row);
+  }
+}
+
 function renderCourseOptions() {
   reconcileCourseRegistry();
   courseOptions.innerHTML = "";
@@ -551,6 +728,7 @@ function renderCourseOptions() {
     empty.textContent = "No courses have been discovered yet.";
     courseOptions.appendChild(empty);
     renderCourseMergeOptions();
+    renderPensiveMergeOptions();
     return;
   }
 
@@ -628,6 +806,7 @@ function renderCourseOptions() {
   }
 
   renderCourseMergeOptions();
+  renderPensiveMergeOptions();
 }
 
 function courseColorIndex(course) {
@@ -734,7 +913,14 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
   check.type = "button";
   check.className = "assignment-check";
 
-  if (a.source === "gradescope" || a.source === "bcourses") {
+  if (usesManualCompletion(a)) {
+    check.title = a.completed ? "Mark incomplete" : "Mark complete";
+    check.setAttribute("aria-label", check.title);
+    check.addEventListener("click", () => {
+      setManualCompletion(a, !a.completed);
+      render();
+    });
+  } else if (a.source !== "manual") {
     check.title = `${sourceLabel(a.source)} completion is detected automatically`;
     check.setAttribute("aria-label", check.title);
   } else {
@@ -1038,9 +1224,10 @@ async function loadRemoteData() {
   const status = document.querySelector("#syncStatus");
   status.textContent = "Loading assignment sources…";
 
-  const [gradescopeResult, bcoursesResult] = await Promise.allSettled([
+  const [gradescopeResult, bcoursesResult, pensiveResult] = await Promise.allSettled([
     fetchDashboardData("./data/gradescope.json"),
     fetchDashboardData("./data/bcourses.json"),
+    fetchDashboardData("./data/pensive.json"),
   ]);
 
   let gradescopeStatus = "Gradescope unavailable";
@@ -1073,7 +1260,25 @@ async function loadRemoteData() {
     bcoursesAssignments = [];
   }
 
-  status.textContent = `${gradescopeStatus} · ${bcoursesStatus}`;
+  let pensiveStatus = "Pensive unavailable";
+  if (pensiveResult.status === "fulfilled") {
+    const data = pensiveResult.value;
+    pensiveAssignments = Array.isArray(data.assignments) ? data.assignments : [];
+    if (data.error === "authentication_failed") {
+      pensiveStatus = "Pensive auth expired/rejected";
+    } else if (data.enabled === false) {
+      pensiveStatus = "Pensive not configured";
+    } else if (data.synced_at) {
+      pensiveStatus = `Pensive ${new Date(data.synced_at).toLocaleString()}`;
+    } else {
+      pensiveStatus = "Pensive not synced";
+    }
+  } else {
+    console.error(pensiveResult.reason);
+    pensiveAssignments = [];
+  }
+
+  status.textContent = `${gradescopeStatus} · ${bcoursesStatus} · ${pensiveStatus}`;
   reconcileCourseRegistry();
   render();
 }
