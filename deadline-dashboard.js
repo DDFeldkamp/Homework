@@ -1,17 +1,29 @@
 const MANUAL_KEY = "deadline-dashboard-manual-v2";
 const THEME_KEY = "deadline-theme";
+const COURSE_REGISTRY_KEY = "deadline-course-registry-v1";
+const DEFAULT_COURSES_KEY = "deadline-default-courses-v1";
+const DEFAULTS_CONFIGURED_KEY = "deadline-default-courses-configured-v1";
+const ACTIVE_COURSES_KEY = "deadline-active-courses-v1";
 const TIMELINE_DAYS = 7;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const TIMELINE_MS = TIMELINE_DAYS * DAY_MS;
 
 let gradescopeAssignments = [];
+let bcoursesAssignments = [];
 let manualAssignments = loadManual();
+let courseRegistry = loadCourseRegistry();
+let defaultCourses = new Set(loadStringArray(localStorage, DEFAULT_COURSES_KEY));
+let defaultsConfigured = localStorage.getItem(DEFAULTS_CONFIGURED_KEY) === "1";
+let activeCourses = null;
+let activeCoursesInitialized = false;
 let filter = "upcoming";
 let query = "";
 
 const list = document.querySelector("#assignmentList");
 const assignmentDialog = document.querySelector("#assignmentDialog");
 const assignmentForm = document.querySelector("#assignmentForm");
+const coursesDialog = document.querySelector("#coursesDialog");
+const courseOptions = document.querySelector("#courseOptions");
 
 function loadManual() {
   try {
@@ -23,6 +35,35 @@ function loadManual() {
 
 function saveManual() {
   localStorage.setItem(MANUAL_KEY, JSON.stringify(manualAssignments));
+}
+
+function loadStringArray(storage, key) {
+  try {
+    const value = JSON.parse(storage.getItem(key));
+    return Array.isArray(value) ? value.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function loadCourseRegistry() {
+  try {
+    const value = JSON.parse(localStorage.getItem(COURSE_REGISTRY_KEY));
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveActiveCourses() {
+  if (!activeCourses) return;
+  sessionStorage.setItem(ACTIVE_COURSES_KEY, JSON.stringify([...activeCourses]));
+}
+
+function saveDefaults() {
+  localStorage.setItem(DEFAULT_COURSES_KEY, JSON.stringify([...defaultCourses]));
+  localStorage.setItem(DEFAULTS_CONFIGURED_KEY, "1");
+  defaultsConfigured = true;
 }
 
 function parseDate(value) {
@@ -52,6 +93,14 @@ function fmtDate(date) {
     weekday: "short",
     month: "short",
     day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function fmtTime(date) {
+  if (!date) return "No time";
+  return new Intl.DateTimeFormat(undefined, {
     hour: "numeric",
     minute: "2-digit",
   }).format(date);
@@ -133,12 +182,161 @@ function expandManual(items) {
   return output;
 }
 
+function rawAssignments() {
+  return [
+    ...gradescopeAssignments,
+    ...bcoursesAssignments,
+    ...expandManual(manualAssignments),
+  ];
+}
+
 function allAssignments() {
-  return [...gradescopeAssignments, ...expandManual(manualAssignments)].map((a) => ({
+  return rawAssignments().map((a) => ({
     ...a,
     dueDate: parseDate(a.due),
     lateDate: parseDate(a.late_due),
   }));
+}
+
+function sourceLabel(source) {
+  if (source === "gradescope") return "Gradescope";
+  if (source === "bcourses") return "bCourses";
+  return "Manual";
+}
+
+function reconcileCourseRegistry() {
+  const prior = new Map();
+  for (const item of courseRegistry) {
+    if (!item || typeof item.name !== "string") continue;
+    prior.set(item.name, {
+      name: item.name,
+      sources: Array.isArray(item.sources) ? [...item.sources] : [],
+    });
+  }
+
+  for (const assignment of rawAssignments()) {
+    const name = String(assignment.course || "Manual").trim() || "Manual";
+    if (!prior.has(name)) prior.set(name, { name, sources: [] });
+    const entry = prior.get(name);
+    const label = sourceLabel(assignment.source);
+    if (!entry.sources.includes(label)) entry.sources.push(label);
+  }
+
+  courseRegistry = [...prior.values()].sort((a, b) => a.name.localeCompare(b.name));
+  localStorage.setItem(COURSE_REGISTRY_KEY, JSON.stringify(courseRegistry));
+
+  const knownNames = new Set(courseRegistry.map((x) => x.name));
+
+  if (!activeCoursesInitialized) {
+    const sessionSaved = loadStringArray(sessionStorage, ACTIVE_COURSES_KEY);
+    if (sessionSaved.length || sessionStorage.getItem(ACTIVE_COURSES_KEY) !== null) {
+      activeCourses = new Set(sessionSaved.filter((name) => knownNames.has(name)));
+    } else if (defaultsConfigured) {
+      activeCourses = new Set([...defaultCourses].filter((name) => knownNames.has(name)));
+    } else {
+      activeCourses = new Set(knownNames);
+    }
+    activeCoursesInitialized = true;
+    saveActiveCourses();
+  } else if (!defaultsConfigured && activeCourses) {
+    // Before the user explicitly configures defaults, newly discovered courses
+    // behave like the original dashboard and appear automatically.
+    for (const name of knownNames) activeCourses.add(name);
+    saveActiveCourses();
+  }
+
+  updateCourseButton();
+  updateCourseSuggestions();
+}
+
+function updateCourseButton() {
+  const total = courseRegistry.length;
+  const shown = activeCourses ? courseRegistry.filter((x) => activeCourses.has(x.name)).length : total;
+  const count = document.querySelector("#courseButtonCount");
+  count.textContent = total ? `${shown}/${total}` : "";
+}
+
+function updateCourseSuggestions() {
+  let datalist = document.querySelector("#courseSuggestions");
+  if (!datalist) {
+    datalist = document.createElement("datalist");
+    datalist.id = "courseSuggestions";
+    document.body.appendChild(datalist);
+    const input = assignmentForm?.querySelector('input[name="course"]');
+    if (input) input.setAttribute("list", "courseSuggestions");
+  }
+  datalist.innerHTML = "";
+  for (const course of courseRegistry) {
+    const option = document.createElement("option");
+    option.value = course.name;
+    datalist.appendChild(option);
+  }
+}
+
+function ensureDefaultsConfigured() {
+  if (defaultsConfigured) return;
+  defaultCourses = new Set(courseRegistry.map((x) => x.name));
+  defaultsConfigured = true;
+  localStorage.setItem(DEFAULTS_CONFIGURED_KEY, "1");
+}
+
+function renderCourseOptions() {
+  reconcileCourseRegistry();
+  courseOptions.innerHTML = "";
+
+  if (!courseRegistry.length) {
+    const empty = document.createElement("div");
+    empty.className = "course-options-empty";
+    empty.textContent = "No courses have been discovered yet.";
+    courseOptions.appendChild(empty);
+    return;
+  }
+
+  for (const course of courseRegistry) {
+    const row = document.createElement("div");
+    row.className = "course-option";
+
+    const info = document.createElement("div");
+    info.className = "course-option-info";
+    const name = document.createElement("strong");
+    name.textContent = course.name;
+    const source = document.createElement("span");
+    source.textContent = course.sources.join(" · ") || "Saved course";
+    info.append(name, source);
+
+    const showWrap = document.createElement("label");
+    showWrap.className = "course-toggle";
+    const show = document.createElement("input");
+    show.type = "checkbox";
+    show.checked = Boolean(activeCourses && activeCourses.has(course.name));
+    show.setAttribute("aria-label", `Show ${course.name}`);
+    show.addEventListener("change", () => {
+      if (!activeCourses) activeCourses = new Set();
+      if (show.checked) activeCourses.add(course.name);
+      else activeCourses.delete(course.name);
+      saveActiveCourses();
+      updateCourseButton();
+      render();
+    });
+    showWrap.appendChild(show);
+
+    const defaultWrap = document.createElement("label");
+    defaultWrap.className = "course-toggle";
+    const defaultBox = document.createElement("input");
+    defaultBox.type = "checkbox";
+    defaultBox.checked = defaultsConfigured ? defaultCourses.has(course.name) : true;
+    defaultBox.setAttribute("aria-label", `Use ${course.name} by default`);
+    defaultBox.addEventListener("change", () => {
+      ensureDefaultsConfigured();
+      if (defaultBox.checked) defaultCourses.add(course.name);
+      else defaultCourses.delete(course.name);
+      saveDefaults();
+    });
+    defaultWrap.appendChild(defaultBox);
+
+    row.append(info, showWrap, defaultWrap);
+    courseOptions.appendChild(row);
+  }
 }
 
 function courseColorIndex(course) {
@@ -205,7 +403,10 @@ function makeCourseHeader(course, count, start, nowPct) {
 }
 
 function assignmentVisible(a, now) {
-  const haystack = `${a.title || ""} ${a.course || ""}`.toLowerCase();
+  const courseName = String(a.course || "Manual");
+  if (activeCourses && !activeCourses.has(courseName)) return false;
+
+  const haystack = `${a.title || ""} ${courseName}`.toLowerCase();
   if (query && !haystack.includes(query)) return false;
 
   if (filter === "done") return Boolean(a.completed);
@@ -230,15 +431,21 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
   row.classList.toggle("urgent", Boolean(!a.completed && remaining !== null && remaining >= 0 && remaining <= DAY_MS));
 
   const label = document.createElement("div");
-  label.className = "assignment-label";
+  label.className = "assignment-label assignment-label-row";
+
+  // The date is already represented by the seven-day axis, so the left edge
+  // intentionally contains only the assignment's time.
+  const time = document.createElement("div");
+  time.className = "assignment-time";
+  time.textContent = a.dueDate ? fmtTime(a.dueDate) : "—";
 
   const check = document.createElement("button");
   check.type = "button";
   check.className = "assignment-check";
 
-  if (a.source === "gradescope") {
-    check.title = "Gradescope completion is detected automatically";
-    check.setAttribute("aria-label", "Gradescope completion is detected automatically");
+  if (a.source === "gradescope" || a.source === "bcourses") {
+    check.title = `${sourceLabel(a.source)} completion is detected automatically`;
+    check.setAttribute("aria-label", check.title);
   } else {
     check.setAttribute("aria-label", a.completed ? "Mark incomplete" : "Mark complete");
     check.addEventListener("click", () => {
@@ -272,28 +479,29 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
   title.textContent = a.title || "Untitled";
   titleRow.appendChild(title);
 
-  if (a.source !== "gradescope") {
-    const tag = document.createElement("span");
-    tag.className = "manual-tag";
+  const tag = document.createElement("span");
+  tag.className = a.source === "manual" ? "manual-tag" : "source-tag";
+  if (a.source === "manual") {
     tag.textContent = a.recurrence && a.recurrence !== "none" ? a.recurrence : "manual";
-    titleRow.appendChild(tag);
+  } else {
+    tag.textContent = sourceLabel(a.source);
   }
+  titleRow.appendChild(tag);
 
   const meta = document.createElement("div");
   meta.className = "assignment-meta";
-  const dueText = a.dueDate ? `Due ${fmtDate(a.dueDate)} · ${remainingText(a.dueDate)}` : "No deadline";
-  meta.append(document.createTextNode(dueText));
+  meta.textContent = a.dueDate ? remainingText(a.dueDate) : "No deadline";
   if (a.lateDate) {
     const late = document.createElement("span");
     late.className = "late-text";
-    late.textContent = ` · Late ${fmtDate(a.lateDate)}`;
+    late.textContent = ` · late until ${fmtTime(a.lateDate)}`;
     meta.appendChild(late);
   }
 
   text.append(titleRow, meta);
-  label.append(check, text);
+  label.append(time, check, text);
 
-  if (a.source !== "gradescope") {
+  if (a.source === "manual") {
     const del = document.createElement("button");
     del.type = "button";
     del.className = "delete-assignment";
@@ -304,6 +512,7 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
       const baseId = a.parent_id || a.id;
       manualAssignments = manualAssignments.filter((x) => x.id !== baseId);
       saveManual();
+      reconcileCourseRegistry();
       render();
     });
     label.appendChild(del);
@@ -350,7 +559,7 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
     const caption = document.createElement("div");
     caption.className = "due-caption";
     caption.style.left = `${duePct}%`;
-    caption.textContent = dueRaw > 100 ? "after this week →" : dueRaw < 0 ? "past due" : new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(a.dueDate);
+    caption.textContent = dueRaw > 100 ? "after this week →" : dueRaw < 0 ? "past due" : fmtTime(a.dueDate);
     cell.appendChild(caption);
 
     if (a.lateDate && a.lateDate > a.dueDate) {
@@ -389,6 +598,8 @@ function render() {
   const start = startOfToday();
   const end = new Date(start.getTime() + TIMELINE_MS);
   const nowPct = pctWithinTimeline(now, start, end);
+
+  reconcileCourseRegistry();
 
   const all = allAssignments();
   const visible = all
@@ -447,37 +658,62 @@ function render() {
     }
   }
 
-  const notDone = all.filter((a) => !a.completed);
+  const shownAll = all.filter((a) => !activeCourses || activeCourses.has(String(a.course || "Manual")));
+  const notDone = shownAll.filter((a) => !a.completed);
   document.querySelector("#countToday").textContent = notDone.filter((a) => a.dueDate && isSameDay(a.dueDate, now)).length;
   document.querySelector("#count7").textContent = notDone.filter((a) => a.dueDate && a.dueDate >= now && a.dueDate - now <= TIMELINE_MS).length;
   document.querySelector("#countUpcoming").textContent = notDone.filter((a) => !a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now)).length;
-  document.querySelector("#countDone").textContent = all.filter((a) => a.completed).length;
+  document.querySelector("#countDone").textContent = shownAll.filter((a) => a.completed).length;
+  updateCourseButton();
 }
 
-async function loadGradescope() {
+async function fetchDashboardData(path) {
+  const response = await fetch(`${path}?t=${Date.now()}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
+  return response.json();
+}
+
+async function loadRemoteData() {
   const status = document.querySelector("#syncStatus");
-  status.textContent = "Loading Gradescope…";
+  status.textContent = "Loading assignment sources…";
 
-  try {
-    const response = await fetch(`./data/gradescope.json?t=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const [gradescopeResult, bcoursesResult] = await Promise.allSettled([
+    fetchDashboardData("./data/gradescope.json"),
+    fetchDashboardData("./data/bcourses.json"),
+  ]);
 
-    const data = await response.json();
+  let gradescopeStatus = "Gradescope unavailable";
+  if (gradescopeResult.status === "fulfilled") {
+    const data = gradescopeResult.value;
     gradescopeAssignments = Array.isArray(data.assignments) ? data.assignments : [];
-
     if (data.synced_at) {
-      const synced = new Date(data.synced_at).toLocaleString();
-      const term = data.term ? ` · ${data.term}` : "";
-      status.textContent = `Gradescope synced ${synced}${term} · ${data.course_count ?? "?"} student courses`;
+      gradescopeStatus = `Gradescope ${new Date(data.synced_at).toLocaleString()}`;
     } else {
-      status.textContent = "Gradescope has not synced yet";
+      gradescopeStatus = "Gradescope not synced";
     }
-  } catch (error) {
+  } else {
+    console.error(gradescopeResult.reason);
     gradescopeAssignments = [];
-    status.textContent = "Could not load Gradescope data · manual assignments still work";
-    console.error(error);
   }
 
+  let bcoursesStatus = "bCourses unavailable";
+  if (bcoursesResult.status === "fulfilled") {
+    const data = bcoursesResult.value;
+    bcoursesAssignments = Array.isArray(data.assignments) ? data.assignments : [];
+    if (data.enabled === false) {
+      bcoursesStatus = "bCourses not configured";
+    } else if (data.synced_at) {
+      bcoursesStatus = `bCourses ${new Date(data.synced_at).toLocaleString()}`;
+    } else {
+      bcoursesStatus = "bCourses not synced";
+    }
+  } else {
+    console.error(bcoursesResult.reason);
+    bcoursesAssignments = [];
+  }
+
+  status.textContent = `${gradescopeStatus} · ${bcoursesStatus}`;
+  reconcileCourseRegistry();
   render();
 }
 
@@ -492,6 +728,33 @@ document.querySelector("#themeBtn").addEventListener("click", () => {
   document.documentElement.dataset.theme = next;
   localStorage.setItem(THEME_KEY, next);
   updateThemeButton();
+});
+
+document.querySelector("#coursesBtn").addEventListener("click", () => {
+  renderCourseOptions();
+  coursesDialog.showModal();
+});
+document.querySelector("#closeCoursesDialog").addEventListener("click", () => coursesDialog.close());
+document.querySelector("#doneCoursesDialog").addEventListener("click", () => coursesDialog.close());
+document.querySelector("#showAllCourses").addEventListener("click", () => {
+  activeCourses = new Set(courseRegistry.map((x) => x.name));
+  saveActiveCourses();
+  renderCourseOptions();
+  render();
+});
+document.querySelector("#hideAllCourses").addEventListener("click", () => {
+  activeCourses = new Set();
+  saveActiveCourses();
+  renderCourseOptions();
+  render();
+});
+document.querySelector("#showDefaultCourses").addEventListener("click", () => {
+  activeCourses = defaultsConfigured
+    ? new Set(defaultCourses)
+    : new Set(courseRegistry.map((x) => x.name));
+  saveActiveCourses();
+  renderCourseOptions();
+  render();
 });
 
 document.querySelector("#addBtn").addEventListener("click", () => assignmentDialog.showModal());
@@ -531,13 +794,19 @@ assignmentForm.addEventListener("submit", (event) => {
   saveManual();
   assignmentForm.reset();
   assignmentDialog.close();
+  reconcileCourseRegistry();
+  if (activeCourses) {
+    activeCourses.add(item.course);
+    saveActiveCourses();
+  }
   render();
 });
 
 updateCurrentDate();
 updateThemeButton();
+reconcileCourseRegistry();
 render();
-loadGradescope();
+loadRemoteData();
 setInterval(() => {
   updateCurrentDate();
   render();

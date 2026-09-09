@@ -1,4 +1,4 @@
-name: Sync Gradescope
+name: Sync deadlines
 
 on:
   workflow_dispatch:
@@ -32,21 +32,26 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Scrape student Gradescope courses
+      - name: Scrape Fall 2026 student Gradescope courses
         env:
           GRADESCOPE_EMAIL: ${{ secrets.GRADESCOPE_EMAIL }}
           GRADESCOPE_PASSWORD: ${{ secrets.GRADESCOPE_PASSWORD }}
         run: python scripts/sync_gradescope.py --output data/gradescope.json
 
+      - name: Sync Fall 2026 student bCourses courses
+        env:
+          BCOURSES_TOKEN: ${{ secrets.BCOURSES_TOKEN }}
+        run: python scripts/sync_bcourses.py --output data/bcourses.json
+
       - name: Commit public deadline metadata
         run: |
-          if git diff --quiet -- data/gradescope.json; then
+          if git diff --quiet -- data/gradescope.json data/bcourses.json; then
             echo "No metadata changes."
           else
-            git config user.name "gradescope-sync[bot]"
-            git config user.email "gradescope-sync[bot]@users.noreply.github.com"
-            git add data/gradescope.json
-            git commit -m "chore: sync Gradescope deadlines"
+            git config user.name "deadline-sync[bot]"
+            git config user.email "deadline-sync[bot]@users.noreply.github.com"
+            git add data/gradescope.json data/bcourses.json
+            git commit -m "chore: sync assignment deadlines"
             git push
           fi
 
@@ -55,7 +60,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/data
           cp index.html styles.css deadline-dashboard.js _site/
-          cp data/gradescope.json _site/data/gradescope.json
+          cp data/gradescope.json data/bcourses.json _site/data/
 
       - uses: actions/configure-pages@v5
 

@@ -8,6 +8,7 @@ on:
       - "styles.css"
       - "deadline-dashboard.js"
       - "data/gradescope.json"
+      - "data/bcourses.json"
   workflow_dispatch:
 
 permissions:
@@ -33,7 +34,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/data
           cp index.html styles.css deadline-dashboard.js _site/
-          cp data/gradescope.json _site/data/gradescope.json
+          cp data/gradescope.json data/bcourses.json _site/data/
 
       - uses: actions/configure-pages@v5
 

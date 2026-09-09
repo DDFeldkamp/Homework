@@ -1,108 +1,101 @@
 # Deadline Dashboard
 
-A GitHub Pages dashboard for Fall 2026 Gradescope deadlines plus manual and recurring assignments.
+A Planit-inspired GitHub Pages assignment dashboard for **Fall 2026**.
 
-The visual design is independently implemented but inspired by the course-by-course weekly timeline in [tanjeffreyz/planit](https://github.com/tanjeffreyz/planit): minimal chrome, one section per course, pastel horizontal deadline bars, and a date axis.
+It supports:
 
-## Current architecture
+- Gradescope student courses and deadlines
+- optional bCourses/Canvas deadlines
+- automatic completion detection when the source exposes submission state
+- late/final deadlines
+- manual and recurring assignments
+- light and dark themes
+- a seven-day timeline
+- a persistent course registry with per-session visibility and configurable defaults
 
-This version intentionally publishes **Gradescope assignment metadata** on GitHub Pages. It does **not** publish your Gradescope login credentials.
+## Course visibility and defaults
+
+The dashboard stores the names of courses it has seen in browser `localStorage`.
+That includes courses discovered from Gradescope, bCourses, and courses entered on
+manual assignments.
+
+Click **Courses** in the top-right banner to manage them.
+
+- **Show** controls the courses visible in the current browser session.
+- **Default** controls which courses are selected when a new browser session is opened.
+- **Show all**, **Hide all**, and **Use defaults** provide quick switching.
+
+The course list is retained even if a course temporarily has no upcoming assignments.
+The selected courses for the current session are stored in `sessionStorage`; default
+course choices and the registry are stored in `localStorage`.
+
+## Gradescope
+
+The Gradescope scraper intentionally collects only courses under:
 
 ```text
-GRADESCOPE_EMAIL + GRADESCOPE_PASSWORD
-        (GitHub Actions secrets only)
-                    |
-                    v
-             GitHub Action
-                    |
-     Fall 2026 STUDENT courses only
-                    |
-                    v
-        data/gradescope.json
-                    |
-          commit + Pages deploy
-                    |
-                    v
-          public dashboard
+Student Courses
+└── Fall 2026
 ```
 
-The published JSON can contain course names, assignment names, release/due/late dates, completion state, and Gradescope assignment links. Anyone who can access the Pages site can access that metadata too.
+It does not fall back to instructor courses or older semesters.
 
-## Features
-
-- Fall 2026 Gradescope deadlines only
-- only courses under Gradescope's **Student Courses** section
-- automatic submitted/graded detection
-- course-by-course seven-day timeline
-- straight-edged pastel bars showing time from now until the normal due date
-- dashed extension showing the late-submission window
-- explicit normal and late deadline text
-- current date/time centered in the top banner
-- light and dark themes
-- manual assignments
-- daily, weekly, biweekly, and monthly recurring assignments
-- Upcoming / All / Done filters and search
-
-## Setup
-
-### 1. Add only these GitHub Actions secrets
-
-In the repository, go to:
-
-**Settings → Secrets and variables → Actions → New repository secret**
-
-Add:
+Add these GitHub Actions repository secrets:
 
 ```text
 GRADESCOPE_EMAIL
 GRADESCOPE_PASSWORD
 ```
 
-### 2. Enable GitHub Pages
+Gradescope does not have a public student API, so this source still relies on the
+Gradescope website. Accounts that require SSO-only login may need a different login
+strategy.
 
-Go to:
+## Optional bCourses integration
 
-**Settings → Pages → Source → GitHub Actions**
+bCourses is based on Canvas and exposes Canvas REST API endpoints for a user's
+student courses and assignments. This repo includes `scripts/sync_bcourses.py`.
 
-### 3. Run the first sync
-
-Go to:
-
-**Actions → Sync Gradescope → Run workflow**
-
-The workflow will:
-
-1. log into Gradescope using GitHub secrets
-2. enter the **Student Courses** section
-3. track the semester headings on the account page
-4. collect only course cards beneath **Fall 2026**
-5. write `data/gradescope.json`
-6. commit the public metadata to the repository
-7. deploy the dashboard and JSON to GitHub Pages
-
-It also runs every two hours.
-
-## Fall 2026 filtering
-
-Gradescope places `Fall 2026` above the group of course cards rather than necessarily including it in each course name. The scraper therefore walks the account page in display order and only saves `/courses/<id>` links while both of these are true:
+If you have a bCourses/Canvas access token, add it as a GitHub Actions repository secret:
 
 ```text
-section = Student Courses
-term    = Fall 2026
+BCOURSES_TOKEN
 ```
 
-It will not fall back to instructor courses or other semesters if the target section cannot be identified.
+If `BCOURSES_TOKEN` is absent, the bCourses step exits successfully and the dashboard
+continues to work with Gradescope/manual assignments only.
 
-## Timeline behavior
+The bCourses sync:
 
-Each course has its own seven-day axis beginning today. The solid colored portion runs from the current time to the standard due date. If a late deadline exists, a dashed extension continues from the regular deadline to the late deadline. Assignments beyond the visible seven-day window are capped at the right side but still show their full due date in text.
+1. requests only active **student** enrollments,
+2. keeps only courses whose Canvas term is **Fall 2026**,
+3. retrieves assignments with the current user's submission information,
+4. uses `due_at` as the due date,
+5. uses `lock_at` as the final/late cutoff when it is later than `due_at`, and
+6. marks an assignment complete when Canvas reports a submitted/graded submission.
 
-## Manual assignments
+Because the dashboard is intentionally public, bCourses assignment metadata is also
+published in `data/bcourses.json`. The access token itself remains a GitHub secret.
 
-Manual assignments are stored in your browser's `localStorage`, not in `data/gradescope.json`. Recurring manual assignments are generated locally up to six months ahead.
+## Deploy
 
-## Security / privacy
+1. Copy the repo to GitHub.
+2. Add `GRADESCOPE_EMAIL` and `GRADESCOPE_PASSWORD` under **Settings → Secrets and variables → Actions**.
+3. Optionally add `BCOURSES_TOKEN`.
+4. Under **Settings → Pages**, use **GitHub Actions** as the deployment source.
+5. Open **Actions → Sync deadlines → Run workflow**.
 
-Your Gradescope email and password remain in GitHub Actions secrets and are never copied into the website files.
+The workflow also runs every two hours.
 
-However, `data/gradescope.json` is intentionally public in this version. Do not use this version if course names, assignment names, deadlines, completion state, or Gradescope links need to remain private.
+## Public data
+
+The GitHub Pages site publishes:
+
+```text
+data/gradescope.json
+data/bcourses.json
+```
+
+These files can contain course names, assignment names, due dates, late/final
+cutoffs, completion state, and assignment links. Credentials/tokens are not written
+to these files.

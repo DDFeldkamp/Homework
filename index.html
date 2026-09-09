@@ -12,7 +12,7 @@
       document.documentElement.dataset.theme = theme;
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=20260908-planit-1" />
+  <link rel="stylesheet" href="./styles.css?v=20260909-courses-1" />
 </head>
 <body>
   <header class="top-banner">
@@ -23,6 +23,7 @@
         <div id="currentDate" class="current-date"></div>
       </div>
       <div class="banner-actions">
+        <button id="coursesBtn" class="course-button" type="button">Courses <span id="courseButtonCount"></span></button>
         <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">☾</button>
         <button id="addBtn" class="add-button" type="button">+ Add</button>
       </div>
@@ -54,6 +55,32 @@
 
     <section id="assignmentList" class="course-list" aria-live="polite"></section>
   </main>
+
+  <dialog id="coursesDialog" class="courses-dialog">
+    <div class="courses-dialog-body">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">COURSE VISIBILITY</p>
+          <h2>Choose courses</h2>
+          <p class="dialog-copy">Show courses temporarily, and choose which courses should be selected by default when you open a new browser session.</p>
+        </div>
+        <button type="button" id="closeCoursesDialog" class="icon-button" aria-label="Close">×</button>
+      </div>
+
+      <div class="course-settings-head" aria-hidden="true">
+        <span>Course</span><span>Show</span><span>Default</span>
+      </div>
+      <div id="courseOptions" class="course-options"></div>
+
+      <div class="course-settings-actions">
+        <button type="button" id="showAllCourses" class="dialog-button secondary">Show all</button>
+        <button type="button" id="showDefaultCourses" class="dialog-button secondary">Use defaults</button>
+        <button type="button" id="hideAllCourses" class="dialog-button secondary">Hide all</button>
+        <span class="course-settings-spacer"></span>
+        <button type="button" id="doneCoursesDialog" class="dialog-button primary">Done</button>
+      </div>
+    </div>
+  </dialog>
 
   <dialog id="assignmentDialog">
     <form id="assignmentForm">
@@ -110,7 +137,7 @@
     });
   </script>
   <script
-    src="./deadline-dashboard.js?v=20260908-planit-1"
+    src="./deadline-dashboard.js?v=20260909-courses-1"
     onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
   ></script>
 </body>
