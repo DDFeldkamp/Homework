@@ -51,12 +51,17 @@ def login(session: requests.Session):
 
 
 def student_courses(session: requests.Session):
-    """Return ONLY courses in Gradescope's Student Courses section.
+    """Return only Fall 2026 courses from Gradescope's Student Courses section.
 
-    Gradescope's account dashboard separates staff and student courses. If the user
-    has any staff role, staff courses appear first and an h2.pageHeading labeled
-    'Student Courses' switches the following courseList to student role.
+    Gradescope displays semester headings (for example ``Fall 2026``) above the
+    course cards, so filtering by course name is not reliable. We walk the
+    account page in DOM order, enter the Student Courses section, track the
+    current semester heading, and only collect exact /courses/<id> links while
+    the active semester is Fall 2026.
     """
+    target_term = "fall 2026"
+    term_re = re.compile(r"^(spring|summer|fall|winter)\s+\d{4}$", re.I)
+
     resp = session.get(f"{BASE}/account", timeout=30)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
@@ -64,38 +69,68 @@ def student_courses(session: requests.Session):
     if account is None:
         fail("Could not find the Gradescope account course list.")
 
+    # If there is no instructor/staff UI at all, the account page may omit a
+    # separate Student Courses heading. In that case it is safe to begin in the
+    # student section. If staff UI exists, we require the explicit heading so
+    # instructor courses cannot be collected accidentally.
     is_staff_somewhere = soup.select_one("button.js-createNewCourse") is not None
-    section_type = "instructor" if is_staff_somewhere else "student"
+    in_student_section = not is_staff_somewhere
+    saw_student_heading = False
+    current_term = None
     found: dict[str, str] = {}
 
-    for section in account.find_all(recursive=True):
-        if section.name == "h2" and "pageHeading" in section.get("class", []):
-            heading = clean(section.get_text(" ", strip=True)).lower()
-            if heading == "student courses":
-                section_type = "student"
-            elif heading in {"instructor courses", "courses as instructor"}:
-                section_type = "instructor"
-            continue
+    for element in account.find_all(True):
+        text = clean(element.get_text(" ", strip=True))
+        lower = text.lower()
 
-        if section.name != "div" or "courseList" not in section.get("class", []):
-            continue
-        if section_type != "student":
-            continue
-
-        for link in section.select('a[href^="/courses/"]'):
-            href = link.get("href", "").rstrip("/")
-            match = re.fullmatch(r"/courses/(\d+)", href)
-            if not match:
+        # Section boundaries. Only headings with short exact text are treated
+        # as boundaries so wrapper elements do not accidentally match.
+        if element.name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+            if lower == "student courses":
+                in_student_section = True
+                saw_student_heading = True
+                current_term = None
                 continue
-            cid = match.group(1)
-            short = link.select_one("h3.courseBox--shortname")
-            full = link.select_one("div.courseBox--name")
-            name = clean(short.get_text(" ", strip=True) if short else "")
-            full_name = clean(full.get_text(" ", strip=True) if full else "")
-            found[cid] = name or full_name or f"Course {cid}"
+            if lower in {"instructor courses", "courses as instructor"}:
+                in_student_section = False
+                current_term = None
+                continue
+
+        if not in_student_section:
+            continue
+
+        # Semester headings can be h-tags or small dedicated div/span labels.
+        # Requiring the entire element text to match prevents a course-list
+        # wrapper containing many cards from being mistaken for a term heading.
+        if term_re.fullmatch(lower):
+            current_term = lower
+            continue
+
+        if current_term != target_term:
+            continue
+
+        if element.name != "a":
+            continue
+
+        href = element.get("href", "").rstrip("/")
+        match = re.fullmatch(r"/courses/(\d+)", href)
+        if not match:
+            continue
+
+        cid = match.group(1)
+        short = element.select_one("h3.courseBox--shortname")
+        full = element.select_one("div.courseBox--name")
+        short_name = clean(short.get_text(" ", strip=True) if short else "")
+        full_name = clean(full.get_text(" ", strip=True) if full else "")
+        found[cid] = short_name or full_name or f"Course {cid}"
 
     if not found:
-        fail("No student courses were found. The scraper intentionally refuses to fall back to all courses, so instructor courses cannot leak into the dashboard.")
+        heading_note = " Student Courses heading was found." if saw_student_heading else ""
+        fail(
+            "No Fall 2026 student courses were found." + heading_note +
+            " The scraper will not fall back to instructor or older-semester courses."
+        )
+
     return [{"id": cid, "name": name} for cid, name in found.items()]
 
 
@@ -198,13 +233,14 @@ def main():
 
     payload = {
         "synced_at": datetime.now(timezone.utc).isoformat(),
+        "term": "Fall 2026",
         "course_count": len(courses),
         "assignments": assignments,
     }
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {len(assignments)} assignments from {len(courses)} STUDENT courses to {output}")
+    print(f"Wrote {len(assignments)} assignments from {len(courses)} Fall 2026 STUDENT courses to {output}")
 
 
 if __name__ == "__main__":

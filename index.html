@@ -3,41 +3,44 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Deadline Dashboard</title>
   <script>
     (() => {
-      const saved = localStorage.getItem('deadline-theme');
-      const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const saved = localStorage.getItem("deadline-theme");
+      const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.dataset.theme = theme;
     })();
   </script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260908-planit-1" />
 </head>
 <body>
-  <header class="banner">
-    <div class="banner-inner">
-      <div class="brand-block">
-        <h1>Deadline Dashboard</h1>
-        <span id="currentDate" class="current-date"></span>
+  <header class="top-banner">
+    <div class="top-banner__inner">
+      <div class="banner-spacer" aria-hidden="true"></div>
+      <div class="brand">
+        <div class="brand-title"><span class="planet-dot" aria-hidden="true"></span>Deadline Dashboard</div>
+        <div id="currentDate" class="current-date"></div>
       </div>
       <div class="banner-actions">
-        <span id="syncStatus" class="sync-status">Starting dashboard…</span>
-        <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme">☾</button>
-        <button id="addBtn" class="button primary" type="button">+ Add</button>
+        <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">☾</button>
+        <button id="addBtn" class="add-button" type="button">+ Add</button>
       </div>
     </div>
   </header>
 
-  <main class="shell">
-    <section class="summary" aria-label="Deadline summary">
-      <div><span>Due today</span><strong id="countToday">0</strong></div>
-      <div><span>Next 7 days</span><strong id="count7">0</strong></div>
-      <div><span>Upcoming</span><strong id="countUpcoming">0</strong></div>
-      <div><span>Done</span><strong id="countDone">0</strong></div>
+  <main class="page-shell">
+    <section class="status-strip" aria-label="Dashboard status">
+      <div id="syncStatus" class="sync-status">Starting dashboard…</div>
+      <div class="stats" aria-label="Assignment summary">
+        <span><strong id="countToday">0</strong> today</span>
+        <span><strong id="count7">0</strong> next 7 days</span>
+        <span><strong id="countUpcoming">0</strong> upcoming</span>
+        <span><strong id="countDone">0</strong> done</span>
+      </div>
     </section>
 
-    <section class="toolbar">
+    <section class="controls" aria-label="Assignment controls">
       <div class="tabs" role="tablist" aria-label="Assignment filters">
         <button class="tab active" data-filter="upcoming" type="button">Upcoming</button>
         <button class="tab" data-filter="all" type="button">All</button>
@@ -49,9 +52,8 @@
       </label>
     </section>
 
-    <section id="assignmentList" class="assignment-list" aria-live="polite"></section>
+    <section id="assignmentList" class="course-list" aria-live="polite"></section>
   </main>
-
 
   <dialog id="assignmentDialog">
     <form id="assignmentForm">
@@ -95,46 +97,11 @@
       </div>
 
       <div class="dialog-actions">
-        <button type="button" id="cancelDialog" class="button subtle">Cancel</button>
-        <button type="submit" class="button primary">Add assignment</button>
+        <button type="button" id="cancelDialog" class="dialog-button secondary">Cancel</button>
+        <button type="submit" class="dialog-button primary">Add assignment</button>
       </div>
     </form>
   </dialog>
-
-  <template id="assignmentTemplate">
-    <article class="assignment-row">
-      <div class="date-cell">
-        <span class="date-month"></span>
-        <strong class="date-day"></strong>
-        <span class="date-time"></span>
-      </div>
-      <button class="check" type="button" aria-label="Mark complete"></button>
-      <div class="assignment-copy">
-        <div class="assignment-heading">
-          <div>
-            <div class="meta-line">
-              <span class="course-pill"></span>
-              <span class="source-pill"></span>
-            </div>
-            <h3 class="title"></h3>
-          </div>
-          <button class="delete-btn" type="button" aria-label="Delete manual assignment">×</button>
-        </div>
-
-        <div class="deadline-line">
-          <strong class="remaining"></strong>
-          <span class="due-full"></span>
-        </div>
-
-        <div class="bar-track" aria-hidden="true"><div class="bar-fill"></div></div>
-
-        <div class="late-line">
-          <span class="late"></span>
-          <a class="open-link" target="_blank" rel="noreferrer">Open ↗</a>
-        </div>
-      </div>
-    </article>
-  </template>
 
   <script>
     window.addEventListener("error", (event) => {
@@ -143,7 +110,7 @@
     });
   </script>
   <script
-    src="./deadline-dashboard.js?v=20260908-2"
+    src="./deadline-dashboard.js?v=20260908-planit-1"
     onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
   ></script>
 </body>

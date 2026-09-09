@@ -1,6 +1,8 @@
 # Deadline Dashboard
 
-A GitHub Pages dashboard for upcoming Gradescope deadlines plus manual and recurring assignments.
+A GitHub Pages dashboard for Fall 2026 Gradescope deadlines plus manual and recurring assignments.
+
+The visual design is independently implemented but inspired by the course-by-course weekly timeline in [tanjeffreyz/planit](https://github.com/tanjeffreyz/planit): minimal chrome, one section per course, pastel horizontal deadline bars, and a date axis.
 
 ## Current architecture
 
@@ -13,7 +15,7 @@ GRADESCOPE_EMAIL + GRADESCOPE_PASSWORD
                     v
              GitHub Action
                     |
-          scrape STUDENT courses only
+     Fall 2026 STUDENT courses only
                     |
                     v
         data/gradescope.json
@@ -28,13 +30,15 @@ The published JSON can contain course names, assignment names, release/due/late 
 
 ## Features
 
-- Gradescope deadlines and late deadlines
+- Fall 2026 Gradescope deadlines only
+- only courses under Gradescope's **Student Courses** section
 - automatic submitted/graded detection
-- only courses from Gradescope's **Student Courses** section
-- compact top banner with current date/time and sync status
+- course-by-course seven-day timeline
+- straight-edged pastel bars showing time from now until the normal due date
+- dashed extension showing the late-submission window
+- explicit normal and late deadline text
+- current date/time centered in the top banner
 - light and dark themes
-- straight-edged time-remaining bars
-- date-grouped assignment list
 - manual assignments
 - daily, weekly, biweekly, and monthly recurring assignments
 - Upcoming / All / Done filters and search
@@ -54,8 +58,6 @@ GRADESCOPE_EMAIL
 GRADESCOPE_PASSWORD
 ```
 
-You no longer need Cloudflare, `DEADLINE_API_URL`, `DEADLINE_SYNC_TOKEN`, or `DASHBOARD_PASSWORD`.
-
 ### 2. Enable GitHub Pages
 
 Go to:
@@ -71,16 +73,29 @@ Go to:
 The workflow will:
 
 1. log into Gradescope using GitHub secrets
-2. read only the **Student Courses** section
-3. write `data/gradescope.json`
-4. commit the public metadata to the repository
-5. deploy the current dashboard and JSON to GitHub Pages
+2. enter the **Student Courses** section
+3. track the semester headings on the account page
+4. collect only course cards beneath **Fall 2026**
+5. write `data/gradescope.json`
+6. commit the public metadata to the repository
+7. deploy the dashboard and JSON to GitHub Pages
 
 It also runs every two hours.
 
-## Student-only filtering
+## Fall 2026 filtering
 
-The scraper deliberately reads course links only from Gradescope's **Student Courses** section. It does not fall back to every `/courses/...` link on the account page. If it cannot identify any student courses, the sync fails instead of accidentally including instructor courses.
+Gradescope places `Fall 2026` above the group of course cards rather than necessarily including it in each course name. The scraper therefore walks the account page in display order and only saves `/courses/<id>` links while both of these are true:
+
+```text
+section = Student Courses
+term    = Fall 2026
+```
+
+It will not fall back to instructor courses or other semesters if the target section cannot be identified.
+
+## Timeline behavior
+
+Each course has its own seven-day axis beginning today. The solid colored portion runs from the current time to the standard due date. If a late deadline exists, a dashed extension continues from the regular deadline to the late deadline. Assignments beyond the visible seven-day window are capped at the right side but still show their full due date in text.
 
 ## Manual assignments
 
