@@ -6,10 +6,19 @@ on:
     - cron: "17 */2 * * *"
 
 permissions:
-  contents: read
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  sync:
+  sync-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -27,17 +36,33 @@ jobs:
         env:
           GRADESCOPE_EMAIL: ${{ secrets.GRADESCOPE_EMAIL }}
           GRADESCOPE_PASSWORD: ${{ secrets.GRADESCOPE_PASSWORD }}
-        run: python scripts/sync_gradescope.py --output /tmp/gradescope.json
+        run: python scripts/sync_gradescope.py --output data/gradescope.json
 
-      - name: Upload deadlines to private API
-        env:
-          DEADLINE_API_URL: ${{ secrets.DEADLINE_API_URL }}
-          DEADLINE_SYNC_TOKEN: ${{ secrets.DEADLINE_SYNC_TOKEN }}
+      - name: Commit public deadline metadata
         run: |
-          test -n "$DEADLINE_API_URL" || (echo "Missing DEADLINE_API_URL" && exit 1)
-          test -n "$DEADLINE_SYNC_TOKEN" || (echo "Missing DEADLINE_SYNC_TOKEN" && exit 1)
-          curl --fail-with-body --silent --show-error \
-            -X POST "${DEADLINE_API_URL%/}/sync" \
-            -H "Authorization: Bearer $DEADLINE_SYNC_TOKEN" \
-            -H "Content-Type: application/json" \
-            --data-binary @/tmp/gradescope.json
+          if git diff --quiet -- data/gradescope.json; then
+            echo "No metadata changes."
+          else
+            git config user.name "gradescope-sync[bot]"
+            git config user.email "gradescope-sync[bot]@users.noreply.github.com"
+            git add data/gradescope.json
+            git commit -m "chore: sync Gradescope deadlines"
+            git push
+          fi
+
+      - name: Build GitHub Pages site
+        run: |
+          rm -rf _site
+          mkdir -p _site/data
+          cp index.html styles.css app.js _site/
+          cp data/gradescope.json _site/data/gradescope.json
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

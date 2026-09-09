@@ -1,97 +1,49 @@
 # Deadline Dashboard
 
-A GitHub Pages frontend for upcoming Gradescope deadlines plus manual/recurring assignments.
+A GitHub Pages dashboard for upcoming Gradescope deadlines plus manual and recurring assignments.
 
-## What changed in v2
+## Current architecture
 
-- **Gradescope metadata is no longer committed to the repository or published by GitHub Pages.**
-- Gradescope sync writes only to `/tmp` inside the GitHub Actions runner, then POSTs the JSON to a private Cloudflare Worker + KV store.
-- The Pages site asks for a dashboard password each browser session before it can read Gradescope metadata.
-- Light and dark themes.
-- Compact title banner with the current date/time at the top.
-- Straight-edged time-remaining bars and date-grouped assignment lists.
-- Gradescope scraping is restricted to the **Student Courses** section and intentionally refuses to fall back to all courses.
-
-## Architecture
+This version intentionally publishes **Gradescope assignment metadata** on GitHub Pages. It does **not** publish your Gradescope login credentials.
 
 ```text
-Gradescope credentials (GitHub Secrets)
-        |
-        v
-GitHub Action scraper
-        |
-        | POST /sync with private sync token
-        v
-Cloudflare Worker ----> Workers KV (private deadline JSON)
-        ^
-        | GET /deadlines with dashboard password
-        |
-GitHub Pages frontend
+GRADESCOPE_EMAIL + GRADESCOPE_PASSWORD
+        (GitHub Actions secrets only)
+                    |
+                    v
+             GitHub Action
+                    |
+          scrape STUDENT courses only
+                    |
+                    v
+        data/gradescope.json
+                    |
+          commit + Pages deploy
+                    |
+                    v
+          public dashboard
 ```
 
-GitHub Pages publishes only these four files:
+The published JSON can contain course names, assignment names, release/due/late dates, completion state, and Gradescope assignment links. Anyone who can access the Pages site can access that metadata too.
 
-- `index.html`
-- `styles.css`
-- `app.js`
-- `config.js`
+## Features
 
-The scraper, Worker source, and all generated Gradescope JSON are excluded from the Pages deployment artifact.
+- Gradescope deadlines and late deadlines
+- automatic submitted/graded detection
+- only courses from Gradescope's **Student Courses** section
+- compact top banner with current date/time and sync status
+- light and dark themes
+- straight-edged time-remaining bars
+- date-grouped assignment list
+- manual assignments
+- daily, weekly, biweekly, and monthly recurring assignments
+- Upcoming / All / Done filters and search
 
-# 1. Deploy the private Worker backend
+## Setup
 
-You need a free Cloudflare account plus Node/npm locally.
+### 1. Add only these GitHub Actions secrets
 
-```bash
-cd worker
-npm install
-npx wrangler login
-npm run deploy
-```
-
-The Wrangler config declares a KV binding without an ID, so current Wrangler can automatically provision the KV resource during deployment.
-
-Then set two Worker secrets:
-
-```bash
-npx wrangler secret put DASHBOARD_PASSWORD
-npx wrangler secret put SYNC_TOKEN
-```
-
-Choose:
-
-- `DASHBOARD_PASSWORD`: the password you will type into the web dashboard.
-- `SYNC_TOKEN`: a long random token used only by GitHub Actions.
-
-For better CORS restriction, add `ALLOWED_ORIGIN` as a Worker environment variable in Cloudflare, set to your exact Pages origin, for example:
-
-```text
-https://YOUR_GITHUB_USERNAME.github.io
-```
-
-or, for a project Pages site, the origin is still just the scheme + host (no repo path).
-
-After deployment, Wrangler prints a Worker URL similar to:
-
-```text
-https://deadline-dashboard-api.YOUR-SUBDOMAIN.workers.dev
-```
-
-# 2. Point the frontend at the Worker
-
-Edit `config.js`:
-
-```js
-window.DEADLINE_CONFIG = {
-  apiUrl: "https://deadline-dashboard-api.YOUR-SUBDOMAIN.workers.dev"
-};
-```
-
-The Worker URL is not secret. Never put a password or token in `config.js`.
-
-# 3. Add GitHub Actions secrets
-
-In the GitHub repository:
+In the repository, go to:
 
 **Settings → Secrets and variables → Actions → New repository secret**
 
@@ -100,65 +52,42 @@ Add:
 ```text
 GRADESCOPE_EMAIL
 GRADESCOPE_PASSWORD
-DEADLINE_API_URL
-DEADLINE_SYNC_TOKEN
 ```
 
-Values:
+You no longer need Cloudflare, `DEADLINE_API_URL`, `DEADLINE_SYNC_TOKEN`, or `DASHBOARD_PASSWORD`.
 
-- `GRADESCOPE_EMAIL`: Gradescope login email
-- `GRADESCOPE_PASSWORD`: Gradescope password
-- `DEADLINE_API_URL`: the Worker URL
-- `DEADLINE_SYNC_TOKEN`: exactly the same random value as the Worker's `SYNC_TOKEN`
-
-# 4. Run the Gradescope sync
-
-Go to:
-
-**Actions → Sync Gradescope → Run workflow**
-
-The workflow now:
-
-1. logs into Gradescope
-2. selects only Student Courses
-3. writes temporary JSON under `/tmp`
-4. POSTs it to the private Worker
-5. exits without committing any assignment data
-
-It also runs automatically every two hours.
-
-# 5. Enable GitHub Pages
+### 2. Enable GitHub Pages
 
 Go to:
 
 **Settings → Pages → Source → GitHub Actions**
 
-Then run the **Deploy GitHub Pages** workflow or push to `main`.
+### 3. Run the first sync
 
-When you open the site, enter `DASHBOARD_PASSWORD`. The browser keeps it only in `sessionStorage`, so closing that browser tab/window session clears it.
+Go to:
+
+**Actions → Sync Gradescope → Run workflow**
+
+The workflow will:
+
+1. log into Gradescope using GitHub secrets
+2. read only the **Student Courses** section
+3. write `data/gradescope.json`
+4. commit the public metadata to the repository
+5. deploy the current dashboard and JSON to GitHub Pages
+
+It also runs every two hours.
+
+## Student-only filtering
+
+The scraper deliberately reads course links only from Gradescope's **Student Courses** section. It does not fall back to every `/courses/...` link on the account page. If it cannot identify any student courses, the sync fails instead of accidentally including instructor courses.
 
 ## Manual assignments
 
-Manual assignments are still stored locally in your browser with `localStorage`. They support:
+Manual assignments are stored in your browser's `localStorage`, not in `data/gradescope.json`. Recurring manual assignments are generated locally up to six months ahead.
 
-- one-time assignments
-- daily recurrence
-- weekly recurrence
-- every-two-weeks recurrence
-- monthly recurrence
-- manual completion checkboxes
+## Security / privacy
 
-Gradescope assignment completion remains read-only in the UI and is detected from the student assignment status during sync.
+Your Gradescope email and password remain in GitHub Actions secrets and are never copied into the website files.
 
-## Student-course filtering
-
-The scraper reads Gradescope's account dashboard and only accepts course links from its `Student Courses` section. If it cannot identify student courses, the sync fails rather than falling back to instructor courses.
-
-## Security notes
-
-- No Gradescope password is shipped to the browser.
-- No Gradescope metadata is stored in the Git repository.
-- No Gradescope metadata is included in the GitHub Pages artifact.
-- The Worker endpoint URL is public, but `/deadlines` requires your dashboard password and `/sync` requires a separate sync token.
-- Use a strong unique dashboard password and a long random sync token.
-- Standard email/password Gradescope login is expected; SSO-only accounts may require a different login strategy.
+However, `data/gradescope.json` is intentionally public in this version. Do not use this version if course names, assignment names, deadlines, completion state, or Gradescope links need to remain private.

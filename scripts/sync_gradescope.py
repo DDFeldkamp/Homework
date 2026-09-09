@@ -1,7 +1,7 @@
-"""Scrape student-course deadlines from Gradescope and write them to a local output file.
+"""Scrape deadlines from Gradescope student courses into public dashboard JSON.
 
-The output is intended to be uploaded directly to the private deadline API by GitHub
-Actions. It is never committed to the repository or published by GitHub Pages.
+Credentials still come only from GitHub Actions secrets; the generated assignment
+metadata is intentionally committed and published by GitHub Pages.
 """
 from __future__ import annotations
 
@@ -176,7 +176,7 @@ def parse_student_assignments(html: str, course_id: str, course_name: str):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="/tmp/gradescope.json")
+    parser.add_argument("--output", default="data/gradescope.json")
     args = parser.parse_args()
 
     if not EMAIL or not PASSWORD:

@@ -22,8 +22,7 @@
         <span id="currentDate" class="current-date"></span>
       </div>
       <div class="banner-actions">
-        <span id="syncStatus" class="sync-status">Gradescope locked</span>
-        <button id="unlockBtn" class="button subtle" type="button">Unlock</button>
+        <span id="syncStatus" class="sync-status">Loading Gradescope…</span>
         <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme">☾</button>
         <button id="addBtn" class="button primary" type="button">+ Add</button>
       </div>
@@ -53,26 +52,6 @@
     <section id="assignmentList" class="assignment-list" aria-live="polite"></section>
   </main>
 
-  <dialog id="unlockDialog">
-    <form id="unlockForm">
-      <div class="dialog-head">
-        <div>
-          <p class="eyebrow">PRIVATE GRADESCOPE DATA</p>
-          <h2>Unlock dashboard</h2>
-        </div>
-        <button type="button" class="icon-button close-unlock" aria-label="Close">×</button>
-      </div>
-      <p class="dialog-copy">Enter your dashboard password. It is sent only to your private API over HTTPS and is kept in this browser tab for the session.</p>
-      <label>Password
-        <input name="password" type="password" autocomplete="current-password" required autofocus />
-      </label>
-      <p id="unlockError" class="form-error" hidden></p>
-      <div class="dialog-actions">
-        <button type="button" class="button subtle close-unlock">Cancel</button>
-        <button type="submit" class="button primary">Unlock</button>
-      </div>
-    </form>
-  </dialog>
 
   <dialog id="assignmentDialog">
     <form id="assignmentForm">
@@ -157,7 +136,6 @@
     </article>
   </template>
 
-  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

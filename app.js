@@ -1,21 +1,16 @@
-const API_URL = (window.DEADLINE_CONFIG?.apiUrl || "").replace(/\/$/, "");
 const MANUAL_KEY = "deadline-dashboard-manual-v2";
 const THEME_KEY = "deadline-theme";
-const SESSION_PASSWORD_KEY = "deadline-dashboard-session-password";
 const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 
 let gradescopeAssignments = [];
 let manualAssignments = loadManual();
 let filter = "upcoming";
 let query = "";
-let dashboardPassword = sessionStorage.getItem(SESSION_PASSWORD_KEY) || "";
 
 const list = document.querySelector("#assignmentList");
 const template = document.querySelector("#assignmentTemplate");
 const assignmentDialog = document.querySelector("#assignmentDialog");
 const assignmentForm = document.querySelector("#assignmentForm");
-const unlockDialog = document.querySelector("#unlockDialog");
-const unlockForm = document.querySelector("#unlockForm");
 
 function loadManual() {
   try { return JSON.parse(localStorage.getItem(MANUAL_KEY)) || []; }
@@ -112,8 +107,7 @@ function render() {
 
   list.innerHTML = "";
   if (!visible.length) {
-    const locked = !dashboardPassword && gradescopeAssignments.length === 0;
-    list.innerHTML = `<div class="empty">${locked ? "Unlock Gradescope data or add a manual assignment." : "No assignments in this view."}</div>`;
+    list.innerHTML = `<div class="empty">No assignments in this view.</div>`;
   }
 
   let lastGroup = null;
@@ -186,60 +180,24 @@ function render() {
   document.querySelector("#countDone").textContent = all.filter(a => a.completed).length;
 }
 
-function apiConfigured() {
-  return API_URL && !API_URL.includes("YOUR-WORKER-NAME");
-}
-
-async function loadGradescope({showUnlockOnAuthFailure = true} = {}) {
+async function loadGradescope() {
   const status = document.querySelector("#syncStatus");
-  if (!apiConfigured()) {
-    status.textContent = "Set the Worker URL in config.js";
-    gradescopeAssignments = [];
-    render();
-    return false;
-  }
-  if (!dashboardPassword) {
-    status.textContent = "Gradescope locked";
-    gradescopeAssignments = [];
-    render();
-    return false;
-  }
-
-  status.textContent = "Loading private Gradescope data…";
+  status.textContent = "Loading Gradescope…";
   try {
-    const res = await fetch(`${API_URL}/deadlines`, {
-      cache: "no-store",
-      headers: {"Authorization": `Bearer ${dashboardPassword}`}
-    });
-    if (res.status === 401) {
-      throw Object.assign(new Error("Incorrect dashboard password."), {auth:true});
-    }
-    if (!res.ok) throw new Error(`Private API returned HTTP ${res.status}`);
+    const res = await fetch(`./data/gradescope.json?t=${Date.now()}`, {cache: "no-store"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     gradescopeAssignments = data.assignments || [];
-    status.textContent = data.synced_at ? `Gradescope synced ${new Date(data.synced_at).toLocaleString()}` : "Gradescope connected";
-    render();
-    return true;
+    if (data.synced_at) {
+      status.textContent = `Gradescope synced ${new Date(data.synced_at).toLocaleString()} · ${data.course_count ?? "?"} student courses`;
+    } else {
+      status.textContent = "Gradescope has not synced yet";
+    }
   } catch (err) {
     gradescopeAssignments = [];
-    if (err.auth) {
-      dashboardPassword = "";
-      sessionStorage.removeItem(SESSION_PASSWORD_KEY);
-      status.textContent = "Gradescope locked";
-      if (showUnlockOnAuthFailure) openUnlock(err.message);
-    } else {
-      status.textContent = "Private API unavailable · manual assignments still work";
-    }
-    render();
-    return false;
+    status.textContent = "Could not load Gradescope data · manual assignments still work";
   }
-}
-
-function openUnlock(message = "") {
-  document.querySelector("#unlockError").hidden = !message;
-  document.querySelector("#unlockError").textContent = message;
-  unlockForm.reset();
-  if (!unlockDialog.open) unlockDialog.showModal();
+  render();
 }
 
 function updateThemeButton() {
@@ -253,33 +211,6 @@ document.querySelector("#themeBtn").addEventListener("click", () => {
   document.documentElement.dataset.theme = next;
   localStorage.setItem(THEME_KEY, next);
   updateThemeButton();
-});
-
-document.querySelector("#unlockBtn").addEventListener("click", () => {
-  if (dashboardPassword) {
-    dashboardPassword = "";
-    sessionStorage.removeItem(SESSION_PASSWORD_KEY);
-    gradescopeAssignments = [];
-    document.querySelector("#syncStatus").textContent = "Gradescope locked";
-    document.querySelector("#unlockBtn").textContent = "Unlock";
-    render();
-  } else openUnlock();
-});
-
-document.querySelectorAll(".close-unlock").forEach(btn => btn.addEventListener("click", () => unlockDialog.close()));
-unlockForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const password = new FormData(unlockForm).get("password");
-  dashboardPassword = String(password || "");
-  const ok = await loadGradescope({showUnlockOnAuthFailure:false});
-  if (ok) {
-    sessionStorage.setItem(SESSION_PASSWORD_KEY, dashboardPassword);
-    document.querySelector("#unlockBtn").textContent = "Lock";
-    unlockDialog.close();
-  } else {
-    document.querySelector("#unlockError").hidden = false;
-    document.querySelector("#unlockError").textContent = "Could not unlock. Check the password and API configuration.";
-  }
 });
 
 document.querySelector("#addBtn").addEventListener("click", () => assignmentDialog.showModal());
@@ -317,10 +248,5 @@ assignmentForm.addEventListener("submit", e => {
 updateCurrentDate();
 updateThemeButton();
 render();
-if (dashboardPassword) {
-  document.querySelector("#unlockBtn").textContent = "Lock";
-  loadGradescope();
-} else if (apiConfigured()) {
-  openUnlock();
-}
+loadGradescope();
 setInterval(() => { updateCurrentDate(); render(); }, 60_000);

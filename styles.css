@@ -173,7 +173,6 @@ dialog input, dialog select { padding: 10px 11px; border: 1px solid var(--border
   .banner-inner, .shell { width: min(100% - 18px, 1080px); }
   .banner h1 { font-size: .88rem; }
   .current-date { font-size: .72rem; }
-  #unlockBtn { display: none; }
   .assignment-row { grid-template-columns: 52px 22px minmax(0,1fr); gap: 10px; padding: 14px 10px; }
   .date-day { font-size: 1.35rem; }
   .deadline-line, .late-line { flex-direction: column; gap: 4px; }
