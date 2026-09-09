@@ -12,7 +12,7 @@
       document.documentElement.dataset.theme = theme;
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=20260909-calendar-2" />
+  <link rel="stylesheet" href="./styles.css?v=20260909-merge-3" />
 </head>
 <body>
   <header class="top-banner">
@@ -77,6 +77,17 @@
         <span>Course</span><span>Show</span><span>Default</span><span>Assignments</span>
       </div>
       <div id="courseOptions" class="course-options"></div>
+
+      <section class="course-merge-settings" aria-labelledby="courseMergeTitle">
+        <div class="course-merge-heading">
+          <div>
+            <p class="eyebrow">SOURCE MATCHING</p>
+            <h3 id="courseMergeTitle">Combine bCourses + Gradescope</h3>
+          </div>
+          <p>Pair a bCourses class with its Gradescope class. Paired assignments display together under the bCourses name.</p>
+        </div>
+        <div id="courseMergeOptions" class="course-merge-options"></div>
+      </section>
 
       <div class="course-settings-actions">
         <button type="button" id="showAllCourses" class="dialog-button secondary">Show all</button>
@@ -143,7 +154,7 @@
     });
   </script>
   <script
-    src="./deadline-dashboard.js?v=20260909-calendar-2"
+    src="./deadline-dashboard.js?v=20260909-merge-3"
     onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
   ></script>
 </body>

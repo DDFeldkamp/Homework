@@ -14,6 +14,19 @@ It supports:
 - a persistent course registry with per-session visibility, configurable defaults, and per-course assignment limits
 - **By class** and **Combined** calendar layouts
 
+## Combining bCourses and Gradescope classes
+
+Open **Courses** and use the **Combine bCourses + Gradescope** section to pair classes whose names differ between the two systems. Each bCourses course can be paired with one Gradescope course, and a Gradescope course can only be used in one pairing.
+
+For example:
+
+```text
+bCourses:   COMPSCI 152-LEC-001
+Gradescope: CS 152
+```
+
+After pairing, assignments from both sources are treated as one course and display under **COMPSCI 152-LEC-001**, because the bCourses name is the canonical name. The merged course also gets one visibility toggle, one default toggle, and one assignment-count limit. Pairings are stored in `localStorage`.
+
 ## Course visibility and defaults
 
 The dashboard stores the names of courses it has seen in browser `localStorage`.
@@ -115,3 +128,7 @@ to these files.
 The left side of each assignment row displays only the due **time**, since the timeline
 already supplies the date context. When a late/final deadline exists, its label always
 shows both the date and time (for example, `late until Thu, Sep 17, 11:59 PM`).
+
+## Theme-aware calendar view controls
+
+The **By class / Combined** segmented control now uses theme-specific background, hover, border, active, and text colors. It stays high-contrast in both light and dark mode and matches the rest of the dashboard controls.

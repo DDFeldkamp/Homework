@@ -14,6 +14,10 @@
   --late: #bc6f55;
   --today: #205d61;
   --shadow: rgba(20, 20, 20, 0.06);
+  --segment-bg: #ffffff;
+  --segment-hover: #f4f6f5;
+  --segment-active: #205d61;
+  --segment-active-text: #ffffff;
   --bar-0: #bfe4ef;
   --bar-1: #f1d2d4;
   --bar-2: #bfe3de;
@@ -38,6 +42,10 @@ html[data-theme="dark"] {
   --late: #e0a18a;
   --today: #9fd5cb;
   --shadow: rgba(0, 0, 0, 0.25);
+  --segment-bg: #15181b;
+  --segment-hover: #202528;
+  --segment-active: #a4d4cc;
+  --segment-active-text: #10201e;
   --bar-0: #315a68;
   --bar-1: #694548;
   --bar-2: #315d57;
@@ -164,14 +172,38 @@ button { color: inherit; }
   padding: 13px 0 18px;
 }
 .control-groups { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.tabs, .view-tabs { display: flex; }
-.tab, .view-tab {
-  padding: 6px 11px;
-  color: var(--muted);
-  border-right: 0;
+.tabs, .view-tabs {
+  display: inline-flex;
+  border: 1px solid var(--grid-strong);
+  background: var(--segment-bg);
+  border-radius: 3px;
+  overflow: hidden;
 }
-.tab:last-child { border-right: 1px solid var(--grid-strong); }
-.tab.active { color: var(--text); background: var(--surface-soft); font-weight: 650; }
+.tab, .view-tab {
+  min-height: 30px;
+  padding: 6px 11px;
+  border: 0;
+  border-right: 1px solid var(--grid-strong);
+  border-radius: 0;
+  background: var(--segment-bg);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.tab:last-child, .view-tab:last-child { border-right: 0; }
+.tab:hover, .view-tab:hover { background: var(--segment-hover); color: var(--text); }
+.tab.active, .view-tab.active {
+  background: var(--segment-active);
+  color: var(--segment-active-text);
+  font-weight: 650;
+}
+.tab:focus-visible, .view-tab:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.view-tabs { position: relative; }
 .search {
   width: min(310px, 100%);
   height: 31px;
@@ -480,6 +512,48 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   font-size: 11px;
 }
 .course-options-empty { padding: 28px 10px; color: var(--muted); text-align: center; font-size: 12px; }
+.course-merge-settings { margin-top: 22px; border-top: 1px solid var(--grid-strong); padding-top: 17px; }
+.course-merge-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  margin-bottom: 9px;
+}
+.course-merge-heading h3 { margin: 3px 0 0; font-size: 14px; font-weight: 600; }
+.course-merge-heading > p {
+  max-width: 330px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: right;
+}
+.course-merge-options { border-top: 1px solid var(--grid); }
+.course-merge-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) 28px minmax(180px, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--grid);
+}
+.course-merge-class { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.course-merge-class strong { font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.course-merge-class span { color: var(--muted); font-size: 9px; }
+.course-merge-arrow { color: var(--faint); text-align: center; }
+.course-merge-row select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid var(--grid-strong);
+  border-radius: 1px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 11px;
+}
+.course-merge-row select:focus { border-color: var(--focus); outline: 0; }
+.course-merge-empty { padding: 16px 10px; border-bottom: 1px solid var(--grid); color: var(--muted); font-size: 11px; }
 .course-settings-actions { display: flex; gap: 8px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
 .course-settings-spacer { flex: 1; }
 
@@ -520,6 +594,11 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
     gap: 6px;
   }
   .course-limit select { width: 66px; }
-  .view-tabs { padding-left: 0; }
-  .view-tabs::before { display: none; }
+}
+
+@media (max-width: 620px) {
+  .course-merge-heading { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .course-merge-heading > p { text-align: left; max-width: none; }
+  .course-merge-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .course-merge-arrow { display: none; }
 }
