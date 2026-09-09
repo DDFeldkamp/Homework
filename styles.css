@@ -163,8 +163,9 @@ button { color: inherit; }
   gap: 14px;
   padding: 13px 0 18px;
 }
-.tabs { display: flex; }
-.tab {
+.control-groups { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.tabs, .view-tabs { display: flex; }
+.tab, .view-tab {
   padding: 6px 11px;
   color: var(--muted);
   border-right: 0;
@@ -291,6 +292,24 @@ button { color: inherit; }
   font-weight: 550;
 }
 .manual-tag { color: var(--faint); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
+.course-tag {
+  display: inline-block;
+  max-width: 115px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 1px 5px;
+  border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+  color: color-mix(in srgb, var(--text) 82%, transparent);
+  font-size: 9px;
+  line-height: 1.25;
+}
+.course-tag.color-0 { background: var(--bar-0); }
+.course-tag.color-1 { background: var(--bar-1); }
+.course-tag.color-2 { background: var(--bar-2); }
+.course-tag.color-3 { background: var(--bar-3); }
+.course-tag.color-4 { background: var(--bar-4); }
+.course-tag.color-5 { background: var(--bar-5); }
 .assignment-meta { margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.35; }
 .assignment-meta .late-text { color: var(--late); }
 .delete-assignment {
@@ -430,7 +449,7 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 .dialog-copy { max-width: 520px; margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .course-settings-head, .course-option {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 60px 70px;
+  grid-template-columns: minmax(0, 1fr) 56px 64px 92px;
   align-items: center;
   gap: 10px;
 }
@@ -449,6 +468,17 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 .course-option-info span { color: var(--muted); font-size: 10px; }
 .course-toggle { display: grid; place-items: center; }
 .course-toggle input { width: 15px; height: 15px; accent-color: var(--button); }
+.course-limit { display: grid; place-items: center; margin: 0; }
+.course-limit select {
+  width: 72px;
+  min-height: 28px;
+  padding: 4px 6px;
+  border: 1px solid var(--grid-strong);
+  border-radius: 1px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 11px;
+}
 .course-options-empty { padding: 28px 10px; color: var(--muted); text-align: center; font-size: 12px; }
 .course-settings-actions { display: flex; gap: 8px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
 .course-settings-spacer { flex: 1; }
@@ -458,6 +488,7 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   .banner-spacer { display: none; }
   .brand { text-align: left; }
   .status-strip, .controls { align-items: flex-start; flex-direction: column; }
+  .control-groups { width: 100%; }
   .stats { width: 100%; overflow-x: auto; gap: 14px; }
   .search { width: 100%; }
   .timeline-header, .timeline-row { grid-template-columns: 170px minmax(520px, 1fr); }
@@ -482,3 +513,13 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 }
 .assignment-link { color: inherit; text-decoration: none; }
 .assignment-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .course-settings-head, .course-option {
+    grid-template-columns: minmax(0, 1fr) 44px 52px 78px;
+    gap: 6px;
+  }
+  .course-limit select { width: 66px; }
+  .view-tabs { padding-left: 0; }
+  .view-tabs::before { display: none; }
+}

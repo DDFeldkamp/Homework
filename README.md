@@ -11,7 +11,8 @@ It supports:
 - manual and recurring assignments
 - light and dark themes
 - a seven-day timeline
-- a persistent course registry with per-session visibility and configurable defaults
+- a persistent course registry with per-session visibility, configurable defaults, and per-course assignment limits
+- **By class** and **Combined** calendar layouts
 
 ## Course visibility and defaults
 
@@ -23,7 +24,15 @@ Click **Courses** in the top-right banner to manage them.
 
 - **Show** controls the courses visible in the current browser session.
 - **Default** controls which courses are selected when a new browser session is opened.
+- **Assignments** controls how many matching assignments from that course are rendered (`1`, `2`, `3`, `5`, `10`, `15`, or `All`).
 - **Show all**, **Hide all**, and **Use defaults** provide quick switching.
+
+The assignment-count choice is stored in `localStorage`, so it persists in that browser.
+
+Above the calendar you can switch between:
+
+- **By class** — one seven-day timeline per course.
+- **Combined** — all selected courses on a single seven-day timeline, sorted by due date. Each row gets a course tag and keeps the course's timeline color.
 
 The course list is retained even if a course temporarily has no upcoming assignments.
 The selected courses for the current session are stored in `sessionStorage`; default
@@ -99,3 +108,10 @@ data/bcourses.json
 These files can contain course names, assignment names, due dates, late/final
 cutoffs, completion state, and assignment links. Credentials/tokens are not written
 to these files.
+
+
+## Deadline labels
+
+The left side of each assignment row displays only the due **time**, since the timeline
+already supplies the date context. When a late/final deadline exists, its label always
+shows both the date and time (for example, `late until Thu, Sep 17, 11:59 PM`).

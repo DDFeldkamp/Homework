@@ -4,6 +4,8 @@ const COURSE_REGISTRY_KEY = "deadline-course-registry-v1";
 const DEFAULT_COURSES_KEY = "deadline-default-courses-v1";
 const DEFAULTS_CONFIGURED_KEY = "deadline-default-courses-configured-v1";
 const ACTIVE_COURSES_KEY = "deadline-active-courses-v1";
+const COURSE_LIMITS_KEY = "deadline-course-assignment-limits-v1";
+const VIEW_MODE_KEY = "deadline-calendar-view-v1";
 const TIMELINE_DAYS = 7;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const TIMELINE_MS = TIMELINE_DAYS * DAY_MS;
@@ -16,6 +18,8 @@ let defaultCourses = new Set(loadStringArray(localStorage, DEFAULT_COURSES_KEY))
 let defaultsConfigured = localStorage.getItem(DEFAULTS_CONFIGURED_KEY) === "1";
 let activeCourses = null;
 let activeCoursesInitialized = false;
+let courseAssignmentLimits = loadCourseLimits();
+let viewMode = localStorage.getItem(VIEW_MODE_KEY) === "combined" ? "combined" : "course";
 let filter = "upcoming";
 let query = "";
 
@@ -53,6 +57,35 @@ function loadCourseRegistry() {
   } catch {
     return [];
   }
+}
+
+function loadCourseLimits() {
+  try {
+    const value = JSON.parse(localStorage.getItem(COURSE_LIMITS_KEY));
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveCourseLimits() {
+  localStorage.setItem(COURSE_LIMITS_KEY, JSON.stringify(courseAssignmentLimits));
+}
+
+function getCourseLimit(courseName) {
+  const raw = courseAssignmentLimits[courseName];
+  if (raw === "all" || raw === undefined || raw === null) return Infinity;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : Infinity;
+}
+
+function setViewMode(nextMode) {
+  viewMode = nextMode === "combined" ? "combined" : "course";
+  localStorage.setItem(VIEW_MODE_KEY, viewMode);
+  document.querySelectorAll(".view-tab").forEach((button) => {
+    button.classList.toggle("active", button.dataset.view === viewMode);
+  });
+  render();
 }
 
 function saveActiveCourses() {
@@ -334,7 +367,34 @@ function renderCourseOptions() {
     });
     defaultWrap.appendChild(defaultBox);
 
-    row.append(info, showWrap, defaultWrap);
+    const limitWrap = document.createElement("label");
+    limitWrap.className = "course-limit";
+    const limitSelect = document.createElement("select");
+    limitSelect.setAttribute("aria-label", `Assignments to show for ${course.name}`);
+    const selectedLimit = courseAssignmentLimits[course.name] ?? "all";
+    for (const [value, labelText] of [
+      ["all", "All"],
+      ["1", "1"],
+      ["2", "2"],
+      ["3", "3"],
+      ["5", "5"],
+      ["10", "10"],
+      ["15", "15"],
+    ]) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = labelText;
+      option.selected = String(selectedLimit) === value;
+      limitSelect.appendChild(option);
+    }
+    limitSelect.addEventListener("change", () => {
+      courseAssignmentLimits[course.name] = limitSelect.value;
+      saveCourseLimits();
+      render();
+    });
+    limitWrap.appendChild(limitSelect);
+
+    row.append(info, showWrap, defaultWrap, limitWrap);
     courseOptions.appendChild(row);
   }
 }
@@ -418,7 +478,7 @@ function assignmentVisible(a, now) {
   return Boolean(a.lateDate && a.lateDate >= now);
 }
 
-function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
+function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = false) {
   const now = new Date();
   const row = document.createElement("div");
   row.className = "timeline-row";
@@ -479,6 +539,13 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
   title.textContent = a.title || "Untitled";
   titleRow.appendChild(title);
 
+  if (showCourseTag) {
+    const courseTag = document.createElement("span");
+    courseTag.className = `course-tag color-${courseColorIndex(a.course || "Manual")}`;
+    courseTag.textContent = a.course || "Manual";
+    titleRow.appendChild(courseTag);
+  }
+
   const tag = document.createElement("span");
   tag.className = a.source === "manual" ? "manual-tag" : "source-tag";
   if (a.source === "manual") {
@@ -494,7 +561,7 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
   if (a.lateDate) {
     const late = document.createElement("span");
     late.className = "late-text";
-    late.textContent = ` · late until ${fmtTime(a.lateDate)}`;
+    late.textContent = ` · late until ${fmtDate(a.lateDate)}`;
     meta.appendChild(late);
   }
 
@@ -593,6 +660,30 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex) {
   return row;
 }
 
+
+function groupVisibleAssignments(assignments) {
+  const grouped = new Map();
+  for (const assignment of assignments) {
+    const course = String(assignment.course || "Manual");
+    if (!grouped.has(course)) grouped.set(course, []);
+    grouped.get(course).push(assignment);
+  }
+
+  for (const items of grouped.values()) {
+    items.sort((a, b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
+  }
+  return grouped;
+}
+
+function applyCourseAssignmentLimits(grouped) {
+  const limited = new Map();
+  for (const [course, assignments] of grouped) {
+    const limit = getCourseLimit(course);
+    limited.set(course, Number.isFinite(limit) ? assignments.slice(0, limit) : assignments);
+  }
+  return limited;
+}
+
 function render() {
   const now = new Date();
   const start = startOfToday();
@@ -602,13 +693,15 @@ function render() {
   reconcileCourseRegistry();
 
   const all = allAssignments();
-  const visible = all
+  const matching = all
     .filter((a) => assignmentVisible(a, now))
-    .sort((a, b) => {
-      const courseCmp = String(a.course || "Manual").localeCompare(String(b.course || "Manual"));
-      if (courseCmp !== 0) return courseCmp;
-      return (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity);
-    });
+    .sort((a, b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
+
+  const uncappedGroups = groupVisibleAssignments(matching);
+  const limitedGroups = applyCourseAssignmentLimits(uncappedGroups);
+  const visible = [...limitedGroups.values()]
+    .flat()
+    .sort((a, b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
 
   list.innerHTML = "";
 
@@ -617,24 +710,61 @@ function render() {
     empty.className = "empty";
     empty.textContent = "No assignments in this view.";
     list.appendChild(empty);
-  } else {
-    const grouped = new Map();
+  } else if (viewMode === "combined") {
+    const section = document.createElement("section");
+    section.className = "course-section combined-section";
+
+    const heading = document.createElement("h2");
+    heading.className = "course-heading";
+    heading.append(document.createTextNode("All selected courses"));
+    const count = document.createElement("span");
+    count.className = "course-count";
+    count.textContent = `${visible.length}`;
+    heading.appendChild(count);
+    section.appendChild(heading);
+
+    const scroll = document.createElement("div");
+    scroll.className = "timeline-scroll";
+    const scrollInner = document.createElement("div");
+    scrollInner.className = "timeline-scroll-inner";
+    const wrap = document.createElement("div");
+    wrap.className = "timeline-wrap";
+
+    wrap.appendChild(makeCourseHeader("All selected courses", visible.length, start, nowPct));
     for (const assignment of visible) {
-      const course = assignment.course || "Manual";
-      if (!grouped.has(course)) grouped.set(course, []);
-      grouped.get(course).push(assignment);
+      wrap.appendChild(
+        makeAssignmentRow(
+          assignment,
+          start,
+          end,
+          nowPct,
+          courseColorIndex(assignment.course || "Manual"),
+          true
+        )
+      );
     }
 
-    for (const [course, assignments] of grouped) {
+    scrollInner.appendChild(wrap);
+    scroll.appendChild(scrollInner);
+    section.appendChild(scroll);
+    list.appendChild(section);
+  } else {
+    for (const [course, assignments] of limitedGroups) {
+      if (!assignments.length) continue;
+
       const section = document.createElement("section");
       section.className = "course-section";
 
       const heading = document.createElement("h2");
       heading.className = "course-heading";
       heading.append(document.createTextNode(course));
+
       const count = document.createElement("span");
       count.className = "course-count";
-      count.textContent = `${assignments.length}`;
+      const totalForCourse = uncappedGroups.get(course)?.length ?? assignments.length;
+      count.textContent = totalForCourse > assignments.length
+        ? `${assignments.length} of ${totalForCourse}`
+        : `${assignments.length}`;
       heading.appendChild(count);
       section.appendChild(heading);
 
@@ -648,7 +778,7 @@ function render() {
       wrap.appendChild(makeCourseHeader(course, assignments.length, start, nowPct));
       const colorIndex = courseColorIndex(course);
       for (const assignment of assignments) {
-        wrap.appendChild(makeAssignmentRow(assignment, start, end, nowPct, colorIndex));
+        wrap.appendChild(makeAssignmentRow(assignment, start, end, nowPct, colorIndex, false));
       }
 
       scrollInner.appendChild(wrap);
@@ -772,6 +902,10 @@ document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click",
   render();
 }));
 
+document.querySelectorAll(".view-tab").forEach((button) => button.addEventListener("click", () => {
+  setViewMode(button.dataset.view);
+}));
+
 assignmentForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const fd = new FormData(assignmentForm);
@@ -804,6 +938,9 @@ assignmentForm.addEventListener("submit", (event) => {
 
 updateCurrentDate();
 updateThemeButton();
+document.querySelectorAll(".view-tab").forEach((button) => {
+  button.classList.toggle("active", button.dataset.view === viewMode);
+});
 reconcileCourseRegistry();
 render();
 loadRemoteData();

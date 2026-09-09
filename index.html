@@ -12,7 +12,7 @@
       document.documentElement.dataset.theme = theme;
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=20260909-courses-1" />
+  <link rel="stylesheet" href="./styles.css?v=20260909-calendar-2" />
 </head>
 <body>
   <header class="top-banner">
@@ -42,10 +42,16 @@
     </section>
 
     <section class="controls" aria-label="Assignment controls">
-      <div class="tabs" role="tablist" aria-label="Assignment filters">
-        <button class="tab active" data-filter="upcoming" type="button">Upcoming</button>
-        <button class="tab" data-filter="all" type="button">All</button>
-        <button class="tab" data-filter="done" type="button">Done</button>
+      <div class="control-groups">
+        <div class="tabs" role="tablist" aria-label="Assignment filters">
+          <button class="tab active" data-filter="upcoming" type="button">Upcoming</button>
+          <button class="tab" data-filter="all" type="button">All</button>
+          <button class="tab" data-filter="done" type="button">Done</button>
+        </div>
+        <div class="view-tabs" role="tablist" aria-label="Calendar layout">
+          <button class="view-tab active" data-view="course" type="button">By class</button>
+          <button class="view-tab" data-view="combined" type="button">Combined</button>
+        </div>
       </div>
       <label class="search">
         <span aria-hidden="true">⌕</span>
@@ -68,7 +74,7 @@
       </div>
 
       <div class="course-settings-head" aria-hidden="true">
-        <span>Course</span><span>Show</span><span>Default</span>
+        <span>Course</span><span>Show</span><span>Default</span><span>Assignments</span>
       </div>
       <div id="courseOptions" class="course-options"></div>
 
@@ -137,7 +143,7 @@
     });
   </script>
   <script
-    src="./deadline-dashboard.js?v=20260909-courses-1"
+    src="./deadline-dashboard.js?v=20260909-calendar-2"
     onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
   ></script>
 </body>
