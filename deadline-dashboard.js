@@ -6,6 +6,8 @@ const DEFAULTS_CONFIGURED_KEY = "deadline-default-courses-configured-v1";
 const ACTIVE_COURSES_KEY = "deadline-active-courses-v1";
 const COURSE_LIMITS_KEY = "deadline-course-assignment-limits-v1";
 const COURSE_MERGES_KEY = "deadline-course-merges-v1";
+const MERGED_NAME_SOURCE_KEY = "deadline-merged-course-name-source-v1";
+const DEFAULT_COURSE_LIMIT_KEY = "deadline-default-course-assignment-limit-v1";
 const VIEW_MODE_KEY = "deadline-calendar-view-v1";
 const TIMELINE_DAYS = 7;
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -21,6 +23,8 @@ let activeCourses = null;
 let activeCoursesInitialized = false;
 let courseAssignmentLimits = loadCourseLimits();
 let courseMerges = loadCourseMerges();
+let mergedNameSource = localStorage.getItem(MERGED_NAME_SOURCE_KEY) === "gradescope" ? "gradescope" : "bcourses";
+let defaultCourseLimit = localStorage.getItem(DEFAULT_COURSE_LIMIT_KEY) || "all";
 let viewMode = localStorage.getItem(VIEW_MODE_KEY) === "combined" ? "combined" : "course";
 let filter = "upcoming";
 let query = "";
@@ -31,6 +35,8 @@ const assignmentForm = document.querySelector("#assignmentForm");
 const coursesDialog = document.querySelector("#coursesDialog");
 const courseOptions = document.querySelector("#courseOptions");
 const courseMergeOptions = document.querySelector("#courseMergeOptions");
+const mergedNameSourceSelect = document.querySelector("#mergedNameSource");
+const allCourseLimitSelect = document.querySelector("#allCourseLimit");
 
 function loadManual() {
   try {
@@ -105,11 +111,19 @@ function sourceCourseNames(assignments) {
 
 function canonicalCourseName(assignment) {
   const original = String(assignment.course || "Manual").trim() || "Manual";
-  if (assignment.source !== "gradescope") return original;
 
-  for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
-    if (gradescopeName === original) return bcoursesName;
+  if (assignment.source === "gradescope") {
+    for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
+      if (gradescopeName === original) {
+        return mergedNameSource === "gradescope" ? gradescopeName : bcoursesName;
+      }
+    }
   }
+
+  if (assignment.source === "bcourses" && courseMerges[original]) {
+    return mergedNameSource === "gradescope" ? courseMerges[original] : original;
+  }
+
   return original;
 }
 
@@ -132,10 +146,51 @@ function migrateCoursePreferences(oldName, newName) {
 }
 
 function getCourseLimit(courseName) {
-  const raw = courseAssignmentLimits[courseName];
+  const raw = courseAssignmentLimits[courseName] ?? defaultCourseLimit;
   if (raw === "all" || raw === undefined || raw === null) return Infinity;
   const parsed = Number(raw);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : Infinity;
+}
+
+function canonicalNameForMerge(bcoursesName, gradescopeName, source = mergedNameSource) {
+  return source === "gradescope" ? gradescopeName : bcoursesName;
+}
+
+function changeMergedNameSource(nextSource) {
+  const normalized = nextSource === "gradescope" ? "gradescope" : "bcourses";
+  if (normalized === mergedNameSource) return;
+
+  const previousSource = mergedNameSource;
+  for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
+    migrateCoursePreferences(
+      canonicalNameForMerge(bcoursesName, gradescopeName, previousSource),
+      canonicalNameForMerge(bcoursesName, gradescopeName, normalized)
+    );
+  }
+
+  mergedNameSource = normalized;
+  localStorage.setItem(MERGED_NAME_SOURCE_KEY, mergedNameSource);
+  reconcileCourseRegistry();
+  renderCourseOptions();
+  render();
+}
+
+function applyLimitToAllCourses(value) {
+  const normalized = ["all", "1", "2", "3", "5", "10", "15"].includes(String(value))
+    ? String(value)
+    : "all";
+
+  defaultCourseLimit = normalized;
+  localStorage.setItem(DEFAULT_COURSE_LIMIT_KEY, defaultCourseLimit);
+
+  // Apply this choice to every known course now. Newly discovered courses use
+  // the same value through defaultCourseLimit until individually overridden.
+  for (const course of courseRegistry) {
+    courseAssignmentLimits[course.name] = normalized;
+  }
+  saveCourseLimits();
+  renderCourseOptions();
+  render();
 }
 
 function setViewMode(nextMode) {
@@ -314,14 +369,19 @@ function reconcileCourseRegistry() {
     if (!entry.sources.includes(label)) entry.sources.push(label);
   }
 
-  // Keep previously discovered classes in the saved registry, but do not let an
-  // old Gradescope alias survive after it has been paired into a bCourses class.
-  const mergedGradescopeNames = new Set(Object.values(courseMerges));
-  const canonicalBCoursesNames = new Set(Object.keys(courseMerges));
+  // Keep previously discovered classes, except for the non-canonical alias of
+  // a paired bCourses/Gradescope course.
+  const mergedAliases = new Set();
+  const canonicalMergedNames = new Set();
+  for (const [bcoursesName, gradescopeName] of Object.entries(courseMerges)) {
+    mergedAliases.add(bcoursesName);
+    mergedAliases.add(gradescopeName);
+    canonicalMergedNames.add(canonicalNameForMerge(bcoursesName, gradescopeName));
+  }
   for (const item of courseRegistry) {
     if (!item || typeof item.name !== "string") continue;
     if (current.has(item.name)) continue;
-    if (mergedGradescopeNames.has(item.name) && !canonicalBCoursesNames.has(item.name)) continue;
+    if (mergedAliases.has(item.name) && !canonicalMergedNames.has(item.name)) continue;
     current.set(item.name, {
       name: item.name,
       sources: Array.isArray(item.sources) ? [...item.sources] : [],
@@ -412,7 +472,7 @@ function renderCourseMergeOptions() {
     const name = document.createElement("strong");
     name.textContent = bcourse;
     const source = document.createElement("span");
-    source.textContent = "bCourses display name";
+    source.textContent = mergedNameSource === "gradescope" ? "paired with Gradescope" : "bCourses display name";
     label.append(name, source);
 
     const select = document.createElement("select");
@@ -451,7 +511,11 @@ function renderCourseMergeOptions() {
           }
         }
         courseMerges[bcourse] = selected;
-        migrateCoursePreferences(selected, bcourse);
+        const oldCanonical = previous
+          ? canonicalNameForMerge(bcourse, previous)
+          : (mergedNameSource === "gradescope" ? bcourse : selected);
+        const newCanonical = canonicalNameForMerge(bcourse, selected);
+        migrateCoursePreferences(oldCanonical, newCanonical);
       } else {
         delete courseMerges[bcourse];
       }
@@ -468,7 +532,9 @@ function renderCourseMergeOptions() {
     const arrow = document.createElement("span");
     arrow.className = "course-merge-arrow";
     arrow.textContent = "←";
-    arrow.title = "Gradescope assignments will display under the bCourses name";
+    arrow.title = mergedNameSource === "gradescope"
+      ? "bCourses assignments will display under the Gradescope name"
+      : "Gradescope assignments will display under the bCourses name";
 
     row.append(label, arrow, select);
     courseMergeOptions.appendChild(row);
@@ -534,7 +600,7 @@ function renderCourseOptions() {
     limitWrap.className = "course-limit";
     const limitSelect = document.createElement("select");
     limitSelect.setAttribute("aria-label", `Assignments to show for ${course.name}`);
-    const selectedLimit = courseAssignmentLimits[course.name] ?? "all";
+    const selectedLimit = courseAssignmentLimits[course.name] ?? defaultCourseLimit;
     for (const [value, labelText] of [
       ["all", "All"],
       ["1", "1"],
@@ -1100,6 +1166,15 @@ assignmentForm.addEventListener("submit", (event) => {
   }
   render();
 });
+
+if (mergedNameSourceSelect) {
+  mergedNameSourceSelect.value = mergedNameSource;
+  mergedNameSourceSelect.addEventListener("change", () => changeMergedNameSource(mergedNameSourceSelect.value));
+}
+if (allCourseLimitSelect) {
+  allCourseLimitSelect.value = defaultCourseLimit;
+  allCourseLimitSelect.addEventListener("change", () => applyLimitToAllCourses(allCourseLimitSelect.value));
+}
 
 updateCurrentDate();
 updateThemeButton();

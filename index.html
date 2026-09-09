@@ -12,7 +12,7 @@
       document.documentElement.dataset.theme = theme;
     })();
   </script>
-  <link rel="stylesheet" href="./styles.css?v=20260909-merge-3" />
+  <link rel="stylesheet" href="./styles.css?v=20260909-name-limit-4" />
 </head>
 <body>
   <header class="top-banner">
@@ -73,6 +73,22 @@
         <button type="button" id="closeCoursesDialog" class="icon-button" aria-label="Close">×</button>
       </div>
 
+      <div class="course-global-settings">
+        <label>
+          <span>Assignments per course</span>
+          <select id="allCourseLimit" aria-label="Set assignment count for all courses and default for new courses">
+            <option value="all">All</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+        </label>
+        <span>Changing this applies to every course and becomes the default for newly discovered courses.</span>
+      </div>
+
       <div class="course-settings-head" aria-hidden="true">
         <span>Course</span><span>Show</span><span>Default</span><span>Assignments</span>
       </div>
@@ -84,7 +100,15 @@
             <p class="eyebrow">SOURCE MATCHING</p>
             <h3 id="courseMergeTitle">Combine bCourses + Gradescope</h3>
           </div>
-          <p>Pair a bCourses class with its Gradescope class. Paired assignments display together under the bCourses name.</p>
+          <p>Pair a bCourses class with its Gradescope class so both sources share one calendar.</p>
+        </div>
+        <div class="merge-name-setting">
+          <label for="mergedNameSource">Combined course name</label>
+          <select id="mergedNameSource">
+            <option value="bcourses">bCourses</option>
+            <option value="gradescope">Gradescope</option>
+          </select>
+          <span>Choose which source supplies the displayed name for every paired course.</span>
         </div>
         <div id="courseMergeOptions" class="course-merge-options"></div>
       </section>
@@ -154,7 +178,7 @@
     });
   </script>
   <script
-    src="./deadline-dashboard.js?v=20260909-merge-3"
+    src="./deadline-dashboard.js?v=20260909-name-limit-4"
     onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
   ></script>
 </body>

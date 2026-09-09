@@ -132,3 +132,12 @@ shows both the date and time (for example, `late until Thu, Sep 17, 11:59 PM`).
 ## Theme-aware calendar view controls
 
 The **By class / Combined** segmented control now uses theme-specific background, hover, border, active, and text colors. It stays high-contrast in both light and dark mode and matches the rest of the dashboard controls.
+
+
+## Combined course display name
+
+In **Courses → Combine bCourses + Gradescope**, use **Combined course name** to choose whether paired courses use the bCourses or Gradescope name. The preference is saved in `localStorage` and applies consistently in both By class and Combined views.
+
+## Assignment-count default
+
+The **Assignments per course** dropdown at the top of the Courses dialog applies one limit to every currently known course and saves that value as the default for newly discovered courses. Individual course dropdowns can still override that value afterward.

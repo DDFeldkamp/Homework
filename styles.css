@@ -479,6 +479,44 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 .courses-dialog { width: min(680px, calc(100% - 28px)); }
 .courses-dialog-body { padding: 22px; }
 .dialog-copy { max-width: 520px; margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.course-global-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px;
+  border-top: 1px solid var(--grid);
+  background: var(--surface-soft);
+}
+.course-global-settings label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+}
+.course-global-settings select,
+.merge-name-setting select {
+  min-width: 76px;
+  padding: 6px 8px;
+  border: 1px solid var(--grid-strong);
+  border-radius: 1px;
+  background: var(--bg);
+  color: var(--text);
+  outline: 0;
+}
+.course-global-settings select:focus,
+.merge-name-setting select:focus { border-color: var(--focus); }
+.course-global-settings > span {
+  max-width: 330px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.35;
+  text-align: right;
+}
 .course-settings-head, .course-option {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 56px 64px 92px;
@@ -528,6 +566,26 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   font-size: 10px;
   line-height: 1.4;
   text-align: right;
+}
+.merge-name-setting {
+  display: grid;
+  grid-template-columns: auto 130px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-top: 1px solid var(--grid);
+  background: var(--surface-soft);
+}
+.merge-name-setting label {
+  margin: 0;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+}
+.merge-name-setting span {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.35;
 }
 .course-merge-options { border-top: 1px solid var(--grid); }
 .course-merge-row {
@@ -589,7 +647,45 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 .assignment-link:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 @media (max-width: 560px) {
-  .course-settings-head, .course-option {
+  .course-global-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px;
+  border-top: 1px solid var(--grid);
+  background: var(--surface-soft);
+}
+.course-global-settings label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+}
+.course-global-settings select,
+.merge-name-setting select {
+  min-width: 76px;
+  padding: 6px 8px;
+  border: 1px solid var(--grid-strong);
+  border-radius: 1px;
+  background: var(--bg);
+  color: var(--text);
+  outline: 0;
+}
+.course-global-settings select:focus,
+.merge-name-setting select:focus { border-color: var(--focus); }
+.course-global-settings > span {
+  max-width: 330px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.35;
+  text-align: right;
+}
+.course-settings-head, .course-option {
     grid-template-columns: minmax(0, 1fr) 44px 52px 78px;
     gap: 6px;
   }
@@ -601,4 +697,11 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   .course-merge-heading > p { text-align: left; max-width: none; }
   .course-merge-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   .course-merge-arrow { display: none; }
+}
+
+@media (max-width: 560px) {
+  .course-global-settings { align-items: flex-start; flex-direction: column; }
+  .course-global-settings > span { text-align: left; }
+  .merge-name-setting { grid-template-columns: 1fr 1fr; }
+  .merge-name-setting span { grid-column: 1 / -1; }
 }

@@ -1,6 +1,6 @@
 {
-  "enabled": true,
-  "synced_at": "2026-09-09T21:56:30.198713+00:00",
+  "enabled": false,
+  "synced_at": null,
   "term": "Fall 2026",
   "course_count": 0,
   "assignments": []
