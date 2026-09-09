@@ -6,7 +6,7 @@ on:
     paths:
       - "index.html"
       - "styles.css"
-      - "app.js"
+      - "deadline-dashboard.js"
       - "data/gradescope.json"
   workflow_dispatch:
 
@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf _site
           mkdir -p _site/data
-          cp index.html styles.css app.js _site/
+          cp index.html styles.css deadline-dashboard.js _site/
           cp data/gradescope.json _site/data/gradescope.json
 
       - uses: actions/configure-pages@v5

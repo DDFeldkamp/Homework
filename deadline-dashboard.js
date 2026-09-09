@@ -1,0 +1,252 @@
+const MANUAL_KEY = "deadline-dashboard-manual-v2";
+const THEME_KEY = "deadline-theme";
+const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+let gradescopeAssignments = [];
+let manualAssignments = loadManual();
+let filter = "upcoming";
+let query = "";
+
+const list = document.querySelector("#assignmentList");
+const template = document.querySelector("#assignmentTemplate");
+const assignmentDialog = document.querySelector("#assignmentDialog");
+const assignmentForm = document.querySelector("#assignmentForm");
+
+function loadManual() {
+  try { return JSON.parse(localStorage.getItem(MANUAL_KEY)) || []; }
+  catch { return []; }
+}
+function saveManual() { localStorage.setItem(MANUAL_KEY, JSON.stringify(manualAssignments)); }
+
+function parseDate(value) {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function fmtDate(d) {
+  if (!d) return "No deadline";
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit"
+  }).format(d);
+}
+function dateGroupKey(d) {
+  if (!d) return "No date";
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function dateHeadingText(d) {
+  if (!d) return "No deadline";
+  const now = new Date();
+  const tomorrow = new Date(now); tomorrow.setDate(tomorrow.getDate()+1);
+  if (isSameDay(d, now)) return `Today · ${new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric"}).format(d)}`;
+  if (isSameDay(d, tomorrow)) return `Tomorrow · ${new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric"}).format(d)}`;
+  return new Intl.DateTimeFormat(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(d);
+}
+function isSameDay(a, b) {
+  return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+function remainingText(target) {
+  if (!target) return "No deadline";
+  const diff = target - new Date();
+  const abs = Math.abs(diff);
+  const days = Math.floor(abs / 86400000);
+  const hours = Math.floor((abs % 86400000) / 3600000);
+  const mins = Math.floor((abs % 3600000) / 60000);
+  const chunk = days ? `${days}d ${hours}h` : hours ? `${hours}h ${mins}m` : `${Math.max(0, mins)}m`;
+  return diff >= 0 ? `${chunk} remaining` : `${chunk} overdue`;
+}
+
+function updateCurrentDate() {
+  const now = new Date();
+  document.querySelector("#currentDate").textContent = new Intl.DateTimeFormat(undefined, {
+    weekday:"long", month:"long", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit"
+  }).format(now);
+}
+
+function expandManual(items) {
+  const output = [];
+  const horizon = new Date(); horizon.setMonth(horizon.getMonth() + 6);
+  for (const item of items) {
+    output.push({...item});
+    if (!item.recurrence || item.recurrence === "none") continue;
+    const due = parseDate(item.due);
+    const late = parseDate(item.late_due);
+    if (!due) continue;
+    const until = item.repeat_until ? new Date(item.repeat_until + "T23:59:59") : horizon;
+    let nextDue = new Date(due);
+    let nextLate = late ? new Date(late) : null;
+    let i = 1;
+    while (i < 100) {
+      if (item.recurrence === "daily") { nextDue.setDate(nextDue.getDate()+1); if (nextLate) nextLate.setDate(nextLate.getDate()+1); }
+      else if (item.recurrence === "weekly") { nextDue.setDate(nextDue.getDate()+7); if (nextLate) nextLate.setDate(nextLate.getDate()+7); }
+      else if (item.recurrence === "biweekly") { nextDue.setDate(nextDue.getDate()+14); if (nextLate) nextLate.setDate(nextLate.getDate()+14); }
+      else if (item.recurrence === "monthly") { nextDue.setMonth(nextDue.getMonth()+1); if (nextLate) nextLate.setMonth(nextLate.getMonth()+1); }
+      if (nextDue > until || nextDue > horizon) break;
+      output.push({...item, id:`${item.id}:${i}`, parent_id:item.id, due:nextDue.toISOString(), late_due:nextLate ? nextLate.toISOString() : null, completed:false});
+      i++;
+    }
+  }
+  return output;
+}
+
+function allAssignments() {
+  return [...gradescopeAssignments, ...expandManual(manualAssignments)]
+    .map(a => ({...a, dueDate:parseDate(a.due), lateDate:parseDate(a.late_due)}));
+}
+
+function render() {
+  const now = new Date();
+  const all = allAssignments();
+  const visible = all.filter(a => {
+    const text = `${a.title || ""} ${a.course || ""}`.toLowerCase();
+    if (query && !text.includes(query)) return false;
+    if (filter === "done") return !!a.completed;
+    if (filter === "upcoming") return !a.completed && (!a.lateDate || a.lateDate >= now) && (!a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now));
+    return true;
+  }).sort((a,b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
+
+  list.innerHTML = "";
+  if (!visible.length) {
+    list.innerHTML = `<div class="empty">No assignments in this view.</div>`;
+  }
+
+  let lastGroup = null;
+  visible.forEach(a => {
+    const group = dateGroupKey(a.dueDate);
+    if (group !== lastGroup) {
+      const heading = document.createElement("div");
+      heading.className = "date-heading";
+      heading.textContent = dateHeadingText(a.dueDate);
+      list.appendChild(heading);
+      lastGroup = group;
+    }
+
+    const node = template.content.firstElementChild.cloneNode(true);
+    const deadline = a.dueDate;
+    const inLate = deadline && deadline < now && a.lateDate && a.lateDate >= now;
+    const activeTarget = inLate ? a.lateDate : deadline;
+    const remaining = activeTarget ? activeTarget - now : null;
+    const width = remaining == null ? 0 : Math.max(0, Math.min(100, remaining / WINDOW_MS * 100));
+
+    node.classList.toggle("done", !!a.completed);
+    node.classList.toggle("urgent", !a.completed && !inLate && remaining != null && remaining < 86400000 && remaining >= 0);
+    node.classList.toggle("late-window", !!inLate);
+
+    const date = deadline;
+    node.querySelector(".date-month").textContent = date ? new Intl.DateTimeFormat(undefined,{month:"short"}).format(date).toUpperCase() : "—";
+    node.querySelector(".date-day").textContent = date ? String(date.getDate()) : "—";
+    node.querySelector(".date-time").textContent = date ? new Intl.DateTimeFormat(undefined,{hour:"numeric",minute:"2-digit"}).format(date) : "";
+    node.querySelector(".title").textContent = a.title || "Untitled";
+    node.querySelector(".course-pill").textContent = a.course || "Manual";
+    node.querySelector(".source-pill").textContent = a.source === "gradescope" ? "Gradescope" : (a.recurrence && a.recurrence !== "none" ? `Manual · ${a.recurrence}` : "Manual");
+    node.querySelector(".remaining").textContent = a.completed ? "Completed" : (inLate ? `Late window · ${remainingText(a.lateDate)}` : remainingText(deadline));
+    node.querySelector(".due-full").textContent = deadline ? `Due ${fmtDate(deadline)}` : "";
+    node.querySelector(".bar-fill").style.width = a.completed ? "100%" : `${width}%`;
+
+    const lateEl = node.querySelector(".late");
+    lateEl.textContent = a.lateDate ? `Late deadline: ${fmtDate(a.lateDate)}` : "No late deadline";
+    lateEl.classList.toggle("active", !!inLate);
+
+    const link = node.querySelector(".open-link");
+    if (a.url) link.href = a.url; else link.remove();
+
+    const del = node.querySelector(".delete-btn");
+    if (a.source === "gradescope") del.remove();
+    else del.addEventListener("click", () => {
+      const base = a.parent_id || a.id;
+      manualAssignments = manualAssignments.filter(x => x.id !== base);
+      saveManual(); render();
+    });
+
+    const check = node.querySelector(".check");
+    if (a.source === "gradescope") {
+      check.title = "Gradescope completion is detected automatically";
+      check.setAttribute("aria-label", "Gradescope completion is detected automatically");
+    } else {
+      check.addEventListener("click", () => {
+        const base = a.parent_id || a.id;
+        const item = manualAssignments.find(x => x.id === base);
+        if (item) { item.completed = !item.completed; saveManual(); render(); }
+      });
+    }
+
+    list.appendChild(node);
+  });
+
+  const notDone = all.filter(a => !a.completed);
+  document.querySelector("#countToday").textContent = notDone.filter(a => a.dueDate && isSameDay(a.dueDate, now)).length;
+  document.querySelector("#count7").textContent = notDone.filter(a => a.dueDate && a.dueDate >= now && a.dueDate-now <= WINDOW_MS).length;
+  document.querySelector("#countUpcoming").textContent = notDone.filter(a => !a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now)).length;
+  document.querySelector("#countDone").textContent = all.filter(a => a.completed).length;
+}
+
+async function loadGradescope() {
+  const status = document.querySelector("#syncStatus");
+  status.textContent = "Loading Gradescope…";
+  try {
+    const res = await fetch(`./data/gradescope.json?t=${Date.now()}`, {cache: "no-store"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    gradescopeAssignments = data.assignments || [];
+    if (data.synced_at) {
+      status.textContent = `Gradescope synced ${new Date(data.synced_at).toLocaleString()} · ${data.course_count ?? "?"} student courses`;
+    } else {
+      status.textContent = "Gradescope has not synced yet";
+    }
+  } catch (err) {
+    gradescopeAssignments = [];
+    status.textContent = "Could not load Gradescope data · manual assignments still work";
+  }
+  render();
+}
+
+function updateThemeButton() {
+  const dark = document.documentElement.dataset.theme === "dark";
+  document.querySelector("#themeBtn").textContent = dark ? "☀" : "☾";
+  document.querySelector("meta[name=theme-color]").setAttribute("content", dark ? "#111722" : "#ffffff");
+}
+
+document.querySelector("#themeBtn").addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem(THEME_KEY, next);
+  updateThemeButton();
+});
+
+document.querySelector("#addBtn").addEventListener("click", () => assignmentDialog.showModal());
+document.querySelector("#closeDialog").addEventListener("click", () => assignmentDialog.close());
+document.querySelector("#cancelDialog").addEventListener("click", () => assignmentDialog.close());
+document.querySelector("#searchInput").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); render(); });
+document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  filter = tab.dataset.filter;
+  render();
+}));
+
+assignmentForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const fd = new FormData(assignmentForm);
+  const item = {
+    id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+    source: "manual",
+    title: String(fd.get("title") || "").trim(),
+    course: String(fd.get("course") || "").trim() || "Manual",
+    due: new Date(fd.get("due")).toISOString(),
+    late_due: fd.get("late_due") ? new Date(fd.get("late_due")).toISOString() : null,
+    recurrence: fd.get("recurrence"),
+    repeat_until: fd.get("repeat_until") || null,
+    completed: false
+  };
+  manualAssignments.push(item);
+  saveManual();
+  assignmentForm.reset();
+  assignmentDialog.close();
+  render();
+});
+
+updateCurrentDate();
+updateThemeButton();
+render();
+loadGradescope();
+setInterval(() => { updateCurrentDate(); render(); }, 60_000);

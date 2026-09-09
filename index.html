@@ -22,7 +22,7 @@
         <span id="currentDate" class="current-date"></span>
       </div>
       <div class="banner-actions">
-        <span id="syncStatus" class="sync-status">Loading Gradescope…</span>
+        <span id="syncStatus" class="sync-status">Starting dashboard…</span>
         <button id="themeBtn" class="icon-button" type="button" aria-label="Toggle light/dark theme">☾</button>
         <button id="addBtn" class="button primary" type="button">+ Add</button>
       </div>
@@ -136,6 +136,15 @@
     </article>
   </template>
 
-  <script src="app.js"></script>
+  <script>
+    window.addEventListener("error", (event) => {
+      const status = document.querySelector("#syncStatus");
+      if (status) status.textContent = `Dashboard error · ${event.message || "JavaScript failed to load"}`;
+    });
+  </script>
+  <script
+    src="./deadline-dashboard.js?v=20260908-2"
+    onerror="document.querySelector('#syncStatus').textContent='Dashboard error · deadline-dashboard.js failed to load'"
+  ></script>
 </body>
 </html>
