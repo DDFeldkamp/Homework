@@ -1,50 +1,8 @@
 {
-  "enabled": true,
-  "error": null,
-  "synced_at": "2026-09-10T01:33:47.002609+00:00",
+  "enabled": false,
+  "error": "authentication_failed",
+  "synced_at": null,
   "term": "Fall 2026",
-  "course_count": 1,
-  "failed_course_count": 0,
-  "failed_courses": [],
-  "assignments": [
-    {
-      "id": "pensive:berkeley_eecs151251a_fa26:2b92a662-7152-4c05-90e3-1f3b6a87b8a1",
-      "source": "pensive",
-      "course": "EECS 151/251A",
-      "title": "[FPGA] Lab 1 Report",
-      "release": "2026-09-04T07:00:00+00:00",
-      "due": "2026-12-05T07:59:59+00:00",
-      "late_due": null,
-      "completed": false,
-      "completion_mode": "manual",
-      "url": "https://www.pensive.com/teacher",
-      "clazz_id": "berkeley_eecs151251a_fa26"
-    },
-    {
-      "id": "pensive:berkeley_eecs151251a_fa26:577adb50-64a7-4a63-8c25-0f151a61a24f",
-      "source": "pensive",
-      "course": "EECS 151/251A",
-      "title": "[ASIC] Lab 1 Report",
-      "release": "2026-09-04T07:00:00+00:00",
-      "due": "2026-12-05T07:59:59+00:00",
-      "late_due": null,
-      "completed": false,
-      "completion_mode": "manual",
-      "url": "https://www.pensive.com/teacher",
-      "clazz_id": "berkeley_eecs151251a_fa26"
-    },
-    {
-      "id": "pensive:berkeley_eecs151251a_fa26:74419bb3-d82c-46cc-95f1-ac7ce64e3597",
-      "source": "pensive",
-      "course": "EECS 151/251A",
-      "title": "Homework 1",
-      "release": "2026-09-05T07:00:00+00:00",
-      "due": "2026-09-12T06:59:59+00:00",
-      "late_due": null,
-      "completed": false,
-      "completion_mode": "manual",
-      "url": "https://www.pensive.com/teacher",
-      "clazz_id": "berkeley_eecs151251a_fa26"
-    }
-  ]
+  "course_count": 0,
+  "assignments": []
 }
