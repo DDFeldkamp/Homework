@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-10T04:47:16.904814+00:00",
+  "synced_at": "2026-09-10T11:19:36.663175+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -103,7 +103,7 @@
       "url": "https://www.gradescope.com/courses/1370577/assignments/8502651/submissions/423244158"
     },
     {
-      "id": "gradescope:1370577:8564363",
+      "id": "gradescope:1370577:Homework 1",
       "source": "gradescope",
       "course": "CS 182/282",
       "title": "Homework 1",
@@ -111,7 +111,7 @@
       "due": "2026-09-09 22:59:00 -0700",
       "late_due": null,
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1370577/assignments/8564363"
+      "url": "https://www.gradescope.com/courses/1370577"
     }
   ]
 }

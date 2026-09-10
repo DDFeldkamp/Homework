@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-09-10T04:47:21.529462+00:00",
+  "synced_at": "2026-09-10T11:19:42.343448+00:00",
   "term": "Fall 2026",
   "course_count": 7,
   "assignments": [
@@ -141,7 +141,7 @@
       "title": "Peer review for Historia Norwegie on the S\u00e1mi",
       "due": "2026-09-10T22:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128055"
     },
     {
