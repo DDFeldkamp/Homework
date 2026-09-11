@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-10T20:52:25.512267+00:00",
+  "synced_at": "2026-09-11T00:10:29.848534+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -53,8 +53,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 0",
       "release": "2026-08-30 00:00:00 -0700",
-      "due": "2026-09-11 23:59:00 -0700",
-      "late_due": "2026-09-14 23:59:00 -0700",
+      "due": "2026-09-13 23:59:00 -0700",
+      "late_due": "2026-09-16 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8459249/submissions/423811453"
     },
@@ -64,8 +64,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 1 Directed",
       "release": "2026-08-30 00:00:00 -0700",
-      "due": "2026-09-11 23:59:00 -0700",
-      "late_due": "2026-09-14 23:59:00 -0700",
+      "due": "2026-09-13 23:59:00 -0700",
+      "late_due": "2026-09-16 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8459251"
     },
@@ -75,8 +75,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 1 Open Ended",
       "release": "2026-08-30 00:00:00 -0700",
-      "due": "2026-09-11 23:59:00 -0700",
-      "late_due": "2026-09-14 23:59:00 -0700",
+      "due": "2026-09-13 23:59:00 -0700",
+      "late_due": "2026-09-16 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8459253"
     },
@@ -103,15 +103,26 @@
       "url": "https://www.gradescope.com/courses/1370577/assignments/8502651/submissions/423244158"
     },
     {
-      "id": "gradescope:1370577:Homework 1",
+      "id": "gradescope:1370577:8564363",
       "source": "gradescope",
       "course": "CS 182/282",
       "title": "Homework 1",
       "release": "2026-09-03 16:19:00 -0700",
       "due": "2026-09-09 22:59:00 -0700",
-      "late_due": null,
+      "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1370577"
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8564363"
+    },
+    {
+      "id": "gradescope:1370577:8613227",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Homework 2",
+      "release": "2026-09-09 22:59:00 -0700",
+      "due": "2026-09-16 22:59:00 -0700",
+      "late_due": "2026-12-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8613227"
     }
   ]
 }
