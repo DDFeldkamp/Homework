@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-14T04:56:18.255914+00:00",
+  "synced_at": "2026-09-14T12:46:44.094065+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -62,7 +62,7 @@
       "id": "gradescope:1364686:8459251",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
-      "title": "Lab 1 Directed",
+      "title": "Lab 1: Directed Portion",
       "release": "2026-08-30 00:00:00 -0700",
       "due": "2026-09-13 23:59:00 -0700",
       "late_due": "2026-09-16 23:59:00 -0700",
@@ -73,12 +73,12 @@
       "id": "gradescope:1364686:8459253",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
-      "title": "Lab 1 Open Ended",
+      "title": "Lab 1: Open-Ended Portion",
       "release": "2026-08-30 00:00:00 -0700",
       "due": "2026-09-13 23:59:00 -0700",
       "late_due": "2026-09-16 23:59:00 -0700",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8459253"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8459253/submissions/425975269"
     },
     {
       "id": "gradescope:1364686:8535414",
@@ -88,8 +88,8 @@
       "release": "2026-08-31 17:32:00 -0700",
       "due": "2026-09-13 23:59:00 -0700",
       "late_due": "2026-09-16 23:59:00 -0700",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8535414/submissions/new"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8535414/submissions/425984733"
     },
     {
       "id": "gradescope:1370577:8502651",
