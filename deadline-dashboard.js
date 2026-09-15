@@ -141,7 +141,7 @@ function saveManualCompletionOverrides() {
 }
 
 function usesManualCompletion(assignment) {
-  return assignment?.completion_mode === "manual" || assignment?.source === "pensive";
+  return true;
 }
 
 function assignmentCompletionKey(assignment) {
@@ -873,19 +873,19 @@ function makeCourseHeader(course, count, start, nowPct) {
 }
 
 function assignmentVisible(a, now) {
-  const courseName = String(a.course || "Manual");
-  if (activeCourses && !activeCourses.has(courseName)) return false;
+  // A late deadline does not extend calendar visibility.
+  if (a.dueDate && a.dueDate < now) return false;
 
-  const haystack = `${a.title || ""} ${courseName}`.toLowerCase();
-  if (query && !haystack.includes(query)) return false;
+  if (activeCourses && !activeCourses.has(String(a.course || "Manual"))) return false;
+
+  if (query) {
+    const haystack = `${a.title || ""} ${a.course || ""}`.toLowerCase();
+    if (!haystack.includes(query)) return false;
+  }
 
   if (filter === "done") return Boolean(a.completed);
   if (filter === "all") return true;
-
-  if (a.completed) return false;
-  if (!a.dueDate) return true;
-  if (a.dueDate >= now) return true;
-  return Boolean(a.lateDate && a.lateDate >= now);
+  return !a.completed;
 }
 
 function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = false) {
@@ -913,18 +913,9 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
   check.type = "button";
   check.className = "assignment-check";
 
-  if (usesManualCompletion(a)) {
+  if (a.source === "manual") {
     check.title = a.completed ? "Mark incomplete" : "Mark complete";
     check.setAttribute("aria-label", check.title);
-    check.addEventListener("click", () => {
-      setManualCompletion(a, !a.completed);
-      render();
-    });
-  } else if (a.source !== "manual") {
-    check.title = `${sourceLabel(a.source)} completion is detected automatically`;
-    check.setAttribute("aria-label", check.title);
-  } else {
-    check.setAttribute("aria-label", a.completed ? "Mark incomplete" : "Mark complete");
     check.addEventListener("click", () => {
       const baseId = a.parent_id || a.id;
       const item = manualAssignments.find((x) => x.id === baseId);
@@ -933,6 +924,15 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
         saveManual();
         render();
       }
+    });
+  } else {
+    check.title = a.completed
+      ? `Mark incomplete (overrides ${sourceLabel(a.source)} status in this browser)`
+      : `Mark complete (overrides ${sourceLabel(a.source)} status in this browser)`;
+    check.setAttribute("aria-label", check.title);
+    check.addEventListener("click", () => {
+      setManualCompletion(a, !a.completed);
+      render();
     });
   }
 
@@ -1209,7 +1209,7 @@ function render() {
   const notDone = shownAll.filter((a) => !a.completed);
   document.querySelector("#countToday").textContent = notDone.filter((a) => a.dueDate && isSameDay(a.dueDate, now)).length;
   document.querySelector("#count7").textContent = notDone.filter((a) => a.dueDate && a.dueDate >= now && a.dueDate - now <= TIMELINE_MS).length;
-  document.querySelector("#countUpcoming").textContent = notDone.filter((a) => !a.dueDate || a.dueDate >= now || (a.lateDate && a.lateDate >= now)).length;
+  document.querySelector("#countUpcoming").textContent = notDone.filter((a) => !a.dueDate || a.dueDate >= now).length;
   document.querySelector("#countDone").textContent = shownAll.filter((a) => a.completed).length;
   updateCourseButton();
 }

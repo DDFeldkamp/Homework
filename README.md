@@ -209,3 +209,16 @@ reset it. Click the checkbox again to mark the assignment incomplete.
 
 Gradescope and bCourses remain automatically controlled when their sync data
 contains submission/completion state.
+
+
+## Manual completion for all sources
+
+All assignment checkboxes can now be toggled manually, including Gradescope,
+bCourses, and Pensive. Gradescope/bCourses detected completion is still used as
+the initial state, but clicking the checkbox stores a browser-local override.
+
+## Hide after the normal deadline
+
+Assignments disappear from every dashboard view as soon as their normal due
+date passes. A late deadline is still shown before the normal due date, but it
+does not keep the assignment visible afterward.
