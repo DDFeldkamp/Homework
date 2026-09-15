@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-15T04:54:26.006904+00:00",
+  "synced_at": "2026-09-15T08:58:44.873562+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -44,8 +44,8 @@
       "release": "2026-09-08 08:00:00 -0700",
       "due": "2026-09-15 12:00:00 -0700",
       "late_due": null,
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1344528/assignments/8589075"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8589075/submissions/426390563"
     },
     {
       "id": "gradescope:1344528:8641329",
@@ -107,9 +107,9 @@
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
       "title": "Homework 2",
-      "release": "2026-08-31 17:32:00 -0700",
-      "due": "2026-09-13 23:59:00 -0700",
-      "late_due": "2026-09-16 23:59:00 -0700",
+      "release": "2026-09-14 17:32:00 -0700",
+      "due": "2026-09-27 23:59:00 -0700",
+      "late_due": "2026-09-30 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8641533/submissions/new"
     },
