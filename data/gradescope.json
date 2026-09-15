@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-15T18:45:51.377817+00:00",
+  "synced_at": "2026-09-15T21:20:48.021614+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -43,7 +43,7 @@
       "title": "Homework 2",
       "release": "2026-09-08 08:00:00 -0700",
       "due": "2026-09-15 12:00:00 -0700",
-      "late_due": null,
+      "late_due": "2026-09-17 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1344528/assignments/8589075/submissions/426390563"
     },
