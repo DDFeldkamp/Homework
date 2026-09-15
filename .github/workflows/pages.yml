@@ -10,6 +10,7 @@ on:
       - "data/gradescope.json"
       - "data/bcourses.json"
       - "data/pensive.json"
+      - "data/eecs151.json"
   workflow_dispatch:
 
 permissions:
@@ -35,7 +36,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/data
           cp index.html styles.css deadline-dashboard.js _site/
-          cp data/gradescope.json data/bcourses.json data/pensive.json _site/data/
+          cp data/gradescope.json data/bcourses.json data/pensive.json data/eecs151.json _site/data/
 
       - uses: actions/configure-pages@v5
 

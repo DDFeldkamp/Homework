@@ -48,14 +48,17 @@ jobs:
           PENSIVE_TOKEN: ${{ secrets.PENSIVE_TOKEN }}
         run: python scripts/sync_pensive.py --output data/pensive.json
 
+      - name: Sync EECS 151 public course calendar
+        run: python scripts/sync_eecs151.py --output data/eecs151.json
+
       - name: Commit public deadline metadata
         run: |
-          if git diff --quiet -- data/gradescope.json data/bcourses.json data/pensive.json; then
+          if git diff --quiet -- data/gradescope.json data/bcourses.json data/pensive.json data/eecs151.json; then
             echo "No metadata changes."
           else
             git config user.name "deadline-sync[bot]"
             git config user.email "deadline-sync[bot]@users.noreply.github.com"
-            git add data/gradescope.json data/bcourses.json data/pensive.json
+            git add data/gradescope.json data/bcourses.json data/pensive.json data/eecs151.json
             git commit -m "chore: sync assignment deadlines"
             git push
           fi
@@ -65,7 +68,7 @@ jobs:
           rm -rf _site
           mkdir -p _site/data
           cp index.html styles.css deadline-dashboard.js _site/
-          cp data/gradescope.json data/bcourses.json data/pensive.json _site/data/
+          cp data/gradescope.json data/bcourses.json data/pensive.json data/eecs151.json _site/data/
 
       - uses: actions/configure-pages@v5
 

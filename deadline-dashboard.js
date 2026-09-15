@@ -18,6 +18,7 @@ const TIMELINE_MS = TIMELINE_DAYS * DAY_MS;
 let gradescopeAssignments = [];
 let bcoursesAssignments = [];
 let pensiveAssignments = [];
+let eecs151Assignments = [];
 let manualAssignments = loadManual();
 let courseRegistry = loadCourseRegistry();
 let defaultCourses = new Set(loadStringArray(localStorage, DEFAULT_COURSES_KEY));
@@ -416,6 +417,7 @@ function sourceAssignments() {
     ...gradescopeAssignments,
     ...bcoursesAssignments,
     ...pensiveAssignments,
+    ...eecs151Assignments,
     ...expandManual(manualAssignments),
   ];
 }
@@ -441,6 +443,7 @@ function sourceLabel(source) {
   if (source === "gradescope") return "Gradescope";
   if (source === "bcourses") return "bCourses";
   if (source === "pensive") return "Pensive";
+  if (source === "eecs151") return "EECS 151 site";
   return "Manual";
 }
 
@@ -873,7 +876,7 @@ function makeCourseHeader(course, count, start, nowPct) {
 }
 
 function assignmentVisible(a, now) {
-  // A late deadline does not extend calendar visibility.
+  // Always hide an assignment after its normal due date, even if late work is allowed.
   if (a.dueDate && a.dueDate < now) return false;
 
   if (activeCourses && !activeCourses.has(String(a.course || "Manual"))) return false;
@@ -909,32 +912,30 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
   time.className = "assignment-time";
   time.textContent = a.dueDate ? fmtTime(a.dueDate) : "—";
 
-  const check = document.createElement("button");
-  check.type = "button";
+  const check = document.createElement("input");
+  check.type = "checkbox";
   check.className = "assignment-check";
+  check.checked = Boolean(a.completed);
+  check.title = a.completed ? "Mark incomplete" : "Mark complete";
+  check.setAttribute("aria-label", check.title);
 
-  if (a.source === "manual") {
-    check.title = a.completed ? "Mark incomplete" : "Mark complete";
-    check.setAttribute("aria-label", check.title);
-    check.addEventListener("click", () => {
+  check.addEventListener("click", (event) => event.stopPropagation());
+  check.addEventListener("change", () => {
+    const nextCompleted = check.checked;
+
+    if (a.source === "manual") {
       const baseId = a.parent_id || a.id;
       const item = manualAssignments.find((x) => x.id === baseId);
       if (item) {
-        item.completed = !item.completed;
+        item.completed = nextCompleted;
         saveManual();
-        render();
       }
-    });
-  } else {
-    check.title = a.completed
-      ? `Mark incomplete (overrides ${sourceLabel(a.source)} status in this browser)`
-      : `Mark complete (overrides ${sourceLabel(a.source)} status in this browser)`;
-    check.setAttribute("aria-label", check.title);
-    check.addEventListener("click", () => {
-      setManualCompletion(a, !a.completed);
-      render();
-    });
-  }
+    } else {
+      setManualCompletion(a, nextCompleted);
+    }
+
+    render();
+  });
 
   const text = document.createElement("div");
   text.className = "assignment-text";
@@ -1224,10 +1225,11 @@ async function loadRemoteData() {
   const status = document.querySelector("#syncStatus");
   status.textContent = "Loading assignment sources…";
 
-  const [gradescopeResult, bcoursesResult, pensiveResult] = await Promise.allSettled([
+  const [gradescopeResult, bcoursesResult, pensiveResult, eecs151Result] = await Promise.allSettled([
     fetchDashboardData("./data/gradescope.json"),
     fetchDashboardData("./data/bcourses.json"),
     fetchDashboardData("./data/pensive.json"),
+    fetchDashboardData("./data/eecs151.json"),
   ]);
 
   let gradescopeStatus = "Gradescope unavailable";
@@ -1278,7 +1280,19 @@ async function loadRemoteData() {
     pensiveAssignments = [];
   }
 
-  status.textContent = `${gradescopeStatus} · ${bcoursesStatus} · ${pensiveStatus}`;
+  let eecs151Status = "EECS 151 site unavailable";
+  if (eecs151Result.status === "fulfilled") {
+    const data = eecs151Result.value;
+    eecs151Assignments = Array.isArray(data.assignments) ? data.assignments : [];
+    eecs151Status = data.synced_at
+      ? `EECS 151 ${new Date(data.synced_at).toLocaleString()}`
+      : "EECS 151 site not synced";
+  } else {
+    console.error(eecs151Result.reason);
+    eecs151Assignments = [];
+  }
+
+  status.textContent = `${gradescopeStatus} · ${bcoursesStatus} · ${pensiveStatus} · ${eecs151Status}`;
   reconcileCourseRegistry();
   render();
 }

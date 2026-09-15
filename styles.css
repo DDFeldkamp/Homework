@@ -724,3 +724,38 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   font-size: 11px;
   line-height: 1.45;
 }
+
+
+/* Native assignment completion control: clickable for every source. */
+.assignment-check {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  flex: 0 0 17px;
+  width: 17px !important;
+  height: 17px !important;
+  margin: 1px 0 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--grid-strong) !important;
+  border-radius: 2px !important;
+  background: var(--surface) !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 5;
+}
+.assignment-check:hover { border-color: var(--button) !important; }
+.assignment-check:focus-visible { outline: 2px solid var(--button); outline-offset: 2px; }
+.assignment-check:checked {
+  background: var(--button) !important;
+  border-color: var(--button) !important;
+}
+.assignment-check:checked::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--button-text);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+}

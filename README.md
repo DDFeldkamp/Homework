@@ -222,3 +222,19 @@ the initial state, but clicking the checkbox stores a browser-local override.
 Assignments disappear from every dashboard view as soon as their normal due
 date passes. A late deadline is still shown before the normal due date, but it
 does not keep the assignment visible afterward.
+
+
+## EECS 151/251A public course calendar
+
+The sync workflow now also reads the Fall 2026 calendar at `https://eecs151.org/`.
+
+Rules:
+- Homework appears only after the course site publishes an explicit due date such as `(due Fri Sep 18)`.
+- Homework with only a title (for example a future `HW3` with no due date yet) is not displayed.
+- A lab is due at 11:59 PM Pacific on Friday of the final calendar week in which that lab appears.
+- A lab's late deadline is the following Friday at 11:59 PM Pacific.
+- ASIC/FPGA listings of the same numbered lab are deduplicated.
+- Final-project checkpoints are not inferred unless the site publishes an explicit due date.
+
+All EECS 151 site assignments use manual completion because the public course site
+does not expose the student's submission state.

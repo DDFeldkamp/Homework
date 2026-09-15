@@ -1,7 +1,7 @@
 {
-  "enabled": false,
+  "enabled": true,
   "synced_at": null,
   "term": "Fall 2026",
-  "course_count": 0,
+  "course_count": 1,
   "assignments": []
 }
