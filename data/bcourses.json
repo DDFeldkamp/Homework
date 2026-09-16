@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-09-16T07:41:22.860711+00:00",
+  "synced_at": "2026-09-16T13:30:34.128037+00:00",
   "term": "Fall 2026",
   "course_count": 7,
   "assignments": [
@@ -39,10 +39,20 @@
       "source": "bcourses",
       "course": "ENGIN 98",
       "title": "Week 1 HW: Make E98 Friends!",
-      "due": "2026-09-18T21:00:00Z",
+      "due": "2026-09-19T06:30:00Z",
       "late_due": null,
       "completed": false,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9148397"
+    },
+    {
+      "id": "bcourses:1559171:9150511",
+      "source": "bcourses",
+      "course": "ENGIN 98",
+      "title": "Week 2 HW: Extracurriculars",
+      "due": "2026-09-26T06:59:59Z",
+      "late_due": "2026-09-27T06:59:59Z",
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9150511"
     },
     {
       "id": "bcourses:1559171:9145853",
