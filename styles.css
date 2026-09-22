@@ -519,7 +519,7 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
 }
 .course-settings-head, .course-option {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 56px 64px 92px;
+  grid-template-columns: minmax(0, 1fr) 56px 64px 92px 58px;
   align-items: center;
   gap: 10px;
 }
@@ -686,7 +686,7 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   text-align: right;
 }
 .course-settings-head, .course-option {
-    grid-template-columns: minmax(0, 1fr) 44px 52px 78px;
+    grid-template-columns: minmax(0, 1fr) 44px 52px 78px 50px;
     gap: 6px;
   }
   .course-limit select { width: 66px; }
@@ -758,4 +758,24 @@ dialog input:focus, dialog select:focus, .search:focus-within { border-color: va
   font-size: 11px;
   line-height: 1;
   font-weight: 800;
+}
+
+
+.course-color { display: grid; place-items: center; margin: 0; }
+.course-color input[type="color"] {
+  width: 36px; height: 30px; padding: 2px;
+  border: 1px solid var(--grid-strong); border-radius: 2px;
+  background: var(--surface); cursor: pointer;
+}
+.course-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 1px; }
+.course-color input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 1px; }
+.course-color input[type="color"]::-moz-color-swatch { border: 0; border-radius: 1px; }
+.timeline-late {
+  border-color: var(--course-color, var(--late));
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--course-color, var(--late)) 18%, transparent) 0,
+    color-mix(in srgb, var(--course-color, var(--late)) 18%, transparent) 5px,
+    transparent 5px, transparent 10px
+  );
 }

@@ -11,6 +11,7 @@ const MANUAL_COMPLETION_KEY = "deadline-manual-completion-overrides-v1";
 const MERGED_NAME_SOURCE_KEY = "deadline-merged-course-name-source-v1";
 const DEFAULT_COURSE_LIMIT_KEY = "deadline-default-course-assignment-limit-v1";
 const VIEW_MODE_KEY = "deadline-calendar-view-v1";
+const COURSE_COLORS_KEY = "deadline-course-colors-v1";
 const TIMELINE_DAYS = 7;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const TIMELINE_MS = TIMELINE_DAYS * DAY_MS;
@@ -26,6 +27,7 @@ let defaultsConfigured = localStorage.getItem(DEFAULTS_CONFIGURED_KEY) === "1";
 let activeCourses = null;
 let activeCoursesInitialized = false;
 let courseAssignmentLimits = loadCourseLimits();
+let courseColors = loadCourseColors();
 let courseMerges = loadCourseMerges();
 let pensiveMerges = loadPensiveMerges();
 let manualCompletionOverrides = loadManualCompletionOverrides();
@@ -86,6 +88,50 @@ function loadCourseLimits() {
 
 function saveCourseLimits() {
   localStorage.setItem(COURSE_LIMITS_KEY, JSON.stringify(courseAssignmentLimits));
+}
+
+function loadCourseColors() {
+  try {
+    const value = JSON.parse(localStorage.getItem(COURSE_COLORS_KEY));
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveCourseColors() {
+  localStorage.setItem(COURSE_COLORS_KEY, JSON.stringify(courseColors));
+}
+
+function normalizeCourseColor(value) {
+  const text = String(value || "").trim();
+  return /^#[0-9a-f]{6}$/i.test(text) ? text.toLowerCase() : null;
+}
+
+function fallbackCourseColor(courseName) {
+  const palette = ["#d9ead3", "#d0e0e3", "#fce5cd", "#ead1dc", "#fff2cc", "#cfe2f3"];
+  return palette[courseColorIndex(courseName)];
+}
+
+function getCourseColor(courseName) {
+  const name = String(courseName || "Manual");
+  return normalizeCourseColor(courseColors[name]) || fallbackCourseColor(name);
+}
+
+function setCourseColor(courseName, value) {
+  const color = normalizeCourseColor(value);
+  if (!color) return;
+  courseColors[String(courseName || "Manual")] = color;
+  saveCourseColors();
+}
+
+function migrateCourseColor(oldName, newName) {
+  if (!oldName || !newName || oldName === newName) return;
+  if (courseColors[oldName] && !courseColors[newName]) {
+    courseColors[newName] = courseColors[oldName];
+  }
+  delete courseColors[oldName];
+  saveCourseColors();
 }
 
 function loadCourseMerges() {
@@ -223,6 +269,7 @@ function migrateCoursePreferences(oldName, newName) {
     courseAssignmentLimits[newName] = courseAssignmentLimits[oldName];
   }
 
+  migrateCourseColor(oldName, newName);
   saveActiveCourses();
   if (defaultsConfigured) saveDefaults();
   saveCourseLimits();
@@ -804,7 +851,20 @@ function renderCourseOptions() {
     });
     limitWrap.appendChild(limitSelect);
 
-    row.append(info, showWrap, defaultWrap, limitWrap);
+    const colorWrap = document.createElement("label");
+    colorWrap.className = "course-color";
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.value = getCourseColor(course.name);
+    colorInput.setAttribute("aria-label", `Color for ${course.name}`);
+    colorInput.title = `Choose color for ${course.name}`;
+    colorInput.addEventListener("input", () => {
+      setCourseColor(course.name, colorInput.value);
+      render();
+    });
+    colorWrap.appendChild(colorInput);
+
+    row.append(info, showWrap, defaultWrap, limitWrap, colorWrap);
     courseOptions.appendChild(row);
   }
 
@@ -891,7 +951,7 @@ function assignmentVisible(a, now) {
   return !a.completed;
 }
 
-function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = false) {
+function makeAssignmentRow(a, start, end, nowPct, courseColor, showCourseTag = false) {
   const now = new Date();
   const row = document.createElement("div");
   row.className = "timeline-row";
@@ -959,7 +1019,8 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
 
   if (showCourseTag) {
     const courseTag = document.createElement("span");
-    courseTag.className = `course-tag color-${courseColorIndex(a.course || "Manual")}`;
+    courseTag.className = "course-tag";
+    courseTag.style.backgroundColor = getCourseColor(a.course || "Manual");
     courseTag.textContent = a.course || "Manual";
     titleRow.appendChild(courseTag);
   }
@@ -1017,7 +1078,8 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
     const leftPct = clamp(nowPct, 0, 100);
 
     const bar = document.createElement("div");
-    bar.className = `timeline-bar color-${colorIndex}`;
+    bar.className = "timeline-bar";
+    bar.style.backgroundColor = courseColor;
 
     if (a.completed && dueRaw < 0) {
       bar.style.left = "0%";
@@ -1038,6 +1100,7 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
 
     const dueMarker = document.createElement("div");
     dueMarker.className = "due-marker";
+    dueMarker.style.backgroundColor = courseColor;
     dueMarker.style.left = `${duePct}%`;
     cell.appendChild(dueMarker);
 
@@ -1054,6 +1117,7 @@ function makeAssignmentRow(a, start, end, nowPct, colorIndex, showCourseTag = fa
       if (lateEnd > lateStart) {
         const lateBar = document.createElement("div");
         lateBar.className = "timeline-late";
+        lateBar.style.setProperty("--course-color", courseColor);
         lateBar.style.left = `${lateStart}%`;
         lateBar.style.width = `${Math.max(0.3, lateEnd - lateStart)}%`;
         lateBar.title = `Late deadline: ${fmtDate(a.lateDate)}`;
@@ -1156,7 +1220,7 @@ function render() {
           start,
           end,
           nowPct,
-          courseColorIndex(assignment.course || "Manual"),
+          getCourseColor(assignment.course || "Manual"),
           true
         )
       );
@@ -1194,9 +1258,9 @@ function render() {
       wrap.className = "timeline-wrap";
 
       wrap.appendChild(makeCourseHeader(course, assignments.length, start, nowPct));
-      const colorIndex = courseColorIndex(course);
+      const courseColor = getCourseColor(course);
       for (const assignment of assignments) {
-        wrap.appendChild(makeAssignmentRow(assignment, start, end, nowPct, colorIndex, false));
+        wrap.appendChild(makeAssignmentRow(assignment, start, end, nowPct, courseColor, false));
       }
 
       scrollInner.appendChild(wrap);

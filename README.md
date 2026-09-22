@@ -238,3 +238,8 @@ Rules:
 
 All EECS 151 site assignments use manual completion because the public course site
 does not expose the student's submission state.
+
+
+## Per-course colors
+
+Open **Courses** and use the color picker beside each displayed course. The choice is saved in browser `localStorage` and is used in both **By class** and **Combined** views. Merged source courses use the color of their canonical displayed course name.
