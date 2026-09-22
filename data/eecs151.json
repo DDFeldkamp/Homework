@@ -1,7 +1,112 @@
 {
   "enabled": true,
-  "synced_at": null,
+  "synced_at": "2026-09-22T04:56:07.089227+00:00",
   "term": "Fall 2026",
   "course_count": 1,
-  "assignments": []
+  "assignments": [
+    {
+      "id": "eecs151:2026:hw1",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW1",
+      "release": null,
+      "due": "2026-09-11T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1g4mKmtIHKDaYEZODcCOUDZE851hY-cLP/view?usp=sharing",
+      "calendar_week": 3
+    },
+    {
+      "id": "eecs151:2026:lab-1",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Lab 1",
+      "release": null,
+      "due": "2026-09-11T23:59:59-07:00",
+      "late_due": "2026-09-18T23:59:59-07:00",
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/asic/lab1/overview",
+      "calendar_week": 3
+    },
+    {
+      "id": "eecs151:2026:hw2",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW2",
+      "release": null,
+      "due": "2026-09-18T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1NBhAvPaPR2j2tEBC5BcKMYzwOBNEwq7Y/view?usp=sharing",
+      "calendar_week": 4
+    },
+    {
+      "id": "eecs151:2026:lab-2",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Lab 2",
+      "release": null,
+      "due": "2026-09-18T23:59:59-07:00",
+      "late_due": "2026-09-25T23:59:59-07:00",
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/asic/lab2/overview",
+      "calendar_week": 4
+    },
+    {
+      "id": "eecs151:2026:hw3",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW3",
+      "release": null,
+      "due": "2026-09-25T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1ff9SV5mqLe-l59hqzQOx7i5eoAqAXwYq/view?usp=sharing",
+      "calendar_week": 5
+    },
+    {
+      "id": "eecs151:2026:lab-3",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Lab 3",
+      "release": null,
+      "due": "2026-09-25T23:59:59-07:00",
+      "late_due": "2026-10-02T23:59:59-07:00",
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/asic/lab3/overview",
+      "calendar_week": 5
+    },
+    {
+      "id": "eecs151:2026:lab-4",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Lab 4",
+      "release": null,
+      "due": "2026-10-02T23:59:59-07:00",
+      "late_due": "2026-10-09T23:59:59-07:00",
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/",
+      "calendar_week": 6
+    },
+    {
+      "id": "eecs151:2026:lab-5",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Lab 5",
+      "release": null,
+      "due": "2026-10-09T23:59:59-07:00",
+      "late_due": "2026-10-16T23:59:59-07:00",
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/",
+      "calendar_week": 7
+    }
+  ]
 }
