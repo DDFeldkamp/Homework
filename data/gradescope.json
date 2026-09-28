@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-09-27T23:03:01.208022+00:00",
+  "synced_at": "2026-09-28T05:24:19.040484+00:00",
   "term": "Fall 2026",
   "course_count": 3,
   "assignments": [
@@ -143,8 +143,8 @@
       "release": "2026-09-14 17:32:00 -0700",
       "due": "2026-09-27 23:59:00 -0700",
       "late_due": "2026-09-30 23:59:00 -0700",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8641533/submissions/new"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8641533/submissions/431162265"
     },
     {
       "id": "gradescope:1370577:8502651",
