@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-09-29T08:30:24.739911+00:00",
+  "synced_at": "2026-09-29T16:31:08.236932+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -101,7 +101,7 @@
       "title": "Al-Ghaz\u0101l\u2019s embassy",
       "due": "2026-09-29T22:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128023"
     },
     {
