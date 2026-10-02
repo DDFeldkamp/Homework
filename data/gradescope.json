@@ -1,7 +1,7 @@
 {
-  "synced_at": "2026-10-02T12:35:17.172092+00:00",
+  "synced_at": "2026-10-02T19:18:03.793402+00:00",
   "term": "Fall 2026",
-  "course_count": 3,
+  "course_count": 4,
   "assignments": [
     {
       "id": "gradescope:1344528:Lab 1",
@@ -222,6 +222,17 @@
       "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577/assignments/8613380"
+    },
+    {
+      "id": "gradescope:1421846:8788068",
+      "source": "gradescope",
+      "course": "CS 194-061A / 47A",
+      "title": "Homework 1",
+      "release": "2026-09-25 10:00:00 -0700",
+      "due": "2026-12-11 23:59:00 -0800",
+      "late_due": "2026-12-18 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1421846/assignments/8788068"
     }
   ]
 }
