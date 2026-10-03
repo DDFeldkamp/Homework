@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-02T23:46:33.076552+00:00",
+  "synced_at": "2026-10-03T05:18:29.283319+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -81,7 +81,7 @@
       "url": "https://www.gradescope.com/courses/1344528/assignments/8731261/submissions/431891627"
     },
     {
-      "id": "gradescope:1344528:8759929",
+      "id": "gradescope:1344528:Lab 4",
       "source": "gradescope",
       "course": "CBE 162",
       "title": "Lab 4",
@@ -89,7 +89,7 @@
       "due": "2026-10-02 18:00:00 -0700",
       "late_due": null,
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1344528/assignments/8759929"
+      "url": "https://www.gradescope.com/courses/1344528"
     },
     {
       "id": "gradescope:1344528:8759993",

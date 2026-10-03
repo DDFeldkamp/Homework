@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-02T23:46:38.572803+00:00",
+  "synced_at": "2026-10-03T05:18:34.425413+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -96,6 +96,19 @@
       "calendar_week": 6
     },
     {
+      "id": "eecs151:2026:hw4",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW4",
+      "release": null,
+      "due": "2026-10-09T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1RBEsq5XY90c1PzfKbPjHySEzBsAXwWLk/view?usp=sharing",
+      "calendar_week": 7
+    },
+    {
       "id": "eecs151:2026:lab-5",
       "source": "eecs151",
       "course": "EECS 151/251A",
@@ -105,7 +118,7 @@
       "late_due": "2026-10-16T23:59:59-07:00",
       "completed": false,
       "completion_mode": "manual",
-      "url": "https://eecs151.org/",
+      "url": "https://eecs151.org/asic/lab5/overview",
       "calendar_week": 7
     }
   ]
