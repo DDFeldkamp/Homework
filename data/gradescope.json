@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-06T15:12:02.724101+00:00",
+  "synced_at": "2026-10-06T20:58:44.637754+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -112,6 +112,17 @@
       "late_due": null,
       "completed": false,
       "url": "https://www.gradescope.com/courses/1344528/assignments/8811931"
+    },
+    {
+      "id": "gradescope:1344528:8814508",
+      "source": "gradescope",
+      "course": "CBE 162",
+      "title": "Homework 5",
+      "release": "2026-10-06 08:00:00 -0700",
+      "due": "2026-10-13 23:59:00 -0700",
+      "late_due": "2026-10-15 22:59:00 -0700",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8814508"
     },
     {
       "id": "gradescope:1364686:8459249",
@@ -275,8 +286,8 @@
       "release": "2026-09-25 10:00:00 -0700",
       "due": "2026-12-11 23:59:00 -0800",
       "late_due": "2026-12-18 23:59:00 -0800",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1421846/assignments/8788068"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1421846/assignments/8788068/submissions/434349059"
     }
   ]
 }

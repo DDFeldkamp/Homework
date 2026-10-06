@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-06T15:12:07.930769+00:00",
+  "synced_at": "2026-10-06T20:58:48.845962+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -121,7 +121,7 @@
       "title": "The Battle of Maldon",
       "due": "2026-10-06T22:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128026"
     },
     {
