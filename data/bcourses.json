@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-05T22:37:15.748539+00:00",
+  "synced_at": "2026-10-06T06:20:28.373010+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -39,8 +39,8 @@
       "source": "bcourses",
       "course": "ENGIN 98",
       "title": "Week 2 HW: Extracurriculars",
-      "due": "2026-09-26T06:59:59Z",
-      "late_due": "2026-09-27T06:59:59Z",
+      "due": "2026-10-10T06:59:59Z",
+      "late_due": null,
       "completed": false,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9150511"
     },
