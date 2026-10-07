@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-07T17:25:46.297429+00:00",
+  "synced_at": "2026-10-07T23:05:09.186984+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -120,6 +120,19 @@
       "completion_mode": "manual",
       "url": "https://eecs151.org/asic/lab5/overview",
       "calendar_week": 7
+    },
+    {
+      "id": "eecs151:2026:final-project-checkpoint-1",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Final Project: Checkpoint 1",
+      "release": null,
+      "due": "2026-10-21T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/",
+      "calendar_week": 8
     }
   ]
 }
