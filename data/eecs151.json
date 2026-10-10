@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-09T22:38:15.660137+00:00",
+  "synced_at": "2026-10-10T05:52:22.672118+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -122,6 +122,19 @@
       "calendar_week": 7
     },
     {
+      "id": "eecs151:2026:hw5",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW5",
+      "release": null,
+      "due": "2026-10-16T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1SU1KgtwbTjY35YhW8Pi1pWBSZDU3ZoOH/view?usp=sharing",
+      "calendar_week": 8
+    },
+    {
       "id": "eecs151:2026:final-project-checkpoint-1",
       "source": "eecs151",
       "course": "EECS 151/251A",
@@ -131,7 +144,7 @@
       "late_due": null,
       "completed": false,
       "completion_mode": "manual",
-      "url": "https://eecs151.org/",
+      "url": "https://eecs151.org/asic/final-project/overview",
       "calendar_week": 8
     }
   ]
