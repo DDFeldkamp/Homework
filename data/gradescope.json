@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-12T22:59:18.002141+00:00",
+  "synced_at": "2026-10-13T06:46:59.339317+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -208,9 +208,31 @@
       "title": "Homework 3",
       "release": "2026-10-05 09:58:00 -0700",
       "due": "2026-10-16 23:59:00 -0700",
-      "late_due": null,
+      "late_due": "2026-10-19 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8807694"
+    },
+    {
+      "id": "gradescope:1364686:8858744",
+      "source": "gradescope",
+      "course": "COMPSCI 152-LEC-001",
+      "title": "Lab 3: Directed Portion",
+      "release": "2026-10-05 12:00:00 -0700",
+      "due": "2026-10-17 23:59:00 -0700",
+      "late_due": "2026-10-20 23:59:00 -0700",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8858744"
+    },
+    {
+      "id": "gradescope:1364686:8858754",
+      "source": "gradescope",
+      "course": "COMPSCI 152-LEC-001",
+      "title": "Lab 3: Open-Ended Portion",
+      "release": "2026-10-05 12:00:00 -0700",
+      "due": "2026-10-17 23:59:00 -0700",
+      "late_due": "2026-10-20 23:59:00 -0700",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8858754"
     },
     {
       "id": "gradescope:1370577:8502651",
