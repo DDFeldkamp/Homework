@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-13T15:58:43.473874+00:00",
+  "synced_at": "2026-10-13T21:14:38.147017+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -125,6 +125,28 @@
       "url": "https://www.gradescope.com/courses/1344528/assignments/8814508"
     },
     {
+      "id": "gradescope:1344528:8862869",
+      "source": "gradescope",
+      "course": "CBE 162",
+      "title": "Lab 6",
+      "release": "2026-10-12 08:00:00 -0700",
+      "due": "2026-10-16 23:59:00 -0700",
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8862869"
+    },
+    {
+      "id": "gradescope:1344528:8862887",
+      "source": "gradescope",
+      "course": "CBE 162",
+      "title": "Homework 6",
+      "release": "2026-10-13 08:00:00 -0700",
+      "due": "2026-10-20 10:59:00 -0700",
+      "late_due": "2026-10-21 23:59:00 -0700",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8862887"
+    },
+    {
       "id": "gradescope:1364686:8459249",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
@@ -200,6 +222,17 @@
       "late_due": "2026-09-30 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8641533/submissions/431162265"
+    },
+    {
+      "id": "gradescope:1364686:8799048",
+      "source": "gradescope",
+      "course": "COMPSCI 152-LEC-001",
+      "title": "Midterm 1",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8799048/submissions/433418873"
     },
     {
       "id": "gradescope:1364686:8807694",
