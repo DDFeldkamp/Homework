@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-15T17:00:25.944119+00:00",
+  "synced_at": "2026-10-15T21:23:25.330455+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -354,6 +354,72 @@
       "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577/assignments/8613396"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 101",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 101",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 104",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 104",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 106",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 106",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 107",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 107",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 108",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 108",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 1 - 109",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 1 - 109",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
     },
     {
       "id": "gradescope:1421846:8788068",
