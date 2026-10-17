@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-17T00:28:53.208222+00:00",
+  "synced_at": "2026-10-17T06:57:12.529923+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -146,6 +146,19 @@
       "completion_mode": "manual",
       "url": "https://eecs151.org/asic/final-project/overview",
       "calendar_week": 8
+    },
+    {
+      "id": "eecs151:2026:hw6",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW6",
+      "release": null,
+      "due": "2026-10-23T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1twcmkAcZZ-f09lhThcpYbglDEWTLGyuI/view?usp=sharing",
+      "calendar_week": 9
     }
   ]
 }
