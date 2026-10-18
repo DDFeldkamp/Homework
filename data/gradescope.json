@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-18T04:33:18.514811+00:00",
+  "synced_at": "2026-10-18T11:04:08.563231+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -253,8 +253,8 @@
       "release": "2026-10-05 12:00:00 -0700",
       "due": "2026-10-17 23:59:00 -0700",
       "late_due": "2026-10-20 23:59:00 -0700",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8858744"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8858744/submissions/438470238"
     },
     {
       "id": "gradescope:1364686:8858754",
@@ -264,8 +264,8 @@
       "release": "2026-10-05 12:00:00 -0700",
       "due": "2026-10-17 23:59:00 -0700",
       "late_due": "2026-10-20 23:59:00 -0700",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8858754"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8858754/submissions/438472245"
     },
     {
       "id": "gradescope:1370577:8502651",
