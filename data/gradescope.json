@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-20T17:03:11.310147+00:00",
+  "synced_at": "2026-10-20T21:36:57.635694+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -141,10 +141,32 @@
       "course": "CBE 162",
       "title": "Homework 6",
       "release": "2026-10-13 08:00:00 -0700",
-      "due": "2026-10-20 10:59:00 -0700",
+      "due": "2026-10-20 23:59:00 -0700",
       "late_due": "2026-10-21 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1344528/assignments/8862887"
+    },
+    {
+      "id": "gradescope:1344528:8909843",
+      "source": "gradescope",
+      "course": "CBE 162",
+      "title": "Lab 7",
+      "release": "2026-10-19 08:01:00 -0700",
+      "due": "2026-10-23 23:59:00 -0700",
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8909843"
+    },
+    {
+      "id": "gradescope:1344528:8909893",
+      "source": "gradescope",
+      "course": "CBE 162",
+      "title": "Homework 7",
+      "release": "2026-10-20 08:00:00 -0700",
+      "due": "2026-10-27 23:59:00 -0700",
+      "late_due": "2026-10-28 23:59:00 -0700",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/8909893"
     },
     {
       "id": "gradescope:1364686:8459249",

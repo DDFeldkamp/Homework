@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-20T17:03:16.087684+00:00",
+  "synced_at": "2026-10-20T21:37:01.832977+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -138,7 +138,7 @@
       "id": "bcourses:1558286:9128032",
       "source": "bcourses",
       "course": "SCANDIN 123-LEC-001",
-      "title": "The Saga of Hrafkel Frey\u2019s Godi",
+      "title": "The Saga of Hrafnkel Frey\u2019s Godi",
       "due": "2026-10-22T22:40:00Z",
       "late_due": null,
       "completed": false,
