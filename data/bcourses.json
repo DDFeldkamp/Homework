@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-21T18:39:08.802098+00:00",
+  "synced_at": "2026-10-21T23:18:43.950506+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -171,7 +171,7 @@
       "title": "The Saga of Hrafnkel Frey\u2019s Godi",
       "due": "2026-10-22T22:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128032"
     },
     {
