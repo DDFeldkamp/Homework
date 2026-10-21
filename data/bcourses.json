@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-21T00:37:18.621534+00:00",
+  "synced_at": "2026-10-21T07:39:22.167434+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -83,6 +83,26 @@
       "late_due": null,
       "completed": false,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9161162"
+    },
+    {
+      "id": "bcourses:1559171:9161210",
+      "source": "bcourses",
+      "course": "ENGIN 98",
+      "title": "Week 7 HW: 4-Year Plan",
+      "due": "2026-10-31T06:59:59Z",
+      "late_due": null,
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9161210"
+    },
+    {
+      "id": "bcourses:1559171:9161211",
+      "source": "bcourses",
+      "course": "ENGIN 98",
+      "title": "Week 8 HW: LinkedIn",
+      "due": "2026-11-07T07:59:59Z",
+      "late_due": null,
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9161211"
     },
     {
       "id": "bcourses:1559171:9145853",
