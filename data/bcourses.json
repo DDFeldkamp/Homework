@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-20T21:37:01.832977+00:00",
+  "synced_at": "2026-10-21T00:37:18.621534+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -73,6 +73,16 @@
       "late_due": null,
       "completed": false,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9157550"
+    },
+    {
+      "id": "bcourses:1559171:9161162",
+      "source": "bcourses",
+      "course": "ENGIN 98",
+      "title": "Week 6 HW: Interview Questions (No Submission!)",
+      "due": "2026-10-24T06:59:59Z",
+      "late_due": null,
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9161162"
     },
     {
       "id": "bcourses:1559171:9145853",
