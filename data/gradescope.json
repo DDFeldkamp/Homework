@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-22T17:10:22.899755+00:00",
+  "synced_at": "2026-10-22T21:35:33.442104+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -409,6 +409,17 @@
       "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577/assignments/8613396"
+    },
+    {
+      "id": "gradescope:1370577:8613410",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Homework 8",
+      "release": "2026-10-21 22:59:00 -0700",
+      "due": "2026-10-28 22:59:00 -0700",
+      "late_due": "2026-12-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8613410"
     },
     {
       "id": "gradescope:1370577:Quiz 1 - 101",
