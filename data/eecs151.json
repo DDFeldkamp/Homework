@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-23T23:08:40.484069+00:00",
+  "synced_at": "2026-10-24T04:36:05.143641+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -159,6 +159,19 @@
       "completion_mode": "manual",
       "url": "https://drive.google.com/file/d/1twcmkAcZZ-f09lhThcpYbglDEWTLGyuI/view?usp=sharing",
       "calendar_week": 9
+    },
+    {
+      "id": "eecs151:2026:hw7",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW7",
+      "release": null,
+      "due": "2026-10-30T23:59:59-07:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1YfgA2gFNkBhQe50ZSLPqqZYUj6d3HIta/view?usp=sharing",
+      "calendar_week": 10
     }
   ]
 }
