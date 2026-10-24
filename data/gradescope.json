@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-24T04:36:00.559298+00:00",
+  "synced_at": "2026-10-24T10:59:57.873044+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -295,8 +295,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 4: Directed (code submission only)",
       "release": "2026-10-18 12:00:00 -0700",
-      "due": "2026-10-25 23:59:00 -0700",
-      "late_due": "2026-10-28 23:59:00 -0700",
+      "due": "2026-10-27 23:59:00 -0700",
+      "late_due": "2026-10-30 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8893194/submissions/440457211"
     },
@@ -306,8 +306,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 4: Open-Ended (Report) -- OPTIONAL",
       "release": "2026-10-18 12:00:00 -0700",
-      "due": "2026-10-25 23:59:00 -0700",
-      "late_due": "2026-10-28 23:59:00 -0700",
+      "due": "2026-10-27 23:59:00 -0700",
+      "late_due": "2026-10-30 23:59:00 -0700",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8893195"
     },
@@ -317,8 +317,8 @@
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 4: Open-Ended (code submission only)",
       "release": "2026-10-18 12:00:00 -0700",
-      "due": "2026-10-25 23:59:00 -0700",
-      "late_due": "2026-10-28 23:59:00 -0700",
+      "due": "2026-10-27 23:59:00 -0700",
+      "late_due": "2026-10-30 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8893196/submissions/440470965"
     },
