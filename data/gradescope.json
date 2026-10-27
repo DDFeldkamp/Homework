@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-27T01:28:39.242402+00:00",
+  "synced_at": "2026-10-27T07:51:22.248304+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -321,6 +321,17 @@
       "late_due": "2026-10-30 23:59:00 -0700",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1364686/assignments/8893196/submissions/440470965"
+    },
+    {
+      "id": "gradescope:1364686:8948773",
+      "source": "gradescope",
+      "course": "COMPSCI 152-LEC-001",
+      "title": "Homework 4",
+      "release": "2026-10-26 09:58:00 -0700",
+      "due": "2026-11-08 23:59:00 -0800",
+      "late_due": "2026-11-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1364686/assignments/8948773"
     },
     {
       "id": "gradescope:1370577:8502651",
