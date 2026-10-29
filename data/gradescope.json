@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-28T22:34:45.160868+00:00",
+  "synced_at": "2026-10-29T05:47:37.888483+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -433,6 +433,17 @@
       "url": "https://www.gradescope.com/courses/1370577/assignments/8613410"
     },
     {
+      "id": "gradescope:1370577:8613412",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Homework 9",
+      "release": "2026-10-28 00:00:00 -0700",
+      "due": "2026-11-04 22:59:00 -0800",
+      "late_due": "2026-12-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8613412"
+    },
+    {
       "id": "gradescope:1370577:Quiz 1 - 101",
       "source": "gradescope",
       "course": "CS 182/282",
@@ -497,6 +508,17 @@
       "late_due": null,
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:8964317",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Homework 9 \u2014 Hardware Check CSV",
+      "release": "2026-10-28 00:00:00 -0700",
+      "due": "2026-11-04 22:59:00 -0800",
+      "late_due": "2026-12-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8964317"
     },
     {
       "id": "gradescope:1421846:8788068",
