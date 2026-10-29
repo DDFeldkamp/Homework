@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-29T19:38:11.085647+00:00",
+  "synced_at": "2026-10-29T23:56:42.905373+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -31,7 +31,7 @@
       "title": "Week 1 HW: Make E98 Friends!",
       "due": "2026-09-19T06:30:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9148397"
     },
     {
@@ -41,7 +41,7 @@
       "title": "Week 2 HW: Extracurriculars",
       "due": "2026-10-10T06:59:59Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9150511"
     },
     {
@@ -51,7 +51,7 @@
       "title": "Week 3 HW: Professor/GSI Office Hours",
       "due": "2026-10-10T06:59:59Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9153751"
     },
     {
@@ -61,7 +61,7 @@
       "title": "Week 4 HW: Resume",
       "due": "2026-10-10T06:59:59Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9156027"
     },
     {
@@ -71,7 +71,7 @@
       "title": "Week 5 HW: Cover Letter",
       "due": "2026-10-24T06:59:59Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9157550"
     },
     {
