@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-31T05:40:08.914053+00:00",
+  "synced_at": "2026-10-31T12:27:54.550708+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -196,7 +196,7 @@
       "late_due": null,
       "completed": false,
       "completion_mode": "manual",
-      "url": "https://eecs151.org/",
+      "url": "https://eecs151.org/asic/final-project/docs/pg4-ckpt3",
       "calendar_week": 12
     }
   ]

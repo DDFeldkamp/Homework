@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-10-31T05:40:04.025929+00:00",
+  "synced_at": "2026-10-31T12:27:49.785759+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -301,7 +301,7 @@
       "url": "https://www.gradescope.com/courses/1364686/assignments/8893194/submissions/440457211"
     },
     {
-      "id": "gradescope:1364686:8893195",
+      "id": "gradescope:1364686:Lab 4: Open-Ended (Report) -- OPTIONAL",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 4: Open-Ended (Report) -- OPTIONAL",
@@ -309,7 +309,7 @@
       "due": "2026-10-27 23:59:00 -0700",
       "late_due": "2026-10-30 23:59:00 -0700",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/8893195"
+      "url": "https://www.gradescope.com/courses/1364686"
     },
     {
       "id": "gradescope:1364686:8893196",
