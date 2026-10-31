@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-10-30T23:46:14.685964+00:00",
+  "synced_at": "2026-10-31T05:40:08.914053+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -172,6 +172,32 @@
       "completion_mode": "manual",
       "url": "https://drive.google.com/file/d/1YfgA2gFNkBhQe50ZSLPqqZYUj6d3HIta/view?usp=sharing",
       "calendar_week": 10
+    },
+    {
+      "id": "eecs151:2026:hw8",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW8",
+      "release": null,
+      "due": "2026-11-13T23:59:59-08:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1343fYewbmm3xhjSvJm_YcYIcbyoItq0Z/view?usp=sharing",
+      "calendar_week": 11
+    },
+    {
+      "id": "eecs151:2026:final-project-checkpoint-3",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "Final Project: Checkpoint 3",
+      "release": null,
+      "due": "2026-11-23T23:59:59-08:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/",
+      "calendar_week": 12
     }
   ]
 }
