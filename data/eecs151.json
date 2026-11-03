@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-02T23:29:33.361707+00:00",
+  "synced_at": "2026-11-03T06:46:49.795963+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -183,7 +183,7 @@
       "late_due": null,
       "completed": false,
       "completion_mode": "manual",
-      "url": "https://drive.google.com/file/d/1343fYewbmm3xhjSvJm_YcYIcbyoItq0Z/view?usp=sharing",
+      "url": "https://drive.google.com/file/d/1qUmDILOVoj8tyQwCl5puz6BrWAnRQLCS/view?usp=sharing",
       "calendar_week": 11
     },
     {
