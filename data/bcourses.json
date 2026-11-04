@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-04T02:19:59.605449+00:00",
+  "synced_at": "2026-11-04T12:07:49.948968+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -103,6 +103,16 @@
       "late_due": null,
       "completed": false,
       "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9161211"
+    },
+    {
+      "id": "bcourses:1559171:9165564",
+      "source": "bcourses",
+      "course": "ENGIN 98",
+      "title": "Week 9 HW: Technical/Nontechnical Presentations",
+      "due": "2026-11-14T07:59:59Z",
+      "late_due": null,
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1559171/assignments/9165564"
     },
     {
       "id": "bcourses:1559171:9145853",

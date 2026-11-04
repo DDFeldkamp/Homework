@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-04T02:19:55.130699+00:00",
+  "synced_at": "2026-11-04T12:07:46.152872+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -552,6 +552,39 @@
       "late_due": "2026-12-18 23:59:00 -0800",
       "completed": true,
       "url": "https://www.gradescope.com/courses/1421846/assignments/8987501/submissions/444486466"
+    },
+    {
+      "id": "gradescope:1421846:8998998",
+      "source": "gradescope",
+      "course": "CS 194-061A / 47A",
+      "title": "Animator Checkpoint 1",
+      "release": "2026-11-02 19:46:00 -0800",
+      "due": "2026-12-07 23:59:00 -0800",
+      "late_due": "2026-12-14 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1421846/assignments/8998998"
+    },
+    {
+      "id": "gradescope:1421846:8999008",
+      "source": "gradescope",
+      "course": "CS 194-061A / 47A",
+      "title": "Animator Checkpoint 2",
+      "release": "2026-11-02 19:50:00 -0800",
+      "due": "2026-12-09 23:59:00 -0800",
+      "late_due": "2026-12-16 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1421846/assignments/8999008"
+    },
+    {
+      "id": "gradescope:1421846:8999010",
+      "source": "gradescope",
+      "course": "CS 194-061A / 47A",
+      "title": "Animator",
+      "release": "2026-11-02 19:51:00 -0800",
+      "due": "2026-12-11 19:51:00 -0800",
+      "late_due": "2026-12-18 19:51:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1421846/assignments/8999010"
     }
   ]
 }
