@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-10T04:06:58.985121+00:00",
+  "synced_at": "2026-11-10T12:38:54.089844+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -191,7 +191,7 @@
       "title": "Law of the Gula\u00feing district - Section on the observance of Christianity",
       "due": "2026-11-12T23:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128051"
     },
     {
