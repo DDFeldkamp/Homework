@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-10T12:38:49.499288+00:00",
+  "synced_at": "2026-11-10T20:49:36.168285+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -497,6 +497,17 @@
       "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577/assignments/8613412"
+    },
+    {
+      "id": "gradescope:1370577:8613416",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Homework 10",
+      "release": "2026-11-04 22:59:00 -0800",
+      "due": "2026-11-11 22:59:00 -0800",
+      "late_due": "2026-12-11 23:59:00 -0800",
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/8613416"
     },
     {
       "id": "gradescope:1370577:Quiz 1 - 101",
