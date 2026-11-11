@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-10T20:49:36.168285+00:00",
+  "synced_at": "2026-11-11T01:55:43.651833+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -576,6 +576,83 @@
       "url": "https://www.gradescope.com/courses/1370577"
     },
     {
+      "id": "gradescope:1370577:Quiz 2 - 101",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 101",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 104",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 104",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 106",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 106",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 107",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 107",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 108",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 108",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 109",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 109",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
+      "id": "gradescope:1370577:Quiz 2 - 110",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Quiz 2 - 110",
+      "release": null,
+      "due": null,
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577"
+    },
+    {
       "id": "gradescope:1370577:8964317",
       "source": "gradescope",
       "course": "CS 182/282",
@@ -585,6 +662,17 @@
       "late_due": "2026-12-11 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1370577/assignments/8964317"
+    },
+    {
+      "id": "gradescope:1370577:9039408",
+      "source": "gradescope",
+      "course": "CS 182/282",
+      "title": "Project Proposals - 1 submission per group",
+      "release": "2026-11-09 15:46:00 -0800",
+      "due": "2026-11-12 22:59:00 -0800",
+      "late_due": null,
+      "completed": false,
+      "url": "https://www.gradescope.com/courses/1370577/assignments/9039408"
     },
     {
       "id": "gradescope:1421846:8788068",
