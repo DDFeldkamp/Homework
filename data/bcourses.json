@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-11T17:53:29.823168+00:00",
+  "synced_at": "2026-11-12T00:43:20.885300+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -23,6 +23,16 @@
       "late_due": "2026-12-12T07:59:00Z",
       "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558186/assignments/9146724"
+    },
+    {
+      "id": "bcourses:1557040:9145390",
+      "source": "bcourses",
+      "course": "CHMENG 162",
+      "title": "Academic Integrity Assignment (Fall 2026)",
+      "due": "2026-09-26T07:59:00Z",
+      "late_due": "2026-12-12T07:59:00Z",
+      "completed": false,
+      "url": "https://bcourses.berkeley.edu/courses/1557040/assignments/9145390"
     },
     {
       "id": "bcourses:1559171:9148397",
