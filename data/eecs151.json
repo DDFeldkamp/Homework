@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-14T15:04:31.040442+00:00",
+  "synced_at": "2026-11-14T20:43:19.995179+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -185,6 +185,19 @@
       "completion_mode": "manual",
       "url": "https://drive.google.com/file/d/1hDhAVxteUs5VfIN595BQd9HrYjt6ePQC/view?usp=sharing",
       "calendar_week": 11
+    },
+    {
+      "id": "eecs151:2026:hw9",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW9",
+      "release": null,
+      "due": "2026-11-20T23:59:59-08:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://drive.google.com/file/d/1S1_xXpQDWybIGPl1r0L_ePRBt03KaqhC/view?usp=sharing",
+      "calendar_week": 13
     },
     {
       "id": "eecs151:2026:final-project-checkpoint-3",
