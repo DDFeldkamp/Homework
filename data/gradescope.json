@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-16T06:28:49.313606+00:00",
+  "synced_at": "2026-11-16T18:31:50.874466+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -395,7 +395,7 @@
       "title": "Lab 5: Directed",
       "release": "2026-11-05 00:00:00 -0800",
       "due": "2026-11-16 23:59:00 -0800",
-      "late_due": null,
+      "late_due": "2026-11-19 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/9022655"
     },
@@ -406,7 +406,7 @@
       "title": "Lab 5: Open-ended (Report)",
       "release": "2026-11-05 00:00:00 -0800",
       "due": "2026-11-16 23:59:00 -0800",
-      "late_due": null,
+      "late_due": "2026-11-19 23:59:00 -0800",
       "completed": false,
       "url": "https://www.gradescope.com/courses/1364686/assignments/9022658"
     },
@@ -686,15 +686,15 @@
       "url": "https://www.gradescope.com/courses/1370577/assignments/8964317"
     },
     {
-      "id": "gradescope:1370577:Project Proposals - 1 submission per group",
+      "id": "gradescope:1370577:9039408",
       "source": "gradescope",
       "course": "CS 182/282",
       "title": "Project Proposals - 1 submission per group",
       "release": "2026-11-09 15:46:00 -0800",
       "due": "2026-11-12 22:59:00 -0800",
-      "late_due": null,
+      "late_due": "2026-11-19 22:59:00 -0800",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1370577"
+      "url": "https://www.gradescope.com/courses/1370577/assignments/9039408"
     },
     {
       "id": "gradescope:1421846:8788068",
