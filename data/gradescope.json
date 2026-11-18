@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-18T07:28:14.254930+00:00",
+  "synced_at": "2026-11-18T17:15:17.325877+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -198,8 +198,8 @@
       "release": "2026-11-10 08:00:00 -0800",
       "due": "2026-11-17 23:59:00 -0800",
       "late_due": "2026-11-19 23:59:00 -0800",
-      "completed": false,
-      "url": "https://www.gradescope.com/courses/1344528/assignments/9043759"
+      "completed": true,
+      "url": "https://www.gradescope.com/courses/1344528/assignments/9043759/submissions/449488023"
     },
     {
       "id": "gradescope:1344528:9080162",
@@ -419,7 +419,7 @@
       "due": "2026-11-16 23:59:00 -0800",
       "late_due": "2026-11-19 23:59:00 -0800",
       "completed": true,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/9022658/submissions/449482447"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9022658/submissions/449488251"
     },
     {
       "id": "gradescope:1364686:9072736",
@@ -433,37 +433,37 @@
       "url": "https://www.gradescope.com/courses/1364686/assignments/9072736"
     },
     {
-      "id": "gradescope:1364686:Lab 6: Directed (code submission only)",
+      "id": "gradescope:1364686:9081319",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 6: Directed (code submission only)",
-      "release": "2026-04-21 09:00:00 -0700",
-      "due": "2026-04-26 23:59:00 -0700",
-      "late_due": "2026-04-29 23:59:00 -0700",
+      "release": "2026-11-18 09:00:00 -0800",
+      "due": "2026-12-03 23:59:00 -0800",
+      "late_due": "2026-12-06 23:59:00 -0800",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9081319"
     },
     {
-      "id": "gradescope:1364686:Lab 6: Open-Ended (code submission only)",
+      "id": "gradescope:1364686:9081333",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 6: Open-Ended (code submission only)",
-      "release": "2026-04-21 09:00:00 -0700",
-      "due": "2026-05-03 23:59:00 -0700",
-      "late_due": "2026-05-06 23:59:00 -0700",
+      "release": "2026-11-18 09:00:00 -0800",
+      "due": "2026-12-03 23:59:00 -0800",
+      "late_due": "2026-12-06 23:59:00 -0800",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9081333"
     },
     {
-      "id": "gradescope:1364686:Lab 6: Competition (code submission only)",
+      "id": "gradescope:1364686:9081335",
       "source": "gradescope",
       "course": "COMPSCI 152-LEC-001",
       "title": "Lab 6: Competition (code submission only)",
-      "release": "2026-04-21 09:00:00 -0700",
-      "due": "2026-05-05 23:59:00 -0700",
+      "release": "2026-11-18 09:00:00 -0800",
+      "due": "2026-12-06 23:59:00 -0800",
       "late_due": null,
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1364686"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9081335"
     },
     {
       "id": "gradescope:1370577:8502651",
