@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-18T17:15:23.248909+00:00",
+  "synced_at": "2026-11-19T00:22:19.821112+00:00",
   "term": "Fall 2026",
   "course_count": 1,
   "assignments": [
@@ -211,6 +211,19 @@
       "completion_mode": "manual",
       "url": "https://eecs151.org/asic/final-project/docs/pg4-ckpt3",
       "calendar_week": 12
+    },
+    {
+      "id": "eecs151:2026:hw10",
+      "source": "eecs151",
+      "course": "EECS 151/251A",
+      "title": "HW10",
+      "release": null,
+      "due": "2026-12-04T23:59:59-08:00",
+      "late_due": null,
+      "completed": false,
+      "completion_mode": "manual",
+      "url": "https://eecs151.org/",
+      "calendar_week": 14
     }
   ]
 }
