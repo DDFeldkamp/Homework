@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "synced_at": "2026-11-19T20:36:38.222337+00:00",
+  "synced_at": "2026-11-20T03:14:06.681684+00:00",
   "term": "Fall 2026",
   "course_count": 6,
   "assignments": [
@@ -211,7 +211,7 @@
       "title": "Tales from Strengleikar",
       "due": "2026-11-19T23:40:00Z",
       "late_due": null,
-      "completed": false,
+      "completed": true,
       "url": "https://bcourses.berkeley.edu/courses/1558286/assignments/9128054"
     },
     {
