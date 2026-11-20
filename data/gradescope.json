@@ -1,5 +1,5 @@
 {
-  "synced_at": "2026-11-20T03:14:02.207351+00:00",
+  "synced_at": "2026-11-20T12:53:17.449931+00:00",
   "term": "Fall 2026",
   "course_count": 4,
   "assignments": [
@@ -419,7 +419,7 @@
       "due": "2026-11-19 23:59:00 -0800",
       "late_due": null,
       "completed": true,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/9020536/submissions/449097352"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9020536/submissions/450387864"
     },
     {
       "id": "gradescope:1364686:9022655",
@@ -441,7 +441,7 @@
       "due": "2026-11-16 23:59:00 -0800",
       "late_due": "2026-11-19 23:59:00 -0800",
       "completed": true,
-      "url": "https://www.gradescope.com/courses/1364686/assignments/9022658/submissions/449488251"
+      "url": "https://www.gradescope.com/courses/1364686/assignments/9022658/submissions/450388167"
     },
     {
       "id": "gradescope:1364686:9072736",
@@ -774,7 +774,7 @@
       "url": "https://www.gradescope.com/courses/1370577/assignments/8964317"
     },
     {
-      "id": "gradescope:1370577:9039408",
+      "id": "gradescope:1370577:Project Proposals - 1 submission per group",
       "source": "gradescope",
       "course": "CS 182/282",
       "title": "Project Proposals - 1 submission per group",
@@ -782,7 +782,7 @@
       "due": "2026-11-12 22:59:00 -0800",
       "late_due": "2026-11-19 22:59:00 -0800",
       "completed": false,
-      "url": "https://www.gradescope.com/courses/1370577/assignments/9039408"
+      "url": "https://www.gradescope.com/courses/1370577"
     },
     {
       "id": "gradescope:1421846:8788068",
